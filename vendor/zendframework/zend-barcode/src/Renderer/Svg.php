@@ -1,10 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-barcode for the canonical source repository
+ * @copyright Copyright (c) 2005-2019 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-barcode/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Barcode\Renderer;
@@ -315,10 +313,10 @@ class Svg extends AbstractRenderer
             $points[0][1] + $this->topOffset,
             $points[1][0] + $this->leftOffset,
             $points[1][1] + $this->topOffset,
-            $points[2][0] + $this->leftOffset + cos(-$orientation),
-            $points[2][1] + $this->topOffset - sin($orientation),
-            $points[3][0] + $this->leftOffset + cos(-$orientation),
-            $points[3][1] + $this->topOffset - sin($orientation),
+            $points[2][0] + $this->leftOffset + cos(-$orientation / 180 * pi()),
+            $points[2][1] + $this->topOffset + sin($orientation / 180 * pi()),
+            $points[3][0] + $this->leftOffset + cos(-$orientation / 180 * pi()),
+            $points[3][1] + $this->topOffset + sin($orientation / 180 * pi()),
         ];
         $newPoints = implode(' ', $newPoints);
         $attributes = [];

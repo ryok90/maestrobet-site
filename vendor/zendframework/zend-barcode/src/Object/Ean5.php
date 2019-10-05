@@ -1,10 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-barcode for the canonical source repository
+ * @copyright Copyright (c) 2005-2019 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-barcode/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Barcode\Object;
@@ -100,10 +98,12 @@ class Ean5 extends Ean13
     public function getChecksum($text)
     {
         $this->checkText($text);
+        $text = $this->addLeadingZeros($text, true);
+
         $checksum = 0;
 
         for ($i = 0; $i < $this->barcodeLength; $i ++) {
-            $checksum += intval($text{$i}) * ($i % 2 ? 9 : 3);
+            $checksum += (int) $text[$i] * (($i % 2) ? 9 : 3);
         }
 
         return ($checksum % 10);
@@ -126,5 +126,13 @@ class Ean5 extends Ean13
     public function getText()
     {
         return $this->addLeadingZeros($this->text);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextToDisplay()
+    {
+        return $this->getText();
     }
 }

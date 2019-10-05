@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.9.0 - 2019-09-20
+
+### Added
+
+- [#115](https://github.com/zendframework/zend-session/pull/115) adds support for PHP 7.3.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- [#115](https://github.com/zendframework/zend-session/pull/115) removes support for zend-stdlib v2 releases.
+
+### Fixed
+
+- Nothing.
+
+## 2.8.7 - 2019-09-19
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#122](https://github.com/zendframework/zend-session/pull/122) fixes
+  type check for configuration of session storage. Allows input to be
+  an instance of ArrayAccess or an array.
+
 ## 2.8.6 - 2019-08-11
 
 ### Added
@@ -34,6 +80,9 @@ All notable changes to this project will be documented in this file, in reverse 
   Validator\Id compatibility with PHP 7.1. INI setting `session.sid_bits_per_character`
   can be now used with PHP 7.1+ instead of `session.hash_bits_per_character`
   (used with PHP versions prior to 7.1).
+
+  In some very specific situations this can lead to an issue with previously generated sessions.
+  See issue [#121](https://github.com/zendframework/zend-session/issues/121).
 
 - [#118](https://github.com/zendframework/zend-session/pull/118) avoid unnecessary phpinfo() call
   when register own save handler which is an object.

@@ -1,10 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-session for the canonical source repository
+ * @copyright Copyright (c) 2005-2019 Zend Technologies USA Inc. (https://www.zend.com)
+ * @license   https://github.com/zendframework/zend-session/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Session\Storage;
@@ -131,17 +129,16 @@ abstract class Factory
     {
         $input = null;
         if (isset($options['input'])) {
-            if (null !== $options['input']
-                && ! is_array($options['input'])
+            $input = $options['input'];
+            if (! is_array($input)
                 && ! $input instanceof ArrayAccess
             ) {
                 throw new Exception\InvalidArgumentException(sprintf(
                     '%s expects the "input" option to be null, an array, or to implement ArrayAccess; received "%s"',
                     $type,
-                    (is_object($options['input']) ? get_class($options['input']) : gettype($options['input']))
+                    is_object($input) ? get_class($input) : gettype($input)
                 ));
             }
-            $input = $options['input'];
         }
 
         return new $type($input);

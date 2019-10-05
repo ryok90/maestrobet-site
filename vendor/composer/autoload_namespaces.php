@@ -6,4 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'DoctrineORMModule\\' => array($vendorDir . '/doctrine/doctrine-orm-module/src'),
+    'DoctrineModule\\' => array($vendorDir . '/doctrine/doctrine-module/src'),
 );

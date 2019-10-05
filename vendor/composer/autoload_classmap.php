@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'JsonException' => $vendorDir . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
     'PHPUnit\\Exception' => $vendorDir . '/phpunit/phpunit/src/Exception.php',
     'PHPUnit\\Framework\\Assert' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert.php',
     'PHPUnit\\Framework\\AssertionFailedError' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/AssertionFailedError.php',
@@ -71,6 +72,7 @@ return array(
     'PHPUnit\\Framework\\IncompleteTestError' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/IncompleteTestError.php',
     'PHPUnit\\Framework\\InvalidCoversTargetException' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/InvalidCoversTargetException.php',
     'PHPUnit\\Framework\\InvalidDataProviderException' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/InvalidDataProviderException.php',
+    'PHPUnit\\Framework\\InvalidParameterGroupException' => $vendorDir . '/phpunit/phpunit/src/Framework/InvalidParameterGroupException.php',
     'PHPUnit\\Framework\\MissingCoversAnnotationException' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/MissingCoversAnnotationException.php',
     'PHPUnit\\Framework\\MockObject\\Api' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/Api/Api.php',
     'PHPUnit\\Framework\\MockObject\\BadMethodCallException' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/Exception/BadMethodCallException.php',
@@ -105,6 +107,7 @@ return array(
     'PHPUnit\\Framework\\MockObject\\Matcher\\Parameters' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/Matcher/Parameters.php',
     'PHPUnit\\Framework\\MockObject\\Matcher\\StatelessInvocation' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/Matcher/StatelessInvocation.php',
     'PHPUnit\\Framework\\MockObject\\Method' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/Api/Method.php',
+    'PHPUnit\\Framework\\MockObject\\MethodNameConstraint' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/MethodNameConstraint.php',
     'PHPUnit\\Framework\\MockObject\\MockBuilder' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/MockBuilder.php',
     'PHPUnit\\Framework\\MockObject\\MockClass' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/MockClass.php',
     'PHPUnit\\Framework\\MockObject\\MockMethod' => $vendorDir . '/phpunit/phpunit/src/Framework/MockObject/MockMethod.php',
@@ -146,6 +149,7 @@ return array(
     'PHPUnit\\Framework\\TestResult' => $vendorDir . '/phpunit/phpunit/src/Framework/TestResult.php',
     'PHPUnit\\Framework\\TestSuite' => $vendorDir . '/phpunit/phpunit/src/Framework/TestSuite.php',
     'PHPUnit\\Framework\\TestSuiteIterator' => $vendorDir . '/phpunit/phpunit/src/Framework/TestSuiteIterator.php',
+    'PHPUnit\\Framework\\UnexpectedValueException' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/UnexpectedValueException.php',
     'PHPUnit\\Framework\\UnintentionallyCoveredCodeError' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/UnintentionallyCoveredCodeError.php',
     'PHPUnit\\Framework\\Warning' => $vendorDir . '/phpunit/phpunit/src/Framework/Exception/Warning.php',
     'PHPUnit\\Framework\\WarningTestCase' => $vendorDir . '/phpunit/phpunit/src/Framework/WarningTestCase.php',

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.9.1 - 2019-08-21
+
+### Added
+
+- [#77](https://github.com/zendframework/zend-navigation/pull/77) adds support for PHP 7.3.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.9.0 - 2018-04-25
 
 ### Added

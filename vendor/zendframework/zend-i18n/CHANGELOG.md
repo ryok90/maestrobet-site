@@ -2,6 +2,64 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.9.2 - 2019-09-30
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#122](https://github.com/zendframework/zend-i18n/pull/122) fixes PHP 7.4 compatibility.
+
+## 2.9.1 - 2019-09-26
+
+### Added
+
+- [#106](https://github.com/zendframework/zend-i18n/pull/106) adds support for PHP 7.3.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#114](https://github.com/zendframework/zend-i18n/pull/114) fixes PHP 7.4 compatibility.
+
+- [#116](https://github.com/zendframework/zend-i18n/pull/116) fixes DateTime formatter when changing timezone within the same instance.
+
+- [#100](https://github.com/zendframework/zend-i18n/pull/100) fixes regular expression in Liechtenstein postcode validator.
+
+- [#116](https://github.com/zendframework/zend-i18n/pull/116) fixes PhoneNumber validator to match the whole value.
+
+- [#103](https://github.com/zendframework/zend-i18n/pull/103) fixes Brazilian PhoneNumber validator.
+
+- [#117](https://github.com/zendframework/zend-i18n/pull/117) fixes French PhoneNumber validator.
+
+- [#119](https://github.com/zendframework/zend-i18n/pull/119) fixes Kosovan PhoneNumber validator.
+
+- [#120](https://github.com/zendframework/zend-i18n/pull/120) fixes Luxembourgish PhoneNumber validator.
+
 ## 2.9.0 - 2018-05-16
 
 ### Added

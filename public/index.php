@@ -7,6 +7,10 @@ use Zend\Stdlib\ArrayUtils;
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
  */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 chdir(dirname(__DIR__));
 
 // Decline static file requests back to the PHP built-in webserver
@@ -29,7 +33,6 @@ if (! class_exists(Application::class)) {
         . "- Type `docker-compose run zf composer install` if you are using Docker.\n"
     );
 }
-
 // Retrieve configuration
 $appConfig = require __DIR__ . '/../config/application.config.php';
 if (file_exists(__DIR__ . '/../config/development.config.php')) {

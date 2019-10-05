@@ -289,6 +289,7 @@ final class Test
     /**
      * Returns the missing requirements for a test.
      *
+     * @throws Exception
      * @throws Warning
      */
     public static function getMissingRequirements(string $className, string $methodName): array
@@ -299,6 +300,8 @@ final class Test
 
         if (!empty($required['PHP'])) {
             $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
+
+            self::ensureOperatorIsValid($operator);
 
             if (!\version_compare(\PHP_VERSION, $required['PHP']['version'], $operator)) {
                 $missing[] = \sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
@@ -320,6 +323,8 @@ final class Test
             $phpunitVersion = Version::id();
 
             $operator = empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator'];
+
+            self::ensureOperatorIsValid($operator);
 
             if (!\version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {
                 $missing[] = \sprintf('PHPUnit %s %s is required.', $operator, $required['PHPUnit']['version']);
@@ -355,7 +360,7 @@ final class Test
             foreach ($required['functions'] as $function) {
                 $pieces = \explode('::', $function);
 
-                if (\count($pieces) === 2 && \method_exists($pieces[0], $pieces[1])) {
+                if (\count($pieces) === 2 && \class_exists($pieces[0]) && \method_exists($pieces[0], $pieces[1])) {
                     continue;
                 }
 
@@ -396,6 +401,8 @@ final class Test
 
                 $operator = empty($req['operator']) ? '>=' : $req['operator'];
 
+                self::ensureOperatorIsValid($operator);
+
                 if ($actualVersion === false || !\version_compare($actualVersion, $req['version'], $operator)) {
                     $missing[] = \sprintf('Extension %s %s %s is required.', $extension, $operator, $req['version']);
                     $hint      = $hint ?? 'extension_' . $extension;
@@ -405,7 +412,7 @@ final class Test
 
         if ($hint && isset($required['__OFFSET'])) {
             \array_unshift($missing, '__OFFSET_FILE=' . $required['__OFFSET']['__FILE']);
-            \array_unshift($missing, '__OFFSET_LINE=' . $required['__OFFSET'][$hint] ?? 1);
+            \array_unshift($missing, '__OFFSET_LINE=' . ($required['__OFFSET'][$hint] ?? 1));
         }
 
         return $missing;
@@ -653,7 +660,7 @@ final class Test
         // Strip away the docblock header and footer to ease parsing of one line annotations
         $docBlock = (string) \substr($docBlock, 3, -2);
 
-        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
+        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>[^\r\n]*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
             $numMatches = \count($matches[0]);
 
             for ($i = 0; $i < $numMatches; ++$i) {
@@ -1278,5 +1285,20 @@ final class Test
         }
 
         return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private static function ensureOperatorIsValid(string $operator): void
+    {
+        if (!\in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'])) {
+            throw new Exception(
+                \sprintf(
+                    '"%s" is not a valid version_compare() operator',
+                    $operator
+                )
+            );
+        }
     }
 }

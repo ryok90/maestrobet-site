@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.9.0 - 2019-08-29
+
+### Added
+
+- [#178](https://github.com/zendframework/zend-cache/pull/178) adds support for PHP 7.3.
+
+### Changed
+
+- [#186](https://github.com/zendframework/zend-cache/pull/186) replaces
+  deprecated `delete()` calls with `del()` in Redis adapter. `delete()`
+  function is deprecated since version 5.0.0 and `del()` is available
+  since version 2.1.0.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- [#178](https://github.com/zendframework/zend-cache/pull/178) removes support for zend-stdlib v2 releases.
+
+### Fixed
+
+- Nothing. 
+
+## 2.8.3 - 2019-08-28
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#184](https://github.com/zendframework/zend-cache/pull/184) fixes
+  an issue with SimpleCacheDecorator where elements were deleted
+  after creation. Wrong TTL was set instead of using default value
+  from options.
+
+- [#182](https://github.com/zendframework/zend-cache/pull/182) fixes
+  a typo in variable name within the `ExtMongoDbResourceManager::getResource`
+  method which prevented using custom db name when using that adapter.
+
 ## 2.8.2 - 2018-05-01
 
 ### Added

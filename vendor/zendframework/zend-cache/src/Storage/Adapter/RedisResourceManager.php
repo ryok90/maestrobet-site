@@ -299,7 +299,7 @@ class RedisResourceManager
         }
 
         if (! $success) {
-            throw new Exception\RuntimeException('Could not estabilish connection with Redis instance');
+            throw new Exception\RuntimeException('Could not establish connection with Redis instance');
         }
 
         $resource['initialized'] = true;
@@ -492,7 +492,7 @@ class RedisResourceManager
             $reflection = new ReflectionClass('Redis');
             $constants  = $reflection->getConstants();
             foreach ($constants as $constName => $constValue) {
-                if (substr($constName, 0, 4) == 'OPT_') {
+                if (strpos($constName, 'OPT_') === 0) {
                     $libOptions[$constValue] = $resource['resource']->getOption($constValue);
                 }
             }

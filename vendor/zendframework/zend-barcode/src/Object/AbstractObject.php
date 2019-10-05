@@ -1,10 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-barcode for the canonical source repository
+ * @copyright Copyright (c) 2005-2019 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-barcode/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Barcode\Object;
@@ -1103,11 +1101,11 @@ abstract class AbstractObject implements ObjectInterface
      */
     protected function rotate($x1, $y1)
     {
-        $x2 = $x1 * cos($this->orientation / 180 * pi())
-            - $y1 * sin($this->orientation / 180 * pi())
+        $x2 = $x1 * round(cos($this->orientation / 180 * pi()), 6)
+            - $y1 * round(sin($this->orientation / 180 * pi()), 6)
             + $this->getOffsetLeft();
-        $y2 = $y1 * cos($this->orientation / 180 * pi())
-            + $x1 * sin($this->orientation / 180 * pi())
+        $y2 = $y1 * round(cos($this->orientation / 180 * pi()), 6)
+            + $x1 * round(sin($this->orientation / 180 * pi()), 6)
             + $this->getOffsetTop();
         return [intval($x2), intval($y2)];
     }
@@ -1218,7 +1216,7 @@ abstract class AbstractObject implements ObjectInterface
                 for ($i = 0; $i < $textLength; $i ++) {
                     $leftPosition = $this->getQuietZone() + $space * ($i + 0.5);
                     $this->addText(
-                        $text{$i},
+                        $text[$i],
                         $this->fontSize * $this->factor,
                         $this->rotate(
                             $leftPosition,

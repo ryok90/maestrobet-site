@@ -1,10 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/zendframework/zend-barcode for the canonical source repository
+ * @copyright Copyright (c) 2005-2019 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/zend-barcode/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Barcode\Object;
@@ -106,7 +104,7 @@ class Code25 extends AbstractObject
         $checksum = 0;
 
         for ($i = strlen($text); $i > 0; $i --) {
-            $checksum += intval($text{$i - 1}) * $factor;
+            $checksum += intval($text[$i - 1]) * $factor;
             $factor    = 4 - $factor;
         }
 

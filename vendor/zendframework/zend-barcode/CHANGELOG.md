@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.7.1 - 2019-09-21
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#43](https://github.com/zendframework/zend-barcode/pull/43) fixes typo in exception message of `Zend\Barcode\Exception\UnexpectedValueException`.
+
+- [#44](https://github.com/zendframework/zend-barcode/pull/44) changes
+  curly braces in array and string offset access to square brackets
+  in order to prevent issues under the upcoming PHP 7.4 release.
+
+- [#45](https://github.com/zendframework/zend-barcode/pull/45) fixes
+  rotation calculations.
+
+- [#46](https://github.com/zendframework/zend-barcode/pull/46) fixes
+  generating checksum for EAN5 and Identcode/Leitcode. These barcodes
+  have fixed length and checksum generator must use also leading zeros. 
+
+- [#47](https://github.com/zendframework/zend-barcode/pull/47) fixes
+  text length for EAN2 and EAN5 by adding leading zeros.
+
 ## 2.7.0 - 2017-12-11
 
 ### Added

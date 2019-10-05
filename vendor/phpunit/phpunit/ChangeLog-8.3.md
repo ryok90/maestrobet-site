@@ -2,6 +2,15 @@
 
 All notable changes of the PHPUnit 8.3 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.3.5] - 2019-09-14
+
+### Fixed
+
+* Fixed [#3745](https://github.com/sebastianbergmann/phpunit/issues/3745): Performance degradation with test doubles
+* Fixed [#3801](https://github.com/sebastianbergmann/phpunit/issues/3801): Class constant as default parameter is undefined
+* Fixed [#3807](https://github.com/sebastianbergmann/phpunit/pull/3807): Fixed message of exception raised by `MockBuilder::addMethods()`
+* Fixed [#3834](https://github.com/sebastianbergmann/phpunit/issues/3834): Trailing slash breaks code coverage on Windows
+
 ## [8.3.4] - 2019-08-11
 
 ### Changed
@@ -47,6 +56,7 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 * Implemented [#3522](https://github.com/sebastianbergmann/phpunit/issues/3522): The `TestCase::setUseErrorHandler()` method, which controlled a feature that was not documented and did not work correctly, has been deprecated and does not have an effect anymore
 * Implemented [#3687](https://github.com/sebastianbergmann/phpunit/pull/3687): `MockBuilder::setMethods()` is now deprecated
 
+[8.3.5]: https://github.com/sebastianbergmann/phpunit/compare/8.3.4...8.3.5
 [8.3.4]: https://github.com/sebastianbergmann/phpunit/compare/8.3.3...8.3.4
 [8.3.3]: https://github.com/sebastianbergmann/phpunit/compare/8.3.2...8.3.3
 [8.3.2]: https://github.com/sebastianbergmann/phpunit/compare/8.3.1...8.3.2

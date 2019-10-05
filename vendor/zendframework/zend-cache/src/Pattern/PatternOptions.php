@@ -152,7 +152,7 @@ class PatternOptions extends AbstractOptions
     public function __construct($options = null)
     {
         // disable file/directory permissions by default on windows systems
-        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+        if (stripos(PHP_OS, 'WIN') === 0) {
             $this->filePermission = false;
             $this->dirPermission = false;
         }
@@ -446,7 +446,7 @@ class PatternOptions extends AbstractOptions
                 );
             } elseif ($filePermission & 0111) {
                 throw new Exception\InvalidArgumentException(
-                    "Invalid file permission: Files shoudn't be executable"
+                    "Invalid file permission: Files shouldn't be executable"
                 );
             }
         }
