@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?= $this->headTitle('Blog')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?= $this->headTitle('Maestro Bet')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?= $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -13,9 +13,9 @@
         <!-- Le styles -->
         <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/x-icon', 'href' => $this->basePath() . '/img/favicon.ico'])
                         ->prependStylesheet($this->basePath('css/style.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-        ?>
-
+                        ->prependStylesheet($this->basePath('lib/bootstrap/css/bootstrap.min.css'))
+                        ->prependStylesheet($this->basePath('lib/font-awesome/css/all.css'))
+        ?>        
         <!-- Scripts -->
         <?= $this->headScript()
             ->prependFile($this->basePath('js/bootstrap.min.js'))
@@ -23,8 +23,6 @@
         ?>
     </head>
     <body>
-        <div class="container">
-            <?= $this->content ?>
-        </div>  
+        <?= $this->content ?>
     </body>
 </html>

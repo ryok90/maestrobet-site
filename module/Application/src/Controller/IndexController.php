@@ -31,10 +31,9 @@ class IndexController extends AbstractActionController
     /**
      * Constructor is used for injecting dependencies into the controller.
      */
-    public function __construct($entityManager, $postManager) 
+    public function __construct($entityManager) 
     {
         $this->entityManager = $entityManager;
-        $this->postManager = $postManager;
     }
     
     /**
@@ -43,48 +42,12 @@ class IndexController extends AbstractActionController
      */
     public function indexAction() 
     {
-        $page = $this->params()->fromQuery('page', 1);
-        $tagFilter = $this->params()->fromQuery('tag', null);
-        
-        if ($tagFilter) {
-         
-            // Filter posts by tag
-            $query = $this->entityManager->getRepository(Post::class)
-                    ->findPostsByTag($tagFilter);
-            
-        } else {
-            // Get recent posts
-            $query = $this->entityManager->getRepository(Post::class)
-                    ->findPublishedPosts();
-        }
-        
-        $adapter = new DoctrineAdapter(new ORMPaginator($query, false));
-        $paginator = new Paginator($adapter);
-        $paginator->setDefaultItemCountPerPage(10);        
-        $paginator->setCurrentPageNumber($page);
-                       
-        // Get popular tags.
-        $tagCloud = $this->postManager->getTagCloud();
-        
-        // Render the view template.
-        return new ViewModel([
-            'posts' => $paginator,
-            'postManager' => $this->postManager,
-            'tagCloud' => $tagCloud
-        ]);
+        return new ViewModel();
     }
     
     /**
      * This action displays the About page.
      */
     public function aboutAction() 
-    {   
-        $appName = 'Blog';
-        $appDescription = 'A simple blog application for the Using Zend Framework 3 book';
-        
-        return new ViewModel([
-            'appName' => $appName,
-            'appDescription' => $appDescription
-        ]);
-    }
+    {}
 }
