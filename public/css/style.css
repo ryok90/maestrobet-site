@@ -17,7 +17,7 @@ body {
   margin-top: 25%
 }
 .apresentacao img{
-  width: 80%;
+  width: 100%;
 }
 @media (max-width: 576px) {
   .logo img{
@@ -26,7 +26,6 @@ body {
     margin-bottom: 2rem;
   }
   .apresentacao img{
-    width: 100%;
     margin-bottom: 2rem;
   }
   .container, .container div{
@@ -42,9 +41,12 @@ body {
   text-align: center;
   padding-bottom: 2rem;
   color: white;
-  font-size: 30px;
+  font-size: 40px;
 }
 .footer a{
   text-decoration: none;
   color: white;
+}
+.footer a+a{
+  margin-left: 1rem;
 }

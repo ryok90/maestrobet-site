@@ -44,10 +44,4 @@ class IndexController extends AbstractActionController
     {
         return new ViewModel();
     }
-    
-    /**
-     * This action displays the About page.
-     */
-    public function aboutAction() 
-    {}
 }

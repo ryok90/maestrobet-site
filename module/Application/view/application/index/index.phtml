@@ -3,15 +3,15 @@
 <div class="container">
     <div class="row pt-4">
         <div class="offset-sm-2 col-sm-4 logo">
-            <img src="/img/logo-branco.png" alt="">
+            <img src="<?= $this->basePath('img/logo-branco.png') ?>" alt="Logo">
         </div>
         <div class="col-sm-3 apresentacao">
-            <img src="/img/apresentacao.gif" alt="Apresentação">
+            <img src="<?= $this->basePath('img/apresentacao.gif') ?>" alt="Apresentação">
         </div>
     </div>
     <div class="footer">
         <a href="#"><i class="fab fa-facebook-square"></i></a>
-        <a href="http://www.instagram.com/maestrobet_oficial"><i class="fab fa-instagram"></i></a>
+        <a href="<?= $this->escapeHtml('https://www.instagram.com/maestrobet_oficial') ?>"><i class="fab fa-instagram"></i></a>
         <a href="#"><i class="fab fa-twitter-square"></i></a>
     </div>
 </div>
