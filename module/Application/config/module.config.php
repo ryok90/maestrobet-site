@@ -54,7 +54,7 @@ return [
             View\Helper\Menu::class => InvokableFactory::class
         ],
         'aliases' => [
-            'mainMenu' => View\Helper\Menu::class
+            'mainMenua' => View\Helper\Menu::class
         ]
     ],
     'view_manager' => [

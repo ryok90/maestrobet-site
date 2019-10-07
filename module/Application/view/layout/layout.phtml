@@ -17,6 +17,7 @@
                         ->prependStylesheet($this->basePath('css/style.css'))
                         ->prependStylesheet($this->basePath('lib/bootstrap/css/bootstrap.min.css'))
                         ->prependStylesheet($this->basePath('lib/font-awesome/css/all.css'))
+                        ->prependStylesheet($this->escapeHtml('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css'))
         ?>        
         <!-- Scripts -->
         <?= $this->headScript()
@@ -25,23 +26,31 @@
         ?>
     </head>
     <body>
-        <div class="main-menu">
-            <?php
-            $this->mainMenu()->setItems([
-                [
-                    'id' => 'home',
-                    'label' => 'Home',
-                    'link' => $this->url('home')
-                ],
-                [
-                    'id' => 'sobre',
-                    'label' => 'Sobre Nós',
-                    'link' => $this->url('sobre')
-                ]
-            ]);
-            echo $this->mainMenu()->render();
-            ?>
+        <div class="home-animation animated fadeOut delay-4s">
+            <img src="/img/logo-brasao.png" class="animated fadeIn slow ani-brasao" alt="Logo Brasao">
+            <img src="/img/logo-maestro.png" class="animated fadeIn slow delay-1s ani-maestro" alt="Logo Titulo">
+            <img src="/img/logo-texto.png" class="animated fadeIn slow delay-2s ani-texto" alt="Logo Texto">
         </div>
-        <?= $this->content ?>
+
+        <div class="animated fadeIn delay-5s slow">
+            <div class="main-menu">
+                <?php
+                $this->mainMenu()->setItems([
+                    [
+                        'id' => 'home',
+                        'label' => 'Home',
+                        'link' => $this->url('home')
+                    ],
+                    [
+                        'id' => 'sobre',
+                        'label' => 'Sobre',
+                        'link' => ''
+                    ]
+                ]);
+                echo $this->mainMenu()->render();
+                ?>
+            </div>
+            <?= $this->content ?>
+        </div>
     </body>
 </html>

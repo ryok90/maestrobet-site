@@ -21,11 +21,30 @@ body {
   font-family: 'Intro Cond Light';
   font-size: 12px;
   background-color: #046131;
-  padding-bottom: 77px;
+  padding-bottom: 109px;
   height: auto;
   min-height: 100%;
   position: relative
 
+}
+.home-animation {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  margin-left: -100px;
+  text-align: center;
+  width: 200px;
+}
+.ani-brasao {
+  width: 170px;
+  margin-bottom: 1rem;
+}
+.ani-maestro {
+  width: 200px;
+  margin-bottom: 0.5rem;
+}
+.ani-texto {
+  width: 160px;
 }
 .logo, .apresentacao{
   text-align: center;
@@ -33,6 +52,11 @@ body {
 .logo img {
   width: 80%;
   margin-top: 25%
+}
+@media (min-width: 578px) {
+  .home-content {
+    margin-top: 50px
+  }
 }
 .apresentacao img{
   width: 100%;
@@ -56,7 +80,7 @@ body {
 .navbar-brand {
   font-family: 'Intro Cond Black';
   color: #57AD00 !important;
-  font-size: 20px;
+  font-size: 16px;
   text-align: right !important;
 }
 .bet {
@@ -70,7 +94,7 @@ body {
 }
 .logo-brasao {
   margin-right: 0.5rem;
-  width: 30px;
+  width: 40px;
 }
 
 .navbar-light {
@@ -102,18 +126,19 @@ body {
 }
 .footer a{
   text-decoration: none;
-  color: white;
+  color: #046131;
 }
 .footer a+a{
   margin-left: 1rem;
 }
 .footer {
+  background-color: white;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   text-align: center;
-  padding-bottom: 2rem;
-  color: white;
-  font-size: 40px;
+  padding: 0.5rem 0;
+  color: #046131;
+  font-size: 30px;
 }
