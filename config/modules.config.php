@@ -27,5 +27,6 @@ return [
     'Zend\Form',
     'Zend\Router',
     'Zend\Validator',
+    'Zend\Navigation',
     'Application',
 ];
