@@ -53,23 +53,18 @@ class Menu extends AbstractHelper
      */
     public function render() 
     {
-        if (count($this->items)==0)
+        if (count($this->items)==0) {
             return ''; // Do nothing if there are no items.
-        
-        $result = '<nav class="navbar navbar-default" role="navigation">';
-        $result .= '<div class="navbar-header">';
-        $result .= '<button type="button" class="navbar-toggle" data-toggle="collapse"';
-        $result .= 'data-target=".navbar-ex1-collapse">';
-        $result .= '<span class="sr-only">Toggle navigation</span>';
-        $result .= '<span class="icon-bar"></span>';
-        $result .= '<span class="icon-bar"></span>';
-        $result .= '<span class="icon-bar"></span>';
-        $result .= '</button>';
-        $result .= '</div>';
-        
-        $result .= '<div class="collapse navbar-collapse navbar-ex1-collapse">';        
-        $result .= '<ul class="nav navbar-nav">';
-        
+        }
+        $result = <<<HTML
+        <div class="header bg-light">
+            <nav class="navbar navbar-expand navbar-light" style="height: 100%">
+                <a class="navbar-brand navbar-logo" href="/">
+                    maestro<span class="bet">bet</span>
+                </a>
+                <img src="/img/logo-brasao.png" alt="Logo" class="logo-brasao">
+                    <ul class="navbar-nav">    
+HTML;
         // Render items
         foreach ($this->items as $item) {
             $result .= $this->renderItem($item);
@@ -78,9 +73,7 @@ class Menu extends AbstractHelper
         $result .= '</ul>';
         $result .= '</div>';
         $result .= '</nav>';
-        
-        return $result;
-        
+        return $result;        
     }
     
     /**
@@ -89,7 +82,7 @@ class Menu extends AbstractHelper
      * @return string HTML code of the item.
      */
     protected function renderItem($item) 
-    {
+    {        
         $id = isset($item['id']) ? $item['id'] : '';
         $isActive = ($id==$this->activeItemId);
         $label = isset($item['label']) ? $item['label'] : '';
@@ -122,8 +115,8 @@ class Menu extends AbstractHelper
         } else {        
             $link = isset($item['link']) ? $item['link'] : '#';
             
-            $result .= $isActive?'<li class="active">':'<li>';
-            $result .= '<a href="'.$escapeHtml($link).'">'.$escapeHtml($label).'</a>';
+            $result .= $isActive?'<li class="nav-item active">':'<li class="nav-item">';
+            $result .= '<a href="'.$escapeHtml($link).'" class="nav-link">'.$escapeHtml($label).'</a>';
             $result .= '</li>';
         }
     

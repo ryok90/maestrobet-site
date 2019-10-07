@@ -11,6 +11,7 @@ namespace Application;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -25,13 +26,13 @@ return [
                     ]
                 ]
             ],
-            'application' => [
-                'type'    => Segment::class,
+            'sobre' => [
+                'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/sobre',
                     'defaults' => [
-                        'controller'    => Controller\IndexController::class,
-                        'action'        => 'index',
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'sobre',
                     ]
                 ]
             ]
@@ -50,8 +51,10 @@ return [
     // helper classes in view plugin manager.
     'view_helpers' => [
         'factories' => [
+            View\Helper\Menu::class => InvokableFactory::class
         ],
         'aliases' => [
+            'mainMenu' => View\Helper\Menu::class
         ]
     ],
     'view_manager' => [

@@ -1,13 +1,31 @@
+@font-face {
+  font-family: 'Intro Cond Black';
+  src: url('../fonts/IntroDemoCond-BlackCAPS.woff2') format('woff2'),
+      url('../fonts/IntroDemoCond-BlackCAPS.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Intro Cond Light';
+  src: url('../fonts/IntroDemoCond-LightCAPS.woff2') format('woff2'),
+      url('../fonts/IntroDemoCond-LightCAPS.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
 html {
   height: 100%;
   min-height: 100%;
 }
 body {
+  font-family: 'Intro Cond Light';
+  font-size: 12px;
   background-color: #046131;
   padding-bottom: 77px;
   height: auto;
   min-height: 100%;
   position: relative
+
 }
 .logo, .apresentacao{
   text-align: center;
@@ -35,6 +53,60 @@ body {
     margin-right: 0;
   }
 }
+.navbar-brand {
+  font-family: 'Intro Cond Black';
+  color: #57AD00 !important;
+  font-size: 20px;
+  text-align: right !important;
+}
+.bet {
+  color: #046131;
+}
+.jogada {
+  font-family: 'Intro Cond Light';
+  font-size: 10px;
+  font-weight: bold;
+  color: #57AD00;
+}
+.logo-brasao {
+  margin-right: 0.5rem;
+  width: 30px;
+}
+
+.navbar-light {
+  justify-content: center;
+}
+/* @media (max-width: 578px) {
+  .navbar-light {
+    justify-content: space-between;
+  }
+} */
+.navbar-nav {
+  text-align: center;
+  font-weight: bold;
+  float: none;
+}
+.navbar-nav > li {
+  float: none;
+  display: inline-block;
+  align-items: center;
+}
+.navbar-nav > li > a{
+  color:#57AD00 !important;
+}
+.navbar-nav > li.active > a{
+  color: #046131 !important;
+}
+.navbar-collapse {
+  flex-grow: 0;
+}
+.footer a{
+  text-decoration: none;
+  color: white;
+}
+.footer a+a{
+  margin-left: 1rem;
+}
 .footer {
   position: absolute;
   bottom: 0;
@@ -44,11 +116,4 @@ body {
   padding-bottom: 2rem;
   color: white;
   font-size: 40px;
-}
-.footer a{
-  text-decoration: none;
-  color: white;
-}
-.footer a+a{
-  margin-left: 1rem;
 }

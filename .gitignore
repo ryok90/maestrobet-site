@@ -1,3 +1,4 @@
 vendor/
 config/development.config.php
 .htaccess
+data/

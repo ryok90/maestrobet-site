@@ -25,6 +25,23 @@
         ?>
     </head>
     <body>
+        <div class="main-menu">
+            <?php
+            $this->mainMenu()->setItems([
+                [
+                    'id' => 'home',
+                    'label' => 'Home',
+                    'link' => $this->url('home')
+                ],
+                [
+                    'id' => 'sobre',
+                    'label' => 'Sobre Nós',
+                    'link' => $this->url('sobre')
+                ]
+            ]);
+            echo $this->mainMenu()->render();
+            ?>
+        </div>
         <?= $this->content ?>
     </body>
 </html>
