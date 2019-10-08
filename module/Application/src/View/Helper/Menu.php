@@ -57,12 +57,12 @@ class Menu extends AbstractHelper
             return ''; // Do nothing if there are no items.
         }
         $result = <<<HTML
-        <div class="header bg-light">
-            <nav class="navbar navbar-expand navbar-light" style="height: 100%">
-                <a class="navbar-brand navbar-logo" href="/">
-                    maestro<span class="bet">bet</span>
+        <div class="bg-light">
+            <nav class="navbar navbar-expand navbar-light">
+                <a class="navbar-brand" href="/">
+                    maestro<span class="navbar-bet">bet</span>
                 </a>
-                <img src="/img/logo-brasao.png" alt="Logo" class="logo-brasao">
+                <img src="/img/logo-brasao.png" alt="Logo" class="navbar-logo">
                     <ul class="navbar-nav">    
 HTML;
         // Render items

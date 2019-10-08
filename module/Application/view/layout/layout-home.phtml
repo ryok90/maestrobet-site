@@ -28,7 +28,13 @@
 </head>
 
 <body>
-    <header class="main-menu">
+    <div class="home-animation animated fadeOut delay-4s">
+        <img src="/img/logo-brasao.png" class="animated fadeIn slow ani-brasao" alt="Logo Brasao">
+        <img src="/img/logo-maestro.png" class="animated fadeIn slow delay-1s ani-maestro" alt="Logo Titulo">
+        <img src="/img/logo-texto.png" class="animated fadeIn slow delay-2s ani-texto" alt="Logo Texto">
+    </div>
+
+    <header class="main-menu animated fadeIn delay-5s slow">
         <?php
         $this->mainMenu()->setItems([
             [
@@ -46,9 +52,11 @@
         ?>
     </header>
 
-    <?= $this->content ?>
+    <div class="animated fadeIn delay-5s slow">
+        <?= $this->content ?>
+    </div>
 
-    <footer class="footer">
+    <footer class="footer animated fadeIn delay-5s slow">
         <a><i class="fab fa-facebook-square"></i></a>
         <a href="<?= $this->escapeHtml('https://www.instagram.com/maestrobet_oficial') ?>"><i class="fab fa-instagram"></i></a>
         <a><i class="fab fa-twitter-square"></i></a>

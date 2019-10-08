@@ -21,11 +21,18 @@ body {
   font-family: 'Intro Cond Light';
   font-size: 12px;
   background-color: #046131;
-  padding-bottom: 109px;
+  padding-bottom: 61px;
   height: auto;
   min-height: 100%;
   position: relative
 
+}
+.intro-black {
+  font-family: 'Intro Cond Black';
+  font-weight: normal;
+}
+.light-green {
+  color: #57AD00;
 }
 .home-animation {
   position: absolute;
@@ -36,7 +43,7 @@ body {
   width: 200px;
 }
 .ani-brasao {
-  width: 170px;
+  width: 100px;
   margin-bottom: 1rem;
 }
 .ani-maestro {
@@ -46,65 +53,22 @@ body {
 .ani-texto {
   width: 160px;
 }
-.logo, .apresentacao{
-  text-align: center;
-}
-.logo img {
-  width: 80%;
-  margin-top: 25%
-}
-@media (min-width: 578px) {
-  .home-content {
-    margin-top: 50px
-  }
-}
-.apresentacao img{
-  width: 100%;
-}
-@media (max-width: 576px) {
-  .logo img{
-    margin-top: 0;
-    width: 40%;
-    margin-bottom: 2rem;
-  }
-  .apresentacao img{
-    margin-bottom: 2rem;
-  }
-  .container, .container div{
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
 .navbar-brand {
   font-family: 'Intro Cond Black';
   color: #57AD00 !important;
   font-size: 16px;
   text-align: right !important;
 }
-.bet {
+.navbar-bet {
   color: #046131;
 }
-.jogada {
-  font-family: 'Intro Cond Light';
-  font-size: 10px;
-  font-weight: bold;
-  color: #57AD00;
-}
-.logo-brasao {
+.navbar-logo {
   margin-right: 0.5rem;
   width: 40px;
 }
-
 .navbar-light {
   justify-content: center;
 }
-/* @media (max-width: 578px) {
-  .navbar-light {
-    justify-content: space-between;
-  }
-} */
 .navbar-nav {
   text-align: center;
   font-weight: bold;
@@ -123,6 +87,41 @@ body {
 }
 .navbar-collapse {
   flex-grow: 0;
+}
+.home-content {
+  margin-top: 25px
+}
+.home-content {
+  height: 100%;
+}
+.apresentacao img{
+  width: 100%;
+}
+@media (max-width: 576px) {
+  .logo img{
+    margin-top: 0;
+    width: 40%;
+    margin-bottom: 2rem;
+  }
+  .container, .container div{
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .home-text {
+    font-weight: bold;
+    margin: 0 1rem 1rem !important;
+  }
+}
+.home-text h1{
+  color: white;
+  font-size: 30px;
+}
+@media (max-width: 992px) {
+  .home-text h1 {
+    font-size: 20px;
+  }
 }
 .footer a{
   text-decoration: none;

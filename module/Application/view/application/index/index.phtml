@@ -2,14 +2,21 @@
 $this->mainMenu()->setActiveItemId('home');
 ?>
 <div class="container">
-    <div class="row home-content text-center">        
-        <div class="offset-sm-4 apresentacao">
+    <div class="row home-content text-center d-sm-flex align-items-center">
+        <div class="offset-sm-2 col-sm-5 home-text">
+            <h1>
+                entenda como a 
+                <span class="intro-black">
+                    <span class="light-green">
+                        maestro
+                    </span>
+                    bet 
+                </span>
+                te ajuda a fazer sua jogada de mestre!
+            </h1>
+        </div>     
+        <div class="col-sm-3 apresentacao">
             <img src="<?= $this->basePath('img/apresentacao.gif') ?>" alt="Apresentação">
         </div>
-    </div>
-    <div class="footer">
-        <a><i class="fab fa-facebook-square"></i></a>
-        <a href="<?= $this->escapeHtml('https://www.instagram.com/maestrobet_oficial') ?>"><i class="fab fa-instagram"></i></a>
-        <a><i class="fab fa-twitter-square"></i></a>
     </div>
 </div>
