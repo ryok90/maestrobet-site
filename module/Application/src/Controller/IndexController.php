@@ -3,10 +3,6 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use Zend\Paginator\Paginator;
-use Application\Entity\Post;
 
 /**
  * This is the main controller class of the Blog application. The 
@@ -21,12 +17,6 @@ class IndexController extends AbstractActionController
      * @var Doctrine\ORM\EntityManager 
      */
     private $entityManager;
-    
-    /**
-     * Post manager.
-     * @var Application\Service\PostManager 
-     */
-    private $postManager;
     
     /**
      * Constructor is used for injecting dependencies into the controller.
@@ -47,6 +37,11 @@ class IndexController extends AbstractActionController
     }
 
     public function sobreAction()
+    {
+        return new ViewModel();
+    }
+
+    public function loginAction()
     {
         return new ViewModel();
     }

@@ -3,7 +3,8 @@
     "description": "MaestroBet Site",
     "require": {
         "zendframework/zendframework": "^3.0",
-        "doctrine/doctrine-orm-module": "^2.0"
+        "doctrine/doctrine-orm-module": "^2.0",
+        "zendframework/zend-session": "^2.9"
     },
     "autoload": {
         "psr-4": {

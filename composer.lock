@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "412a30ae149db05c0a9e5d47ab8e347c",
+    "content-hash": "431abd301ae65b9da55ea73edd166579",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -35,6 +35,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -3776,6 +3777,7 @@
                 "debug",
                 "zf"
             ],
+            "abandoned": true,
             "time": "2018-04-30T20:10:31+00:00"
         },
         {
@@ -6202,16 +6204,16 @@
         },
         {
             "name": "zendframework/zend-session",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-session.git",
-                "reference": "0a0c7ae4d8be608e30ecff714c86164ccca19ca3"
+                "reference": "c289c4d733ec23a389e25c7c451f4d062088511f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-session/zipball/0a0c7ae4d8be608e30ecff714c86164ccca19ca3",
-                "reference": "0a0c7ae4d8be608e30ecff714c86164ccca19ca3",
+                "url": "https://api.github.com/repos/zendframework/zend-session/zipball/c289c4d733ec23a389e25c7c451f4d062088511f",
+                "reference": "c289c4d733ec23a389e25c7c451f4d062088511f",
                 "shasum": ""
             },
             "require": {
@@ -6265,7 +6267,7 @@
                 "session",
                 "zf"
             ],
-            "time": "2019-09-20T12:50:51+00:00"
+            "time": "2019-10-28T19:40:43+00:00"
         },
         {
             "name": "zendframework/zend-soap",

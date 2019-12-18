@@ -2,6 +2,7 @@
 namespace Application\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use Zend\View\Helper\EscapeHtml;
 
 /**
  * This view helper class displays a menu bar.
@@ -89,7 +90,7 @@ HTML;
              
         $result = ''; 
      
-        $escapeHtml = $this->getView()->plugin('escapeHtml');
+        $escapeHtml = new EscapeHtml();
         
         if (isset($item['dropdown'])) {
             
