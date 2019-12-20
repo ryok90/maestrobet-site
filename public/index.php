@@ -10,6 +10,13 @@ use Zend\Stdlib\ArrayUtils;
 
 chdir(dirname(__DIR__));
 
+define('APPLICATION_ENV', getenv('APPLICATION_ENV') ?? 'production');
+define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../module'));
+
+if (APPLICATION_ENV == 'production') {
+    define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../maestrobet.site/module'));
+}
+
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server') {
     $path = realpath(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
@@ -20,7 +27,7 @@ if (php_sapi_name() === 'cli-server') {
 }
 
 // Composer autoloading
-include __DIR__ . '/../vendor/autoload.php';
+include APPLICATION_PATH . '/../vendor/autoload.php';
 
 if (! class_exists(Application::class)) {
     throw new RuntimeException(
@@ -31,9 +38,9 @@ if (! class_exists(Application::class)) {
     );
 }
 // Retrieve configuration
-$appConfig = require __DIR__ . '/../config/application.config.php';
-if (file_exists(__DIR__ . '/../config/development.config.php')) {
-    $appConfig = ArrayUtils::merge($appConfig, require __DIR__ . '/../config/development.config.php');
+$appConfig = require APPLICATION_PATH . '/../config/application.config.php';
+if (file_exists(APPLICATION_PATH . '/../config/development.config.php')) {
+    $appConfig = ArrayUtils::merge($appConfig, require APPLICATION_PATH . '/../config/development.config.php');
 }
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
