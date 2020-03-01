@@ -44,8 +44,7 @@ return [
         ]
     ],
     'service_manager' => [
-        'factories' => [
-        ]
+        'factories' => []
     ],
     // The following registers our custom view 
     // helper classes in view plugin manager.

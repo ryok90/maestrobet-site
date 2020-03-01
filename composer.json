@@ -3,12 +3,24 @@
     "description": "MaestroBet Site",
     "require": {
         "zendframework/zendframework": "^3.0",
-        "doctrine/doctrine-orm-module": "^2.0",
-        "zendframework/zend-session": "^2.9"
+        "doctrine/doctrine-orm-module": "^2.1",
+        "zendframework/zend-session": "^2.9",
+        "api-skeletons/zf-oauth2-doctrine": "^3.1",
+        "zfcampus/zf-apigility": "^1.5",
+        "zfcampus/zf-development-mode": "^3.2"
     },
     "autoload": {
         "psr-4": {
-            "Application\\": "module/Application/src/"
+            "Application\\": "module/Application/src/",
+            "Usuario\\": "module/Usuario/src/",
+            "Financeiro\\": "module/Financeiro/src/"
         }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "zfcampus/zf-apigility-admin": "~1.0",
+        "zend/zend-studio-development-mode": "^1.0",
+        "zfcampus/zf-asset-manager": "^1.2"
     }
 }
