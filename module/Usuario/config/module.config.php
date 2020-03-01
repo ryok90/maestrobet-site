@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Usuario\Service\Factory\UsuarioServiceFactory;
 use Usuario\Service\UsuarioService;
+use Zend\Form\Form;
 
 return [
     'router' => [
