@@ -2,13 +2,14 @@
 
 namespace Usuario;
 
-use Laminas\Router\Http\Literal;
-use Laminas\Router\Http\Segment;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Laminas\ServiceManager\Factory\InvokableFactory;
+use Exception;
+use User\Authentication\iAuthAwareInterface;
+use Usuario\Entity\Usuario;
 use Usuario\Service\Factory\UsuarioServiceFactory;
 use Usuario\Service\UsuarioService;
-use Zend\Form\Form;
+use ZF\ApiProblem\ApiProblem;
+use ZF\MvcAuth\Identity\AuthenticatedIdentity;
 
 return [
     'router' => [
@@ -23,6 +24,26 @@ return [
         ],
         'factories' => [
             UsuarioService::class => UsuarioServiceFactory::class
+        ],
+        'initializers' => [
+            'iAuthAwareInterface' => function($model, $serviceManager) {
+
+                if ($model instanceof iAuthAwareInterface) {
+                    try {
+                        $authObj = $serviceManager->get('api-identity');
+
+                        if ($authObj instanceof AuthenticatedIdentity) {
+                            /** @var EntityManagerInterface $orm */
+                            $orm = $serviceManager->get('doctrine.entitymanager.orm_default');
+                            $oauthUserId = $serviceManager->get('api-identity')->getAuthenticationIdentity()['user_id'];
+                            $userObj = $orm->find(Usuario::class, $oauthUserId);
+                            $model->setAuthenticatedIdentity($userObj);
+                        }
+                    } catch (Exception $exception) {
+                        return new ApiProblem(500, $exception->getMessage());
+                    }
+                }
+            }
         ]
     ],
     'view_helpers' => [

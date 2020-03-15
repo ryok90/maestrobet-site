@@ -1,5 +1,5 @@
 <?php
-namespace Identidade;
+namespace Identity;
 
 use ZF\Apigility\Provider\ApigilityProviderInterface;
 

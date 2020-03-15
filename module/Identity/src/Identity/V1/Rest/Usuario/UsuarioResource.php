@@ -1,6 +1,7 @@
 <?php
-namespace Identidade\V1\Rest\Usuario;
+namespace Identity\V1\Rest\Usuario;
 
+use Exception;
 use RuntimeException;
 use Usuario\Entity\Usuario;
 use ZF\ApiProblem\ApiProblem;
@@ -34,7 +35,7 @@ class UsuarioResource extends AbstractResourceListener
             $response = $this->usuarioService->insertUsuario($usuario);
 
             return $response;
-        } catch (RuntimeException $exception) {
+        } catch (Exception $exception) {
             return new ApiProblem(422, 'Usuário já existe');
         }
 

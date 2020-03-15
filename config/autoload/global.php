@@ -1,26 +1,33 @@
 <?php
-/**
- * Global Configuration Override
- *
- * You can use this file for overriding configuration values from modules, etc.
- * You would place values in here that are agnostic to the environment and not
- * sensitive to security.
- *
- * @NOTE: In practice, this file will typically be INCLUDED in your source
- * control, so do not include passwords or other sensitive information in this
- * file.
- */
-
-return [
-    'doctrine' => [        
-        // migrations configuration
-        'migrations_configuration' => [
-            'orm_default' => [
+return array(
+    'doctrine' => array(
+        'migrations_configuration' => array(
+            'orm_default' => array(
                 'directory' => 'data/Migrations',
-                'name'      => 'Doctrine Database Migrations',
+                'name' => 'Doctrine Database Migrations',
                 'namespace' => 'Migrations',
-                'table'     => 'migrations',
-            ],
-        ],
-    ],
-];
+                'table' => 'migrations',
+            ),
+        ),
+    ),
+    'zf-oauth2' => array(
+        'storage' => 'oauth2.doctrineadapter.default',
+    ),
+    'zf-mvc-auth' => array(
+        'authentication' => array(
+            'adapters' => array(
+                'oauth2_doctrine' => array(
+                    'adapter' => 'ZF\\MvcAuth\\Authentication\\OAuth2Adapter',
+                    'storage' => array(
+                        'storage' => 'oauth2.doctrineadapter.default',
+                        'route' => '/oauth',
+                    ),
+                ),
+            ),
+            'map' => array(
+                'Identidade\\V1' => 'oauth2_doctrine',
+                'Identity\\V1' => 'oauth2_doctrine',
+            ),
+        ),
+    ),
+);

@@ -2,17 +2,17 @@
 return array(
     'service_manager' => array(
         'factories' => array(
-            'Identidade\\V1\\Rest\\Usuario\\UsuarioResource' => 'Identidade\\V1\\Rest\\Usuario\\UsuarioResourceFactory',
+            'Identity\\V1\\Rest\\Usuario\\UsuarioResource' => 'Identity\\V1\\Rest\\Usuario\\UsuarioResourceFactory',
         ),
     ),
     'router' => array(
         'routes' => array(
-            'identidade.rest.usuario' => array(
+            'identity.rest.usuario' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/usuario[/:usuario_id]',
                     'defaults' => array(
-                        'controller' => 'Identidade\\V1\\Rest\\Usuario\\Controller',
+                        'controller' => 'Identity\\V1\\Rest\\Usuario\\Controller',
                     ),
                 ),
             ),
@@ -20,13 +20,13 @@ return array(
     ),
     'zf-versioning' => array(
         'uri' => array(
-            0 => 'identidade.rest.usuario',
+            0 => 'identity.rest.usuario',
         ),
     ),
     'zf-rest' => array(
-        'Identidade\\V1\\Rest\\Usuario\\Controller' => array(
-            'listener' => 'Identidade\\V1\\Rest\\Usuario\\UsuarioResource',
-            'route_name' => 'identidade.rest.usuario',
+        'Identity\\V1\\Rest\\Usuario\\Controller' => array(
+            'listener' => 'Identity\\V1\\Rest\\Usuario\\UsuarioResource',
+            'route_name' => 'identity.rest.usuario',
             'route_identifier_name' => 'usuario_id',
             'collection_name' => 'usuario',
             'entity_http_methods' => array(),
@@ -37,57 +37,57 @@ return array(
             'page_size' => 25,
             'page_size_param' => null,
             'entity_class' => 'Usuario\\Entity\\Usuario',
-            'collection_class' => 'Identidade\\V1\\Rest\\Usuario\\UsuarioCollection',
+            'collection_class' => 'Identity\\V1\\Rest\\Usuario\\UsuarioCollection',
             'service_name' => 'Usuario',
         ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
-            'Identidade\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
+            'Identity\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
-            'Identidade\\V1\\Rest\\Usuario\\Controller' => array(
-                0 => 'application/vnd.identidade.v1+json',
+            'Identity\\V1\\Rest\\Usuario\\Controller' => array(
+                0 => 'application/vnd.identity.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
         ),
         'content_type_whitelist' => array(
-            'Identidade\\V1\\Rest\\Usuario\\Controller' => array(
-                0 => 'application/vnd.identidade.v1+json',
+            'Identity\\V1\\Rest\\Usuario\\Controller' => array(
+                0 => 'application/vnd.identity.v1+json',
                 1 => 'application/json',
             ),
         ),
     ),
     'zf-hal' => array(
         'metadata_map' => array(
-            'Identidade\\V1\\Rest\\Usuario\\UsuarioEntity' => array(
+            'Identity\\V1\\Rest\\Usuario\\UsuarioEntity' => array(
                 'entity_identifier_name' => 'id',
-                'route_name' => 'identidade.rest.usuario',
+                'route_name' => 'identity.rest.usuario',
                 'route_identifier_name' => 'usuario_id',
                 'hydrator' => 'Zend\\Hydrator\\ArraySerializable',
             ),
-            'Identidade\\V1\\Rest\\Usuario\\UsuarioCollection' => array(
+            'Identity\\V1\\Rest\\Usuario\\UsuarioCollection' => array(
                 'entity_identifier_name' => 'id',
-                'route_name' => 'identidade.rest.usuario',
+                'route_name' => 'identity.rest.usuario',
                 'route_identifier_name' => 'usuario_id',
                 'is_collection' => true,
             ),
             'Usuario\\Entity\\Usuario' => array(
                 'entity_identifier_name' => 'id',
-                'route_name' => 'identidade.rest.usuario',
+                'route_name' => 'identity.rest.usuario',
                 'route_identifier_name' => 'usuario_id',
                 'hydrator' => 'DoctrineModule\\Stdlib\\Hydrator\\DoctrineObject',
             ),
         ),
     ),
     'zf-content-validation' => array(
-        'Identidade\\V1\\Rest\\Usuario\\Controller' => array(
-            'input_filter' => 'Identidade\\V1\\Rest\\Usuario\\Validator',
+        'Identity\\V1\\Rest\\Usuario\\Controller' => array(
+            'input_filter' => 'Identity\\V1\\Rest\\Usuario\\Validator',
         ),
     ),
     'input_filter_specs' => array(
-        'Identidade\\V1\\Rest\\Usuario\\Validator' => array(
+        'Identity\\V1\\Rest\\Usuario\\Validator' => array(
             0 => array(
                 'required' => true,
                 'validators' => array(
@@ -98,7 +98,7 @@ return array(
                 ),
                 'filters' => array(),
                 'name' => 'email',
-                'description' => 'Endereço de Email',
+                'description' => 'Endereço de e-mail',
                 'error_message' => 'Insira seu endereço de e-mail válido',
             ),
             1 => array(
@@ -106,10 +106,7 @@ return array(
                 'validators' => array(
                     0 => array(
                         'name' => 'Zend\\Validator\\StringLength',
-                        'options' => array(
-                            'max' => '256',
-                            'min' => '5',
-                        ),
+                        'options' => array(),
                     ),
                 ),
                 'filters' => array(),
@@ -128,7 +125,7 @@ return array(
                 'filters' => array(),
                 'name' => 'nome',
                 'description' => 'Nome completo',
-                'error_message' => 'Nome obrigatório',
+                'error_message' => 'Insira o nome completo',
             ),
             3 => array(
                 'required' => true,
@@ -141,7 +138,7 @@ return array(
                 'filters' => array(),
                 'name' => 'apelido',
                 'description' => 'Apelido',
-                'error_message' => 'Apelido obrigatório',
+                'error_message' => 'Insira o apelido',
             ),
         ),
     ),

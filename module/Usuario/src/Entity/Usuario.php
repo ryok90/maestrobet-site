@@ -4,6 +4,7 @@ namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\EntityAbstract;
+use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 
 /**
@@ -188,6 +189,18 @@ class Usuario extends EntityAbstract implements UserInterface
      */
     public function setSenha($senha)
     {
-        $this->senha = $senha;
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost(10);
+
+        $this->senha = $bcrypt->create($senha);
+    }
+
+    /**
+     * Método utilizado pelo doctrine oauth2
+     * @return array
+     */
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
     }
 }

@@ -13,7 +13,7 @@ return [
             'driver' => 'doctrine.driver.orm_default',
             'enable_default_entities' => true,
             'bcrypt_cost' => 10, # match php default
-            'auth_identity_fields' => ['username'],
+            'auth_identity_fields' => ['username', 'email'],
             // Dynamically map the user_entity to the client_entity
             'dynamic_mapping' => [
                 'user_entity' => [
@@ -80,12 +80,17 @@ return [
                         ],
                         'username' => [
                             'type' => 'field',
-                            'name' => 'username',
+                            'name' => 'apelido',
                             'datatype' => 'string',
+                        ],
+                        'email' => [
+                            'type' => 'field',
+                            'name' => 'email',
+                            'datatype' => 'string'
                         ],
                         'password' => [
                             'type' => 'field',
-                            'name' => 'password',
+                            'name' => 'senha',
                             'datatype' => 'string',
                         ],
                     ],

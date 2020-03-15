@@ -37,5 +37,5 @@ return array(
     'Application',
     'Usuario',
     'Financeiro',
-    'Identidade',
+    'Identity',
 );

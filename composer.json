@@ -22,5 +22,16 @@
         "zfcampus/zf-apigility-admin": "~1.0",
         "zend/zend-studio-development-mode": "^1.0",
         "zfcampus/zf-asset-manager": "^1.2"
+    },
+    "scripts": {
+        "development-disable": "zf-development-mode disable",
+        "development-enable": "zf-development-mode enable",
+        "development-status": "zf-development-mode status",
+        "doctrine-clear-cache": [
+            "doctrine-module orm:clear-cache:metadata",
+            "doctrine-module orm:clear-cache:query",
+            "doctrine-module orm:clear-cache:result"
+        ],
+        "doctrine-force-update": "doctrine-module orm:schema-tool:update --force"
     }
 }
