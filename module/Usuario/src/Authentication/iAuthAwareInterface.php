@@ -1,6 +1,6 @@
 <?php
 
-namespace User\Authentication;
+namespace Usuario\Authentication;
 
 use Usuario\Entity\Usuario;
 

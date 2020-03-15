@@ -29,9 +29,12 @@ return array(
             'route_name' => 'identity.rest.usuario',
             'route_identifier_name' => 'usuario_id',
             'collection_name' => 'usuario',
-            'entity_http_methods' => array(),
+            'entity_http_methods' => array(
+                0 => 'GET',
+            ),
             'collection_http_methods' => array(
                 0 => 'POST',
+                1 => 'GET',
             ),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
@@ -139,6 +142,26 @@ return array(
                 'name' => 'apelido',
                 'description' => 'Apelido',
                 'error_message' => 'Insira o apelido',
+            ),
+        ),
+    ),
+    'zf-mvc-auth' => array(
+        'authorization' => array(
+            'Identity\\V1\\Rest\\Usuario\\Controller' => array(
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
             ),
         ),
     ),

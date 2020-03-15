@@ -44,17 +44,27 @@ class Usuario extends EntityAbstract implements UserInterface
      */
     protected $senha;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Credito", mappedBy="usuario", fetch="EXTRA_LAZY", cascade="persist")
+     * @var ArrayCollection
+     */
+    protected $creditos;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Debito", mappedBy="usuario", fetch="EXTRA_LAZY", cascade="persist")
+     * @var ArrayCollection
+     */
+    protected $debitos;
+
+    /**
+     * Propriedades necessárias para autenticação via Doctrine OAuth2
+     */
     protected $client;
-
     protected $accessToken;
-    
     protected $authorizationCode;
-
     protected $refreshToken;
 
     /**
-     * Get the value of id
-     *
      * @return int
      */
     public function getId()
@@ -63,8 +73,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Set the value of id
-     *
      * @param int $id 
      */
     public function setId($id)
@@ -73,8 +81,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of nome
-     *
      * @return string
      */
     public function getNome()
@@ -83,8 +89,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Set the value of nome
-     *
      * @param string $nome 
      */
     public function setNome($nome)
@@ -93,8 +97,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of apelido
-     *
      * @return string
      */
     public function getApelido()
@@ -103,8 +105,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Set the value of apelido
-     *
      * @param string $apelido 
      */
     public function setApelido($apelido)
@@ -113,8 +113,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of email
-     *
      * @return string
      */
     public function getEmail()
@@ -123,8 +121,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Set the value of email
-     *
      * @param string $email 
      */
     public function setEmail($email)
@@ -133,8 +129,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of client
-     *
      * @return mixed
      */
     public function getClient()
@@ -143,8 +137,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of accessToken
-     *
      * @return mixed
      */
     public function getAccessToken()
@@ -153,8 +145,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of authorizationCode
-     *
      * @return mixed
      */
     public function getAuthorizationCode()
@@ -163,8 +153,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of refreshToken
-     *
      * @return mixed
      */
     public function getRefreshToken()
@@ -173,8 +161,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Get the value of senha
-     *
      * @return mixed
      */
     public function getSenha()
@@ -183,8 +169,6 @@ class Usuario extends EntityAbstract implements UserInterface
     }
 
     /**
-     * Set the value of senha
-     *
      * @param mixed $senha 
      */
     public function setSenha($senha)
@@ -202,5 +186,37 @@ class Usuario extends EntityAbstract implements UserInterface
     public function getArrayCopy()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCreditos()
+    {
+        return $this->creditos;
+    }
+
+    /**
+     * @param ArrayCollection $creditos 
+     */
+    public function setCreditos($creditos)
+    {
+        $this->creditos = $creditos;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getDebitos()
+    {
+        return $this->debitos;
+    }
+
+    /**
+     * @param ArrayCollection $debitos 
+     */
+    public function setDebitos($debitos)
+    {
+        $this->debitos = $debitos;
     }
 }

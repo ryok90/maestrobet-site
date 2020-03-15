@@ -5,7 +5,7 @@ namespace Usuario\Service;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
-use User\Authentication\iAuthAwareInterface;
+use Usuario\Authentication\iAuthAwareInterface;
 use Usuario\Entity\Usuario;
 
 class UsuarioService implements iAuthAwareInterface
@@ -46,5 +46,22 @@ class UsuarioService implements iAuthAwareInterface
         $this->entityManager->flush($usuario);
 
         return $usuario;
+    }
+
+    public function getUsuario($id)
+    {
+        $usuarioRepo = $this->entityManager->getRepository(Usuario::class);
+        $usuario = $usuarioRepo->findOneBy(['id' => $id]);
+
+        return $usuario;
+        
+    }
+
+    public function getUsuarios()
+    {
+        $usuarioRepo = $this->entityManager->getRepository(Usuario::class);
+        $usuarios = $usuarioRepo->findAll();
+
+        return $usuarios;
     }
 }

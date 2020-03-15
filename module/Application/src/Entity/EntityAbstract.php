@@ -25,8 +25,6 @@ abstract class EntityAbstract
     protected $status = 1;
 
     /**
-     * Get the value of dataCriacao
-     *
      * @return DateTime
      */
     public function getDataCriacao()
@@ -35,8 +33,6 @@ abstract class EntityAbstract
     }
 
     /**
-     * Set the value of dataCriacao
-     *
      * @param DateTime $dataCriacao 
      */
     public function setDataCriacao($dataCriacao)
@@ -45,8 +41,6 @@ abstract class EntityAbstract
     }
 
     /**
-     * Get the value of dataAlteracao
-     *
      * @return DateTime
      */
     public function getDataAlteracao()
@@ -55,8 +49,6 @@ abstract class EntityAbstract
     }
 
     /**
-     * Set the value of dataAlteracao
-     *
      * @param DateTime $dataAlteracao 
      */
     public function setDataAlteracao($dataAlteracao)
@@ -65,8 +57,6 @@ abstract class EntityAbstract
     }
 
     /**
-     * Get the value of status
-     *
      * @return string
      */
     public function getStatus()
@@ -75,8 +65,6 @@ abstract class EntityAbstract
     }
 
     /**
-     * Set the value of status
-     *
      * @param string $status 
      */
     public function setStatus($status)
