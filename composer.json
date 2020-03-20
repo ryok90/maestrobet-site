@@ -27,11 +27,11 @@
         "development-disable": "zf-development-mode disable",
         "development-enable": "zf-development-mode enable",
         "development-status": "zf-development-mode status",
-        "doctrine-clear-cache": [
+        "run-doctrine": [
             "doctrine-module orm:clear-cache:metadata",
             "doctrine-module orm:clear-cache:query",
-            "doctrine-module orm:clear-cache:result"
-        ],
-        "doctrine-force-update": "doctrine-module orm:schema-tool:update --force"
+            "doctrine-module orm:clear-cache:result",
+            "doctrine-module orm:schema-tool:update --force"
+        ]
     }
 }

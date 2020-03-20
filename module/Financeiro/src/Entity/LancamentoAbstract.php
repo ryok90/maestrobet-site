@@ -5,7 +5,11 @@ namespace Financeiro\Entity;
 use Usuario\Entity\Usuario;
 use Application\Entity\EntityAbstract;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
+/**
+ * Abstração de Crédito e Débito
+ */
 abstract class LancamentoAbstract extends EntityAbstract
 {
     /**
@@ -16,6 +20,9 @@ abstract class LancamentoAbstract extends EntityAbstract
     protected $usuario;
 
     /**
+     * O valor deve ser absoluto (somente positivo)
+     * O que determinará se deverá ser somado ou subtraído é qual classe pertence: crédito ou débito
+     * 
      * @ORM\Column(name="valor", type="decimal", precision=11, scale=2, nullable=false)
      * @var float
      */
@@ -34,7 +41,7 @@ abstract class LancamentoAbstract extends EntityAbstract
     protected $data;
 
     /**
-     * @return \Usuario\Entity\Usuario
+     * @return Usuario
      */
     public function getUsuario()
     {
@@ -42,7 +49,7 @@ abstract class LancamentoAbstract extends EntityAbstract
     }
 
     /**
-     * @param \Usuario\Entity\Usuario $usuario 
+     * @param Usuario $usuario 
      */
     public function setUsuario($usuario)
     {
@@ -82,7 +89,7 @@ abstract class LancamentoAbstract extends EntityAbstract
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getData()
     {
@@ -90,7 +97,7 @@ abstract class LancamentoAbstract extends EntityAbstract
     }
 
     /**
-     * @param \DateTime $data 
+     * @param DateTime $data 
      */
     public function setData($data)
     {

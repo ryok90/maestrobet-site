@@ -4,7 +4,7 @@ namespace Usuario;
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Exception;
-use User\Authentication\iAuthAwareInterface;
+use Usuario\Authentication\iAuthAwareInterface;
 use Usuario\Entity\Usuario;
 use Usuario\Service\Factory\UsuarioServiceFactory;
 use Usuario\Service\UsuarioService;
