@@ -143,6 +143,15 @@ return array(
                 'description' => 'Apelido',
                 'error_message' => 'Insira o apelido',
             ),
+            4 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(),
+                'name' => 'roles',
+                'description' => 'Roles',
+                'field_type' => 'array',
+                'error_message' => 'Roles',
+            ),
         ),
     ),
     'zf-mvc-auth' => array(

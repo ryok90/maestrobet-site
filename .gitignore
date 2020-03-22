@@ -4,3 +4,4 @@ config/autoload/development.local.php
 data/
 error_log
 public/oauth.html
+.vscode

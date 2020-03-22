@@ -2,58 +2,42 @@
 
 namespace Usuario;
 
+use Application\Initializer\ServiceInitializer;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Exception;
-use Usuario\Authentication\iAuthAwareInterface;
-use Usuario\Entity\Usuario;
+use Usuario\Rbac\AuthenticationListener;
+use Usuario\Rbac\Factory\AuthenticationListenerFactory;
+use Usuario\Rbac\Authorization;
+use Usuario\Rbac\Factory\AuthorizationFactory;
 use Usuario\Service\Factory\UsuarioServiceFactory;
 use Usuario\Service\UsuarioService;
-use ZF\ApiProblem\ApiProblem;
-use ZF\MvcAuth\Identity\AuthenticatedIdentity;
+use Zend\Authentication\AuthenticationService;
+use ZF\MvcAuth\Authorization\AuthorizationInterface;
+use ZF\MvcAuth\Factory\AuthenticationServiceFactory;
 
 return [
-    'router' => [
-    ],
+    'router' => [],
     'controllers' => [
-        'factories' => [
-        ]
+        'factories' => []
     ],
     'service_manager' => [
         'aliases' => [
-            'UsuarioService' => UsuarioService::class
+            AuthorizationInterface::class => Authorization::class,
         ],
         'factories' => [
-            UsuarioService::class => UsuarioServiceFactory::class
+            Authorization::class => AuthorizationFactory::class,
+            AuthenticationListener::class => AuthenticationListenerFactory::class,
+            UsuarioService::class => UsuarioServiceFactory::class,
+            AuthenticationService::class => AuthenticationServiceFactory::class
         ],
         'initializers' => [
-            'iAuthAwareInterface' => function($model, $serviceManager) {
-
-                if ($model instanceof iAuthAwareInterface) {
-                    try {
-                        $authObj = $serviceManager->get('api-identity');
-
-                        if ($authObj instanceof AuthenticatedIdentity) {
-                            /** @var EntityManagerInterface $orm */
-                            $orm = $serviceManager->get('doctrine.entitymanager.orm_default');
-                            $oauthUserId = $serviceManager->get('api-identity')->getAuthenticationIdentity()['user_id'];
-                            $userObj = $orm->find(Usuario::class, $oauthUserId);
-                            $model->setAuthenticatedIdentity($userObj);
-                        }
-                    } catch (Exception $exception) {
-                        return new ApiProblem(500, $exception->getMessage());
-                    }
-                }
-            }
+            ServiceInitializer::class
         ]
     ],
     'view_helpers' => [
-        'factories' => [
-        ],
-        'aliases' => [
-        ]
+        'factories' => [],
+        'aliases' => []
     ],
-    'view_manager' => [
-    ],
+    'view_manager' => [],
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [

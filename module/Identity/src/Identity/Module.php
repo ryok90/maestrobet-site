@@ -1,6 +1,7 @@
 <?php
 namespace Identity;
 
+use Zend\EventManager\EventInterface;
 use ZF\Apigility\Provider\ApigilityProviderInterface;
 
 class Module implements ApigilityProviderInterface

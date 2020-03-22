@@ -6,13 +6,28 @@ use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\EntityAbstract;
 use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
+use ZfcRbac\Identity\IdentityInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="usuario")
  */
-class Usuario extends EntityAbstract implements UserInterface
+class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
 {
+    const ROLE_GUEST = 'guest';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USUARIO = 'usuario';
+
+    const ROLES = [
+        self::ROLE_GUEST => [],
+        self::ROLE_ADMIN => [
+            'children' => [self::ROLE_USUARIO]
+        ],
+        self::ROLE_USUARIO => [
+            'children' => [self::ROLE_GUEST]
+        ]
+    ];
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -55,6 +70,12 @@ class Usuario extends EntityAbstract implements UserInterface
      * @var ArrayCollection
      */
     protected $debitos;
+
+    /**
+     * @ORM\Column(name="roles", type="array")
+     * @var array
+     */
+    protected $roles = ['usuario'];
 
     /**
      * Propriedades necessárias para autenticação via Doctrine OAuth2
@@ -218,5 +239,30 @@ class Usuario extends EntityAbstract implements UserInterface
     public function setDebitos($debitos)
     {
         $this->debitos = $debitos;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param array $roles 
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * @param string|mixed $role
+     * @return void
+     */
+    public function addRole($role)
+    {
+        $this->roles[] = $role;
     }
 }

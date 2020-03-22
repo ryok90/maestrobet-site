@@ -34,6 +34,7 @@ return array(
     'Zend\\Router',
     'Zend\\Validator',
     'Zend\\Navigation',
+    'ZfcRbac',
     'Application',
     'Usuario',
     'Financeiro',
