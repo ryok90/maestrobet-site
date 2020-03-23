@@ -25,7 +25,6 @@ return array(
                 ),
             ),
             'map' => array(
-                'Identidade\\V1' => 'oauth2_doctrine',
                 'Identity\\V1' => 'oauth2_doctrine',
             ),
         ),

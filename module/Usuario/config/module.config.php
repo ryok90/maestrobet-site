@@ -8,6 +8,8 @@ use Usuario\Rbac\AuthenticationListener;
 use Usuario\Rbac\Factory\AuthenticationListenerFactory;
 use Usuario\Rbac\Authorization;
 use Usuario\Rbac\Factory\AuthorizationFactory;
+use Usuario\Rbac\Factory\IdentityProviderFactory;
+use Usuario\Rbac\IdentityProvider;
 use Usuario\Service\Factory\UsuarioServiceFactory;
 use Usuario\Service\UsuarioService;
 use Zend\Authentication\AuthenticationService;
@@ -24,14 +26,11 @@ return [
             AuthorizationInterface::class => Authorization::class,
         ],
         'factories' => [
+            AuthenticationService::class => AuthenticationServiceFactory::class,
             Authorization::class => AuthorizationFactory::class,
-            AuthenticationListener::class => AuthenticationListenerFactory::class,
+            IdentityProvider::class => IdentityProviderFactory::class,
             UsuarioService::class => UsuarioServiceFactory::class,
-            AuthenticationService::class => AuthenticationServiceFactory::class
         ],
-        'initializers' => [
-            ServiceInitializer::class
-        ]
     ],
     'view_helpers' => [
         'factories' => [],

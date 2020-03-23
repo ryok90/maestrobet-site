@@ -1,4 +1,5 @@
 <?php
+
 namespace Identity\V1\Rest\Usuario;
 
 use Exception;
@@ -38,7 +39,6 @@ class UsuarioResource extends AbstractResourceListener
         } catch (Exception $exception) {
             return new ApiProblem(422, 'Usuário já existe');
         }
-
     }
 
     /**

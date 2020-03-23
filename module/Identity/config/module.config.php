@@ -33,8 +33,8 @@ return array(
                 0 => 'GET',
             ),
             'collection_http_methods' => array(
-                0 => 'POST',
-                1 => 'GET',
+                0 => 'GET',
+                1 => 'POST',
             ),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
@@ -158,14 +158,14 @@ return array(
         'authorization' => array(
             'Identity\\V1\\Rest\\Usuario\\Controller' => array(
                 'collection' => array(
-                    'GET' => true,
-                    'POST' => true,
+                    'GET' => false,
+                    'POST' => false,
                     'PUT' => false,
                     'PATCH' => false,
                     'DELETE' => false,
                 ),
                 'entity' => array(
-                    'GET' => true,
+                    'GET' => false,
                     'POST' => false,
                     'PUT' => false,
                     'PATCH' => false,
