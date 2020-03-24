@@ -28,4 +28,36 @@ class Fechamento extends EntityAbstract
      * @var int
      */
     protected $semana;
+
+    /**
+     * @return int
+     */
+    public function getIdFechamento()
+    {
+        return $this->idFechamento;
+    }
+
+    /**
+     * @param int $idFechamento 
+     */
+    public function setIdFechamento($idFechamento)
+    {
+        $this->idFechamento = $idFechamento;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSemana()
+    {
+        return $this->semana;
+    }
+
+    /**
+     * @param int $semana
+     */
+    public function setSemana($semana)
+    {
+        $this->semana = $semana;
+    }
 }

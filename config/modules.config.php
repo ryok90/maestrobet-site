@@ -38,5 +38,5 @@ return array(
     'Application',
     'Usuario',
     'Financeiro',
-    'Identity',
+    'ApiResource',
 );

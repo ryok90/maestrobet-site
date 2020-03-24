@@ -12,7 +12,7 @@ class AuthorizationFactory implements FactoryInterface
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
         $authorizationService = $services->get(AuthorizationService::class);
-        $config = $services->get('config')['zfc_rbac'];
+        $config = $services->get('config');
 
         return new Authorization($authorizationService, $config);
     }

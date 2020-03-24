@@ -18,4 +18,20 @@ class Cliente extends EntityAbstract
      * @var int
      */
     protected $idCliente;
+
+    /**
+     * @return int
+     */
+    public function getIdCliente()
+    {
+        return $this->idCliente;
+    }
+
+    /**
+     * @param int $idCliente 
+     */
+    public function setIdCliente($idCliente)
+    {
+        $this->idCliente = $idCliente;
+    }
 }

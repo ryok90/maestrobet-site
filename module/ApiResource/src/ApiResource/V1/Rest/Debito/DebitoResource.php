@@ -1,23 +1,11 @@
 <?php
+namespace ApiResource\V1\Rest\Debito;
 
-namespace Identity\V1\Rest\Usuario;
-
-use Exception;
-use RuntimeException;
-use Usuario\Entity\Usuario;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
-use Usuario\Service\UsuarioService;
 
-class UsuarioResource extends AbstractResourceListener
+class DebitoResource extends AbstractResourceListener
 {
-    protected $usuarioService;
-
-    public function __construct(UsuarioService $usuarioService)
-    {
-        $this->usuarioService = $usuarioService;
-    }
-
     /**
      * Create a resource
      *
@@ -26,19 +14,7 @@ class UsuarioResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        try {
-            $usuario = new Usuario();
-            $usuario->setNome($data->nome);
-            $usuario->setSenha($data->senha);
-            $usuario->setEmail($data->email);
-            $usuario->setApelido($data->apelido);
-
-            $response = $this->usuarioService->insertUsuario($usuario);
-
-            return $response;
-        } catch (Exception $exception) {
-            return new ApiProblem(422, 'Usuário já existe');
-        }
+        return new ApiProblem(405, 'The POST method has not been defined');
     }
 
     /**
@@ -71,9 +47,7 @@ class UsuarioResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return $this->usuarioService->getUsuario($id);
-
-        // return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
     }
 
     /**
@@ -84,7 +58,6 @@ class UsuarioResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        return $this->usuarioService->getUsuarios();
         return new ApiProblem(405, 'The GET method has not been defined for collections');
     }
 

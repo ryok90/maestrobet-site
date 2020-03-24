@@ -6,6 +6,7 @@ use Usuario\Entity\Usuario;
 use Application\Entity\EntityAbstract;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Financeiro\Entity\Fechamento;
 
 /**
  * Abstração de Crédito e Débito
@@ -21,7 +22,7 @@ abstract class LancamentoAbstract extends EntityAbstract
 
     /**
      * O valor deve ser absoluto (somente positivo)
-     * O que determinará se deverá ser somado ou subtraído é qual classe pertence: crédito ou débito
+     * O que determinará se deverá ser somado ou subtraído é qual classe pertence: Crédito ou Débito
      * 
      * @ORM\Column(name="valor", type="decimal", precision=11, scale=2, nullable=false)
      * @var float
@@ -36,9 +37,16 @@ abstract class LancamentoAbstract extends EntityAbstract
 
     /**
      * @ORM\Column(name="data", type="datetime", nullable=false)
-     * @var \DateTime
+     * @var DateTime
      */
     protected $data;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Fechamento")
+     * @ORM\JoinColumn(name="idFechamento", referencedColumnName="idFechamento", nullable=true)
+     * @var Fechamento
+     */
+    protected $fechamento;
 
     /**
      * @return Usuario

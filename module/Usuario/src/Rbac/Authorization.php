@@ -19,9 +19,26 @@ class Authorization implements AuthorizationInterface
     /**
      * @var AuthorizationService
      */
-    private $authorizationService;
+    protected $authorizationService;
 
-    private $config;
+    protected $config;
+
+    const METHOD_CONVERSION = [
+        'collection' => [
+            'GET' => 'fetchAll',
+            'POST' => 'createList',
+            'PUT' => 'replaceList',
+            'PATCH' => 'patchList',
+            'DELETE' => 'deleteList'
+        ],
+        'entity' => [
+            'GET' => 'fetch',
+            'POST' => 'create',
+            'PUT' => 'replace',
+            'PATCH' => 'patch',
+            'DELETE' => 'delete'
+        ]
+    ];
 
     public function __construct(AuthorizationService $authorizationService, array $config)
     {
@@ -30,43 +47,53 @@ class Authorization implements AuthorizationInterface
     }
 
     /**
-     * Método responsável pela autenticação geral do usuário/convidado
+     * Método responsável pela autorização geral do usuário/convidado
      * 
      * @param \ZF\MvcAuth\Identity\IdentityInterface $identity
-     * @param string $resource
-     * @param string $privilege
+     * @param string $request Ex: Application\Controller\IndexController::index
+     * @param string $privilege Ex: GET
      * @return bool
      */
-    public function isAuthorized(IdentityInterface $identity, $resource, $privilege)
+    public function isAuthorized(IdentityInterface $identity, $request, $privilege)
     {
-        $restGuard = $this->config['rest_guard'];
-        list($class, $group) = explode('::', $resource);
-
-        $allowedRoles = $restGuard[$class][$group][$privilege] ?? null;
-
-        /** Caso em que não foram adicionadas as permissões no zfc_rbac.global.php */
-        if (is_null($allowedRoles)) {
-
-            return false;
-        }
+        list($controller, $group) = explode('::', $request);
+        $restConfig = $this->config['zf-rest'];
+        $resourceName = $restConfig[$controller]['listener'] ?? '';
 
         /** 
-         * Caso em que é um array de Roles. 
-         * Nesse caso, se usuário possui ao menos 1 Role compatível, o acesso é permitido
+         * Caso em que o controller não pertence a Api
+         * @todo Implementar casos em que não seja da Api
          */
-        if (is_array($allowedRoles)) {
+        if (!class_exists($resourceName)) {
 
-            foreach ($allowedRoles as $allowedRole) {
-
-                if ($this->authorizationService->isGranted($allowedRole)) {
-
-                    return true;
-                }
-            }
-            /** Retorno caso nenhuma permissão que o usuário possui satifaça */
-            return false;
+            return true;
         }
-        /** Retorno caso a requisição tenha permissão absoluta (boolean) */
-        return $allowedRoles;
+        $interfaces = class_implements($resourceName);
+
+        /**
+         * Caso em que o Resource em questão não implementa a interface de permissão
+         * @todo Revisar como tratar a resposta nesse caso
+         */
+        if (!in_array(GuardedResourceInterface::class, $interfaces)) {
+
+            return true;
+        }
+        $requestedMethod = self::METHOD_CONVERSION[$group][$privilege];
+        $guard = $resourceName::getResourceGuard();
+        $permission = $guard[$requestedMethod] ?? false;
+
+        /**
+         * Caso em que há uma permissão implementada ao método
+         */
+        if (is_string($permission)) {
+
+            return $this->authorizationService->isGranted($permission);
+        }
+
+        /**
+         * Caso em que a permissão é absoluta (boolean)
+         * Permite qualquer acesso ou não permite nenhum
+         */
+        return $permission;
     }
 }

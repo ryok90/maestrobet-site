@@ -1,5 +1,5 @@
 <?php
-namespace Identity\V1\Rest\Usuario;
+namespace ApiResource\V1\Rest\Usuario;
 
 use Zend\Paginator\Paginator;
 

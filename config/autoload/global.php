@@ -25,7 +25,7 @@ return array(
                 ),
             ),
             'map' => array(
-                'Identity\\V1' => 'oauth2_doctrine',
+                'ApiResource\\V1' => 'oauth2_doctrine',
             ),
         ),
     ),

@@ -14,44 +14,6 @@ use ZfcRbac\Identity\IdentityInterface;
  */
 class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
 {
-    const ROLE_GUEST = 'guest';
-    const ROLE_ADMIN = 'admin';
-    const ROLE_USUARIO = 'usuario';
-    const ADMIN_FETCH = 'admin-fetch';
-    const ADMIN_CREATE = 'admin-create';
-    const ADMIN_UPDATE = 'admin-update';
-    const ADMIN_DELETE = 'admin-delete';
-    const ADMIN_PATCH = 'admin-patch';
-    const USUARIO_FETCH = 'usuario-fetch';
-    const USUARIO_CREATE = 'usuario-create';
-    const USUARIO_UPDATE = 'usuario-update';
-    const USUARIO_DELETE = 'usuario-delete';
-    const USUARIO_PATCH = 'usuario-patch';
-
-    const ROLES = [
-        self::ROLE_ADMIN => [
-            'children' => [self::ROLE_USUARIO],
-            'permissions' => [
-                self::ADMIN_FETCH,
-                self::ADMIN_CREATE,
-                self::ADMIN_UPDATE,
-                self::ADMIN_DELETE,
-                self::ADMIN_PATCH,
-            ]
-        ],
-        self::ROLE_USUARIO => [
-            'children' => [self::ROLE_GUEST],
-            'permissions' => [
-                self::USUARIO_FETCH,
-                self::USUARIO_CREATE,
-                self::USUARIO_UPDATE,
-                self::USUARIO_DELETE,
-                self::USUARIO_PATCH
-            ]
-        ],
-        self::ROLE_GUEST => [],
-    ];
-
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -96,10 +58,10 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $debitos;
 
     /**
-     * @ORM\Column(name="roles", type="array")
+     * @ORM\Column(name="roles", type="array", nullable=false)
      * @var array
      */
-    protected $roles = ['usuario'];
+    protected $roles;
 
     /**
      * Propriedades necessárias para autenticação via Doctrine OAuth2
