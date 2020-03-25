@@ -25,14 +25,20 @@ class UsuarioService extends ServiceAbstract
     public function insertUsuario(Usuario $usuario)
     {
         if ($usuario->getId()) {
-            throw new RuntimeException();
+            throw new RuntimeException('Usuário já registrado.');
         }
-        $usuario->setDataCriacao(new DateTime());
 
         $this->entityManager->persist($usuario);
-        $this->entityManager->flush($usuario);
+        $this->entityManager->flush();
 
         return $usuario;
+    }
+
+    public function updateUsuario(Usuario $usuario)
+    {
+        if (!$usuario->getId()) {
+            throw new RuntimeException('Usuário ainda não registrado');
+        }
     }
 
     public function getUsuario($id)

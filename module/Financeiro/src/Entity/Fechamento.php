@@ -4,10 +4,12 @@ namespace Financeiro\Entity;
 
 use Application\Entity\EntityAbstract;
 use Doctrine\ORM\Mapping as ORM;
+use Financeiro\Entity\Lancamento;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="fechamento")
+ * @ORM\HasLifecycleCallbacks
  */
 class Fechamento extends EntityAbstract
 {
@@ -28,6 +30,12 @@ class Fechamento extends EntityAbstract
      * @var int
      */
     protected $semana;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Lancamento", mappedBy="fechamento", cascade={"persist"})
+     * @var Lancamento
+     */
+    protected $lancamento;
 
     /**
      * @return int

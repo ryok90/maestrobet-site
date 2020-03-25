@@ -37,17 +37,29 @@ class UsuarioResource extends AbstractResourceListener implements GuardedResourc
     public function create($data)
     {
         try {
-            $usuario = new Usuario();
-            $usuario->setNome($data->nome);
-            $usuario->setSenha($data->senha);
-            $usuario->setEmail($data->email);
-            $usuario->setApelido($data->apelido);
-
+            $usuario = new Usuario($data);
             $response = $this->usuarioService->insertUsuario($usuario);
 
             return $response;
         } catch (Exception $exception) {
-            return new ApiProblem(422, 'Usuário já existe');
+
+            return new ApiProblem(500, 'Ocorreu um erro ao inserir usuário');
+        }
+    }
+
+    public function patch($id, $data)
+    {
+        try {
+            $usuario = $this->usuarioService->getUsuario($id);
+
+            if (!$usuario instanceof Usuario) {
+
+                return new ApiProblem(404, 'Usuário não encontrado');
+            }
+            $usuario->patch($data);
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao atualizar usuário');
         }
     }
 

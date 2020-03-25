@@ -19,6 +19,11 @@ class RoleProvider
     const USUARIO_UPDATE = 'usuario-update';
     const USUARIO_DELETE = 'usuario-delete';
     const USUARIO_PATCH = 'usuario-patch';
+    const USUARIO_FETCH_SELF = 'usuario-fetch-self';
+    const USUARIO_CREATE_SELF = 'usuario-create-self';
+    const USUARIO_UPDATE_SELF = 'usuario-update-self';
+    const USUARIO_DELETE_SELF = 'usuario-delete-self';
+    const USUARIO_PATCH_SELF = 'usuario-patch-self';
 
     public static function getFullRoles()
     {
@@ -40,7 +45,12 @@ class RoleProvider
                     self::USUARIO_CREATE,
                     self::USUARIO_UPDATE,
                     self::USUARIO_DELETE,
-                    self::USUARIO_PATCH
+                    self::USUARIO_PATCH,
+                    self::USUARIO_FETCH_SELF,
+                    self::USUARIO_CREATE_SELF,
+                    self::USUARIO_UPDATE_SELF,
+                    self::USUARIO_DELETE_SELF,
+                    self::USUARIO_PATCH_SELF,
                 ]
             ],
             self::ROLE_GUEST => [],

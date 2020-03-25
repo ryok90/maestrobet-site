@@ -4,6 +4,7 @@ namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\EntityAbstract;
+use Usuario\Rbac\RoleProvider;
 use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
@@ -11,6 +12,7 @@ use ZfcRbac\Identity\IdentityInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name="usuario")
+ * @ORM\HasLifecycleCallbacks
  */
 class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
 {
@@ -42,20 +44,15 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
 
     /**
      * @ORM\Column(name="senha", type="string", nullable=false, length=256)
+     * @var string
      */
     protected $senha;
 
     /**
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Credito", mappedBy="usuario", fetch="EXTRA_LAZY", cascade="persist")
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Lancamento", mappedBy="usuario", fetch="EXTRA_LAZY", cascade="persist")
      * @var ArrayCollection
      */
-    protected $creditos;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Debito", mappedBy="usuario", fetch="EXTRA_LAZY", cascade="persist")
-     * @var ArrayCollection
-     */
-    protected $debitos;
+    protected $lancamentos;
 
     /**
      * @ORM\Column(name="roles", type="array", nullable=false)
@@ -70,6 +67,88 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $accessToken;
     protected $authorizationCode;
     protected $refreshToken;
+
+    public function __construct($data)
+    {
+        $this->setNome($data->nome ?? null);
+        $this->setEmail($data->email ?? null);
+        $this->setSenha($data->senha ?? null);
+        $this->setApelido($data->apelido ?? null);
+        $this->setRoles($data->roles ?? null);
+    }
+
+    /**
+     * Métodos utilizados pelo doctrine oauth2
+     * @return array
+     */
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * @param mixed $accessToken 
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = $accessToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorizationCode()
+    {
+        return $this->authorizationCode;
+    }
+
+    /**
+     * @param mixed $authorizationCode 
+     */
+    public function setAuthorizationCode($authorizationCode)
+    {
+        $this->authorizationCode = $authorizationCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRefreshToken()
+    {
+        return $this->refreshToken;
+    }
+
+    /**
+     * @param mixed $refreshToken 
+     */
+    public function setRefreshToken($refreshToken)
+    {
+        $this->refreshToken = $refreshToken;
+    }
 
     /**
      * @return int
@@ -136,39 +215,7 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * @return mixed
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAccessToken()
-    {
-        return $this->accessToken;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAuthorizationCode()
-    {
-        return $this->authorizationCode;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRefreshToken()
-    {
-        return $this->refreshToken;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getSenha()
     {
@@ -176,7 +223,7 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * @param mixed $senha 
+     * @param string $senha 
      */
     public function setSenha($senha)
     {
@@ -184,47 +231,6 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         $bcrypt->setCost(10);
 
         $this->senha = $bcrypt->create($senha);
-    }
-
-    /**
-     * Método utilizado pelo doctrine oauth2
-     * @return array
-     */
-    public function getArrayCopy()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getCreditos()
-    {
-        return $this->creditos;
-    }
-
-    /**
-     * @param ArrayCollection $creditos 
-     */
-    public function setCreditos($creditos)
-    {
-        $this->creditos = $creditos;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getDebitos()
-    {
-        return $this->debitos;
-    }
-
-    /**
-     * @param ArrayCollection $debitos 
-     */
-    public function setDebitos($debitos)
-    {
-        $this->debitos = $debitos;
     }
 
     /**
@@ -250,5 +256,34 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     public function addRole($role)
     {
         $this->roles[] = $role;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getLancamentos()
+    {
+        return $this->lancamentos;
+    }
+
+    /**
+     * @param ArrayCollection $lancamentos 
+     */
+    public function setLancamentos($lancamentos)
+    {
+        $this->lancamentos = $lancamentos;
+    }
+
+    /**
+     * @param stdClass $data
+     * @return void
+     */
+    public function patch($data)
+    {
+        empty($data->senha) ?: $this->setSenha($data->senha);
+        empty($data->nome) ?: $this->setNome($data->nome);
+        empty($data->email) ?: $this->setNome($data->email);
+        empty($data->apelido) ?: $this->setNome($data->apelido);
+        empty($data->roles) ?: $this->setRoles($data->roles);
     }
 }

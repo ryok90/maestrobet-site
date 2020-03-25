@@ -26,15 +26,14 @@ class Authorization implements AuthorizationInterface
     const METHOD_CONVERSION = [
         'collection' => [
             'GET' => 'fetchAll',
-            'POST' => 'createList',
+            'POST' => 'create',
             'PUT' => 'replaceList',
             'PATCH' => 'patchList',
             'DELETE' => 'deleteList'
         ],
         'entity' => [
             'GET' => 'fetch',
-            'POST' => 'create',
-            'PUT' => 'replace',
+            'PUT' => 'update',
             'PATCH' => 'patch',
             'DELETE' => 'delete'
         ]
@@ -83,11 +82,27 @@ class Authorization implements AuthorizationInterface
         $permission = $guard[$requestedMethod] ?? false;
 
         /**
-         * Caso em que há uma permissão implementada ao método
+         * Caso em que há somente uma permissão implementada ao método
          */
         if (is_string($permission)) {
 
             return $this->authorizationService->isGranted($permission);
+        }
+
+        /**
+         * Caso em que há um array de permissões
+         * Se a Role possuir ao menos uma das permissões, o acesso é concedido
+         */
+        if (is_array($permission)) {
+
+            foreach ($permission as $perm) {
+                
+                if ($this->authorizationService->isGranted($perm)) {
+                    return true;
+                }
+            }
+            
+            return false;
         }
 
         /**

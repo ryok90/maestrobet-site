@@ -9,10 +9,20 @@ use DateTime;
 use Financeiro\Entity\Fechamento;
 
 /**
- * Abstração de Crédito e Débito
+ * @ORM\Entity
+ * @ORM\Table(name="lancamento")
+ * @ORM\HasLifecycleCallbacks
  */
-abstract class LancamentoAbstract extends EntityAbstract
+class Lancamento extends EntityAbstract
 {
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="idLancamento", type="integer")
+     * @ORM\GeneratedValue
+     * @var int
+     */
+    protected $idLancamento;
+
     /**
      * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario")
      * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
@@ -21,9 +31,6 @@ abstract class LancamentoAbstract extends EntityAbstract
     protected $usuario;
 
     /**
-     * O valor deve ser absoluto (somente positivo)
-     * O que determinará se deverá ser somado ou subtraído é qual classe pertence: Crédito ou Débito
-     * 
      * @ORM\Column(name="valor", type="decimal", precision=11, scale=2, nullable=false)
      * @var float
      */
@@ -42,12 +49,27 @@ abstract class LancamentoAbstract extends EntityAbstract
     protected $data;
 
     /**
-     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Fechamento")
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Fechamento", inversedBy="lancamento")
      * @ORM\JoinColumn(name="idFechamento", referencedColumnName="idFechamento", nullable=true)
      * @var Fechamento
      */
     protected $fechamento;
 
+    /**
+     * @return int
+     */
+    public function getIdLancamento()
+    {
+        return $this->idLancamento;
+    }
+
+    /**
+     * @param int $idLancamento 
+     */
+    public function setIdLancamento($idLancamento)
+    {
+        $this->idLancamento = $idLancamento;
+    }
     /**
      * @return Usuario
      */
