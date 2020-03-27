@@ -1,6 +1,7 @@
 vendor/
 config/development.config.php
 config/autoload/development.local.php
+config/autoload/local.php
 data/
 error_log
 public/oauth.html

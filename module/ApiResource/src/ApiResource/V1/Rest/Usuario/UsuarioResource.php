@@ -3,29 +3,30 @@
 namespace ApiResource\V1\Rest\Usuario;
 
 use Exception;
+use Application\RestResource\RestResourceAbstract;
 use Usuario\Entity\Usuario;
 use Usuario\Rbac\GuardedResourceInterface;
 use Usuario\Rbac\RoleProvider;
-use ZF\ApiProblem\ApiProblem;
-use ZF\Rest\AbstractResourceListener;
 use Usuario\Service\UsuarioService;
+use Zend\View\Model\JsonModel;
+use ZF\ApiProblem\ApiProblem;
 
-class UsuarioResource extends AbstractResourceListener implements GuardedResourceInterface
+class UsuarioResource extends RestResourceAbstract implements GuardedResourceInterface
 {
-    protected $usuarioService;
+    /**
+     * @var UsuarioService $service
+     */
+    protected $service;
 
     public static function getResourceGuard()
     {
         return [
             'create' => RoleProvider::ADMIN_CREATE,
             'fetch' => RoleProvider::ADMIN_FETCH,
-            'fetchAll' => RoleProvider::ADMIN_FETCH
+            'fetchAll' => RoleProvider::ADMIN_FETCH,
+            'patch' => RoleProvider::ADMIN_PATCH,
+            'delete' => RoleProvider::ADMIN_DELETE,
         ];
-    }
-
-    public function __construct(UsuarioService $usuarioService)
-    {
-        $this->usuarioService = $usuarioService;
     }
 
     /**
@@ -38,7 +39,7 @@ class UsuarioResource extends AbstractResourceListener implements GuardedResourc
     {
         try {
             $usuario = new Usuario($data);
-            $response = $this->usuarioService->insertUsuario($usuario);
+            $response = $this->service->insert($usuario);
 
             return $response;
         } catch (Exception $exception) {
@@ -50,16 +51,38 @@ class UsuarioResource extends AbstractResourceListener implements GuardedResourc
     public function patch($id, $data)
     {
         try {
-            $usuario = $this->usuarioService->getUsuario($id);
+            $usuarioRepo = $this->getRepository(Usuario::class);
+            $usuario = $usuarioRepo->getActiveResult($id);
 
             if (!$usuario instanceof Usuario) {
 
                 return new ApiProblem(404, 'Usuário não encontrado');
             }
             $usuario->patch($data);
+
+            return $this->service->update($usuario);
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao atualizar usuário');
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $usuarioRepo = $this->getRepository(Usuario::class);
+            $usuario = $usuarioRepo->getActiveResult($id);
+
+            if (!$usuario instanceof Usuario) {
+
+                return new ApiProblem(404, 'Usuário não encontrado');
+            }
+            $usuario->logicalDelete();
+
+            return $this->service->delete($usuario);
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao remover usuário');
         }
     }
 
@@ -71,7 +94,20 @@ class UsuarioResource extends AbstractResourceListener implements GuardedResourc
      */
     public function fetch($id)
     {
-        return $this->usuarioService->getUsuario($id);
+        try {
+            $usuarioRepo = $this->getRepository(Usuario::class);
+            $usuario = $usuarioRepo->getActiveResult($id);
+
+            if (!$usuario instanceof Usuario) {
+
+                return new ApiProblem(404, 'Usuário não encontrado');
+            }
+            
+            return $usuario;
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao recuperar usuário');
+        }
     }
 
     /**
@@ -82,6 +118,13 @@ class UsuarioResource extends AbstractResourceListener implements GuardedResourc
      */
     public function fetchAll($params = [])
     {
-        return $this->usuarioService->getUsuarios();
+        try {
+            $usuarioRepo = $this->service->getRepository(Usuario::class);
+
+            return $usuarioRepo->getActiveResults();
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao recuperar usuários');
+        }
     }
 }

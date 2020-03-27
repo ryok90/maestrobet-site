@@ -9,23 +9,14 @@ use Exception;
 use RuntimeException;
 use Usuario\Entity\Usuario;
 use ZF\ApiProblem\ApiProblem;
+use Zend\Mvc\Controller\AbstractActionController;
 
 class UsuarioService extends ServiceAbstract
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    public function insertUsuario(Usuario $usuario)
+    public function insert(Usuario $usuario)
     {
         if ($usuario->getId()) {
-            throw new RuntimeException('Usuário já registrado.');
+            return new ApiProblem(400, 'Usuário já registrado.');
         }
 
         $this->entityManager->persist($usuario);
@@ -34,26 +25,28 @@ class UsuarioService extends ServiceAbstract
         return $usuario;
     }
 
-    public function updateUsuario(Usuario $usuario)
+    public function update(Usuario $usuario)
     {
         if (!$usuario->getId()) {
-            throw new RuntimeException('Usuário ainda não registrado');
+            return new ApiProblem(400, 'Usuário ainda não registrado');
         }
-    }
-
-    public function getUsuario($id)
-    {
-        $usuarioRepo = $this->entityManager->getRepository(Usuario::class);
-        $usuario = $usuarioRepo->findOneBy(['id' => $id]);
+        
+        $this->entityManager->persist($usuario);
+        $this->entityManager->flush();
 
         return $usuario;
     }
 
-    public function getUsuarios()
+    public function delete(Usuario $usuario)
     {
-        $usuarioRepo = $this->entityManager->getRepository(Usuario::class);
-        $usuarios = $usuarioRepo->findAll();
+        if (!$usuario->getId()) {
+            return new ApiProblem(400, 'Usuário ainda não registrado');
+        }
+        $usuario->logicalDelete();
 
-        return $usuarios;
+        $this->entityManager->persist($usuario);
+        $this->entityManager->flush();
+
+        return true;
     }
 }

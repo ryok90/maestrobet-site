@@ -37,9 +37,9 @@ abstract class EntityAbstract
     /**
      * @return DateTime
      */
-    public function getDataCriacao()
+    public function getDataCriacao($format = 'Y-m-d H:i')
     {
-        return $this->dataCriacao;
+        return $this->dataCriacao->format($format);
     }
 
     /**
@@ -53,8 +53,13 @@ abstract class EntityAbstract
     /**
      * @return DateTime
      */
-    public function getDataAlteracao()
+    public function getDataAlteracao($format = 'Y-m-d H:i')
     {
+        if ($this->dataAlteracao instanceof DateTime) {
+            
+            return $this->dataAlteracao->format($format = 'Y-m-d H:i');
+        }
+
         return $this->dataAlteracao;
     }
 
@@ -80,6 +85,11 @@ abstract class EntityAbstract
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    public function logicalDelete()
+    {
+        $this->setStatus(-1);
     }
 
     /**

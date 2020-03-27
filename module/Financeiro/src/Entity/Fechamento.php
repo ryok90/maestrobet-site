@@ -15,11 +15,11 @@ class Fechamento extends EntityAbstract
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="idFechamento", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @var int
      */
-    protected $idFechamento;
+    protected $id;
 
     /**
      * Número da semana a qual o Fechamento pertence
@@ -40,17 +40,17 @@ class Fechamento extends EntityAbstract
     /**
      * @return int
      */
-    public function getIdFechamento()
+    public function getId()
     {
-        return $this->idFechamento;
+        return $this->id;
     }
 
     /**
-     * @param int $idFechamento 
+     * @param int $id 
      */
-    public function setIdFechamento($idFechamento)
+    public function setId($id)
     {
-        $this->idFechamento = $idFechamento;
+        $this->id = $id;
     }
 
     /**

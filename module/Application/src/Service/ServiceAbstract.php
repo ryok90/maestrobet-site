@@ -6,6 +6,8 @@ use Exception;
 use RuntimeException;
 use Usuario\Entity\Usuario;
 use Zend\Permissions\Rbac\AssertionInterface;
+use Application\Repository\RepositoryAbstract;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ServiceAbstract
 {
@@ -18,7 +20,21 @@ class ServiceAbstract
     const PERMISSION_DENIED_MESSAGE = 'Você não possui permissões para executar esta ação.';
     const PERMISSION_DENIED_CODE = 5;
 
+    /**
+     * Usuario Autenticado
+     * @var Usuario
+     */
     protected $authenticatedIdentity;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * Define usuario autenticado
@@ -44,5 +60,19 @@ class ServiceAbstract
         }
 
         return $this->authenticatedIdentity;
+    }
+
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param string $class
+     * @return RepositoryAbstract
+     */
+    public function getRepository($class)
+    {
+        return $this->entityManager->getRepository($class);
     }
 }

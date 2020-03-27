@@ -1,6 +1,36 @@
 <?php
+
+use Usuario\HydratorFilter\UsuarioFilter;
+
 return array(
+    'doctrine-hydrator' => array(
+        'LancamentoHydrator' => array(
+            'entity_class' => 'Financeiro\\Entity\\Lancamento',
+            'object_manager' => 'Doctrine\\ORM\\EntityManager',
+            'by_value' => true,
+        ),
+        'UsuarioHydrator' => array(
+            'entity_class' => 'Usuario\\Entity\\Usuario',
+            'object_manager' => 'Doctrine\\ORM\\EntityManager',
+            'by_value' => true,
+            'filters' => array(
+                'usuario_filter' => array(
+                    'condition' => 'or',
+                    'filter' => 'UsuarioFilter',
+                ),
+            ),
+        ),
+    ),
+    'hydrators' => array(
+        'aliases' => array(
+            'Financeiro\\Entity\\Lancamento' => 'LancamentoHydrator',
+            'Usuario\\Entity\\Usuario' => 'UsuarioHydrator',
+        ),
+    ),
     'service_manager' => array(
+        'invokables' => [
+            'UsuarioFilter' => UsuarioFilter::class,
+        ],
         'factories' => array(
             'ApiResource\\V1\\Rest\\Usuario\\UsuarioResource' => 'ApiResource\\V1\\Rest\\Usuario\\UsuarioResourceFactory',
             'ApiResource\\V1\\Rest\\Lancamento\\LancamentoResource' => 'ApiResource\\V1\\Rest\\Lancamento\\LancamentoResourceFactory',
@@ -20,7 +50,7 @@ return array(
             'api-resource.rest.lancamento' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/lancamento[/:lancamento_id]',
+                    'route' => '/usuario/:usuario_id/lancamento[/:lancamento_id]',
                     'defaults' => array(
                         'controller' => 'ApiResource\\V1\\Rest\\Lancamento\\Controller',
                     ),
@@ -66,11 +96,11 @@ return array(
                 0 => 'GET',
                 1 => 'PATCH',
                 2 => 'PUT',
-                3 => 'POST',
-                4 => 'DELETE',
+                3 => 'DELETE',
             ),
             'collection_http_methods' => array(
                 0 => 'GET',
+                1 => 'POST',
             ),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
@@ -90,32 +120,30 @@ return array(
                 0 => 'application/vnd.api-resource.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
+                3 => 'multipart/form-data',
             ),
             'ApiResource\\V1\\Rest\\Lancamento\\Controller' => array(
                 0 => 'application/vnd.api-resource.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
+                3 => 'multipart/form-data',
             ),
         ),
         'content_type_whitelist' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
                 0 => 'application/vnd.api-resource.v1+json',
                 1 => 'application/json',
+                2 => 'multipart/form-data',
             ),
             'ApiResource\\V1\\Rest\\Lancamento\\Controller' => array(
                 0 => 'application/vnd.api-resource.v1+json',
                 1 => 'application/json',
+                2 => 'multipart/form-data',
             ),
         ),
     ),
     'zf-hal' => array(
         'metadata_map' => array(
-            'ApiResource\\V1\\Rest\\Usuario\\UsuarioEntity' => array(
-                'entity_identifier_name' => 'id',
-                'route_name' => 'api-resource.rest.usuario',
-                'route_identifier_name' => 'usuario_id',
-                'hydrator' => 'Zend\\Hydrator\\ArraySerializable',
-            ),
             'ApiResource\\V1\\Rest\\Usuario\\UsuarioCollection' => array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api-resource.rest.usuario',
@@ -126,13 +154,7 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api-resource.rest.usuario',
                 'route_identifier_name' => 'usuario_id',
-                'hydrator' => 'DoctrineModule\\Stdlib\\Hydrator\\DoctrineObject',
-            ),
-            'ApiResource\\V1\\Rest\\Lancamento\\LancamentoEntity' => array(
-                'entity_identifier_name' => 'id',
-                'route_name' => 'api-resource.rest.lancamento',
-                'route_identifier_name' => 'lancamento_id',
-                'hydrator' => 'Zend\\Hydrator\\ArraySerializable',
+                'hydrator' => 'UsuarioHydrator',
             ),
             'ApiResource\\V1\\Rest\\Lancamento\\LancamentoCollection' => array(
                 'entity_identifier_name' => 'id',
@@ -144,7 +166,8 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api-resource.rest.lancamento',
                 'route_identifier_name' => 'lancamento_id',
-                'hydrator' => 'Zend\\Hydrator\\ArraySerializable',
+                'hydrator' => 'LancamentoHydrator',
+                'max_depth' => 0,
             ),
         ),
     ),
@@ -156,19 +179,11 @@ return array(
         'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
             'input_filter' => 'ApiResource\\V1\\Rest\\Usuario\\Validator',
         ),
+        'ApiResource\\V1\\Rest\\Lancamento\\Controller' => array(
+            'input_filter' => 'ApiResource\\V1\\Rest\\Lancamento\\Validator',
+        ),
     ),
     'input_filter_specs' => array(
-        'ApiResource\\V1\\Rest\\Debito\\Validator' => array(
-            0 => array(
-                'required' => true,
-                'validators' => array(),
-                'filters' => array(),
-                'name' => 'Teste',
-                'description' => 'teste',
-                'field_type' => 'teste',
-                'error_message' => 'teste',
-            ),
-        ),
         'ApiResource\\V1\\Rest\\Usuario\\Validator' => array(
             0 => array(
                 'required' => true,
@@ -264,6 +279,86 @@ return array(
                 'field_type' => 'array',
                 'description' => 'Papéis do usuário',
                 'error_message' => 'Ao menos um papel deve ser especificado',
+            ),
+        ),
+        'ApiResource\\V1\\Rest\\Lancamento\\Validator' => array(
+            0 => array(
+                'required' => true,
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\I18n\\Validator\\IsFloat',
+                        'options' => array(),
+                    ),
+                ),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\ToFloat',
+                        'options' => array(),
+                    ),
+                ),
+                'name' => 'valor',
+                'description' => 'Valor do lançamento',
+                'field_type' => 'integer',
+            ),
+            1 => array(
+                'required' => true,
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\I18n\\Validator\\IsInt',
+                        'options' => array(),
+                    ),
+                ),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\ToInt',
+                        'options' => array(),
+                    ),
+                ),
+                'name' => 'usuario',
+                'description' => 'Usuario vinculado',
+                'field_type' => 'Usuario\\Entity\\Usuario',
+            ),
+            2 => array(
+                'required' => false,
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\Validator\\StringLength',
+                        'options' => array(
+                            'max' => '256',
+                        ),
+                    ),
+                ),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\StringTrim',
+                        'options' => array(),
+                    ),
+                ),
+                'name' => 'descricao',
+                'description' => 'Descricao do lançamento',
+                'field_type' => 'string',
+            ),
+            3 => array(
+                'required' => true,
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\I18n\\Validator\\DateTime',
+                        'options' => array(
+                            'pattern' => 'Y-m-d',
+                        ),
+                    ),
+                ),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\DateTimeFormatter',
+                        'options' => array(
+                            'format' => 'Y-m-d',
+                        ),
+                    ),
+                ),
+                'name' => 'dataLancamento',
+                'description' => 'Data do lancamento',
+                'field_type' => 'datetime',
             ),
         ),
     ),

@@ -9,7 +9,7 @@ use DateTime;
 use Financeiro\Entity\Fechamento;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Financeiro\Repository\Lancamento")
  * @ORM\Table(name="lancamento")
  * @ORM\HasLifecycleCallbacks
  */
@@ -17,14 +17,14 @@ class Lancamento extends EntityAbstract
 {
     /**
      * @ORM\Id
-     * @ORM\Column(name="idLancamento", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @var int
      */
-    protected $idLancamento;
+    protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", inversedBy="lancamentos")
      * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
      * @var \Usuario\Entity\Usuario
      */
@@ -43,14 +43,14 @@ class Lancamento extends EntityAbstract
     protected $descricao;
 
     /**
-     * @ORM\Column(name="data", type="datetime", nullable=false)
+     * @ORM\Column(name="dataLancamento", type="datetime", nullable=false)
      * @var DateTime
      */
-    protected $data;
+    protected $dataLancamento;
 
     /**
      * @ORM\OneToOne(targetEntity="Financeiro\Entity\Fechamento", inversedBy="lancamento")
-     * @ORM\JoinColumn(name="idFechamento", referencedColumnName="idFechamento", nullable=true)
+     * @ORM\JoinColumn(name="idFechamento", referencedColumnName="id", nullable=true)
      * @var Fechamento
      */
     protected $fechamento;
@@ -58,17 +58,17 @@ class Lancamento extends EntityAbstract
     /**
      * @return int
      */
-    public function getIdLancamento()
+    public function getId()
     {
-        return $this->idLancamento;
+        return $this->id;
     }
 
     /**
-     * @param int $idLancamento 
+     * @param int $id 
      */
-    public function setIdLancamento($idLancamento)
+    public function setId($id)
     {
-        $this->idLancamento = $idLancamento;
+        $this->id = $id;
     }
     /**
      * @return Usuario
@@ -91,7 +91,7 @@ class Lancamento extends EntityAbstract
      */
     public function getValor()
     {
-        return $this->valor;
+        return (float) $this->valor;
     }
 
     /**
@@ -121,16 +121,21 @@ class Lancamento extends EntityAbstract
     /**
      * @return DateTime
      */
-    public function getData()
+    public function getDataLancamento($format = 'Y-m-d')
     {
-        return $this->data;
+        if ($this->dataLancamento instanceof DateTime) {
+
+            return $this->dataLancamento->format($format);
+        }
+        
+        return $this->dataLancamento;
     }
 
     /**
-     * @param DateTime $data 
+     * @param DateTime $dataLancamento 
      */
-    public function setData($data)
+    public function setDataLancamento($dataLancamento)
     {
-        $this->data = $data;
+        $this->dataLancamento = $dataLancamento;
     }
 }

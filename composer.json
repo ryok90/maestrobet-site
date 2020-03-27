@@ -8,7 +8,8 @@
         "api-skeletons/zf-oauth2-doctrine": "^3.1",
         "zfcampus/zf-apigility": "^1.5",
         "zfcampus/zf-development-mode": "^3.2",
-        "zf-commons/zfc-rbac": "^2.6"
+        "zf-commons/zfc-rbac": "^2.6",
+        "phpro/zf-doctrine-hydration-module": "^4.1"
     },
     "autoload": {
         "psr-4": {

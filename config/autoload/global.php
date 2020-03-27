@@ -1,32 +1,32 @@
 <?php
-return array(
-    'doctrine' => array(
-        'migrations_configuration' => array(
-            'orm_default' => array(
+return [
+    'doctrine' => [
+        'migrations_configuration' => [
+            'orm_default' => [
                 'directory' => 'data/Migrations',
                 'name' => 'Doctrine Database Migrations',
                 'namespace' => 'Migrations',
                 'table' => 'migrations',
-            ),
-        ),
-    ),
-    'zf-oauth2' => array(
+            ],
+        ],
+    ],
+    'zf-oauth2' => [
         'storage' => 'oauth2.doctrineadapter.default',
-    ),
-    'zf-mvc-auth' => array(
-        'authentication' => array(
-            'adapters' => array(
-                'oauth2_doctrine' => array(
+    ],
+    'zf-mvc-auth' => [
+        'authentication' => [
+            'adapters' => [
+                'oauth2_doctrine' => [
                     'adapter' => 'ZF\\MvcAuth\\Authentication\\OAuth2Adapter',
-                    'storage' => array(
+                    'storage' => [
                         'storage' => 'oauth2.doctrineadapter.default',
                         'route' => '/oauth',
-                    ),
-                ),
-            ),
-            'map' => array(
+                    ],
+                ],
+            ],
+            'map' => [
                 'ApiResource\\V1' => 'oauth2_doctrine',
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

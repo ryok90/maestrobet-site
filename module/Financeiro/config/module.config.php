@@ -2,30 +2,30 @@
 
 namespace Financeiro;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Financeiro\Entity\Lancamento;
+use Financeiro\Service\Factory\LancamentoServiceFactory;
+use Financeiro\Service\LancamentoService;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
-    'router' => [
-    ],
+    'router' => [],
     'controllers' => [
-        'factories' => [
-        ]
+        'factories' => []
     ],
     'service_manager' => [
         'factories' => [
+            LancamentoService::class => LancamentoServiceFactory::class,
         ]
     ],
     'view_helpers' => [
-        'factories' => [
-        ],
-        'aliases' => [
-        ]
+        'factories' => [],
+        'aliases' => []
     ],
-    'view_manager' => [
-    ],
+    'view_manager' => [],
     'doctrine' => [
         'driver' => [
             __NAMESPACE__ . '_driver' => [
@@ -39,5 +39,5 @@ return [
                 ]
             ]
         ]
-    ]
+    ],
 ];

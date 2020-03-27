@@ -2,18 +2,28 @@
 
 namespace ApiResource\V1\Rest\Lancamento;
 
+use Application\RestResource\RestResourceAbstract;
+use Exception;
+use Financeiro\Entity\Lancamento;
 use Usuario\Rbac\GuardedResourceInterface;
 use Usuario\Rbac\RoleProvider;
 use ZF\ApiProblem\ApiProblem;
-use ZF\Rest\AbstractResourceListener;
+use Financeiro\Service\LancamentoService;
 
-class LancamentoResource extends AbstractResourceListener implements GuardedResourceInterface
+class LancamentoResource extends RestResourceAbstract implements GuardedResourceInterface
 {
+    /**
+     * Declarado somente pela Annotation
+     * @var LancamentoService
+     */
+    protected $service;
+
     public static function getResourceGuard()
     {
         return [
             'create' => RoleProvider::ADMIN_CREATE,
             'fetch' => [RoleProvider::USUARIO_FETCH_SELF, RoleProvider::ADMIN_FETCH],
+            'fetchAll' => [RoleProvider::USUARIO_FETCH_SELF, RoleProvider::ADMIN_FETCH],
             'patch' => RoleProvider::ADMIN_PATCH,
             'delete' => RoleProvider::ADMIN_DELETE,
         ];
@@ -25,9 +35,18 @@ class LancamentoResource extends AbstractResourceListener implements GuardedReso
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function create($data)
+    public function create($rawData)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+        try {
+            $data = $this->getInputFilter()->getValues();
+            $hydrator = $this->getHydrator();
+            $lancamento = $hydrator->hydrate($data, new Lancamento());
+
+            return $this->service->insert($lancamento);
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao registrar lançamento');
+        }
     }
 
     /**
@@ -38,7 +57,16 @@ class LancamentoResource extends AbstractResourceListener implements GuardedReso
      */
     public function delete($id)
     {
-        return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
+        try {
+            $lancamentoRepo = $this->getRepository();
+            $lancamento = $lancamentoRepo->getActiveResult($id);
+            $lancamento->logicalDelete();
+
+            return $this->service->delete($lancamento);
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao remover lançamento');
+        }
     }
 
     /**
@@ -49,7 +77,32 @@ class LancamentoResource extends AbstractResourceListener implements GuardedReso
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        try {
+            $usuarioId = $this->getRouteParam('usuario_id');
+            $lancamento = $this->getRepository()->getLancamentoPorUsuario($id, $usuarioId);
+
+            if (!$lancamento instanceof Lancamento) {
+
+                return new ApiProblem(404, 'Lançamento não encontrado');
+            }
+
+            return $lancamento;
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao recuperar lançamento');
+        }
+    }
+
+    public function fetchAll($params = [])
+    {
+        try {
+            $usuarioId = $this->getRouteParam('usuario_id');
+
+            return $this->getRepository()->getLancamentosPorUsuario($usuarioId);
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao recuperar lançamentos');
+        }
     }
 
     /**
@@ -59,8 +112,23 @@ class LancamentoResource extends AbstractResourceListener implements GuardedReso
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function patch($id, $data)
+    public function patch($id, $rawData)
     {
-        return new ApiProblem(405, 'The PATCH method has not been defined for individual resources');
+        try {
+            $lancamento = $this->getRepository()->getActiveResult($id);
+
+            if (!$lancamento instanceof Lancamento) {
+
+                return new ApiProblem(404, 'Lançamento não encontrado');
+            }
+            $data = $this->getInputFilter()->getValues();
+            $hydrator = $this->getHydrator();
+            $lancamento = $hydrator->hydrate($data, $lancamento);
+
+            return $this->service->patch($lancamento);
+        } catch (Exception $exception) {
+
+            return new ApiProblem(500, 'Ocorreu um erro ao atualizar lançamento');
+        }
     }
 }

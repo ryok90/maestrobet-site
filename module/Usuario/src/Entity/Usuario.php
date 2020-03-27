@@ -4,13 +4,12 @@ namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\EntityAbstract;
-use Usuario\Rbac\RoleProvider;
 use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Usuario\Repository\Usuario")
  * @ORM\Table(name="usuario")
  * @ORM\HasLifecycleCallbacks
  */
@@ -49,10 +48,19 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $senha;
 
     /**
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Lancamento", mappedBy="usuario", fetch="EXTRA_LAZY", cascade="persist")
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Lancamento", fetch="EXTRA_LAZY", mappedBy="usuario", cascade={"persist"})
      * @var ArrayCollection
      */
     protected $lancamentos;
+
+    /**
+     * Extrato com total até o mês anterior ao mês atual
+     * Incluído mais um extrato toda primeira vez do mês em que é requisitado o saldo
+     * 
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", mappedBy="usuario", cascade={"persist"})
+     * @var Extrato
+     */
+    protected $extratos;
 
     /**
      * @ORM\Column(name="roles", type="array", nullable=false)
@@ -61,21 +69,19 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $roles;
 
     /**
+     * Propriedade não salva no banco
+     * Existe para ser repassada pela Api como total do saldo
+     * @var float
+     */
+    protected $saldo;
+
+    /**
      * Propriedades necessárias para autenticação via Doctrine OAuth2
      */
     protected $client;
     protected $accessToken;
     protected $authorizationCode;
     protected $refreshToken;
-
-    public function __construct($data)
-    {
-        $this->setNome($data->nome ?? null);
-        $this->setEmail($data->email ?? null);
-        $this->setSenha($data->senha ?? null);
-        $this->setApelido($data->apelido ?? null);
-        $this->setRoles($data->roles ?? null);
-    }
 
     /**
      * Métodos utilizados pelo doctrine oauth2
@@ -285,5 +291,21 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         empty($data->email) ?: $this->setNome($data->email);
         empty($data->apelido) ?: $this->setNome($data->apelido);
         empty($data->roles) ?: $this->setRoles($data->roles);
+    }
+
+    /**
+     * @return Extrato
+     */
+    public function getExtratos()
+    {
+        return $this->extratos;
+    }
+
+    /**
+     * @param Extrato $extratos Valor atualizado toda primeira vez do mês em que é requisitado o saldo
+     */
+    public function setExtratos($extratos)
+    {
+        $this->extratos = $extratos;
     }
 }
