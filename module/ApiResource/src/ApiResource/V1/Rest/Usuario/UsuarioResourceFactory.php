@@ -9,7 +9,7 @@ use Zend\Hydrator\HydratorPluginManager;
 
 class UsuarioResourceFactory
 {
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container)
     {
         $service = $container->get(UsuarioService::class);
         $entityManager = $container->get(EntityManager::class);

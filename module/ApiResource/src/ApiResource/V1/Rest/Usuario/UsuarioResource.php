@@ -121,8 +121,13 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
     {
         try {
             $usuarioRepo = $this->service->getRepository(Usuario::class);
+            $usuarios = $usuarioRepo->getActiveResults();
 
-            return $usuarioRepo->getActiveResults();
+            foreach ($usuarios as $usuario) {
+                $usuario->setExtrato($usuario->getExtrato()->saldoTotalAtual());
+            }
+            
+            return $usuarios;
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao recuperar usuários');

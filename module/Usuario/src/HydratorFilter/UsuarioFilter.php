@@ -20,6 +20,9 @@ class UsuarioFilter implements FilterInterface
             'nome',
             'email',
             'roles',
+            'status',
+            'extrato',
+            'usuarioCriador',
         ];
 
         return in_array($field, $allowedFields);

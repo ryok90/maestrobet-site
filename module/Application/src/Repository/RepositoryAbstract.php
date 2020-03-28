@@ -10,13 +10,6 @@ use Doctrine\ORM\QueryBuilder;
 abstract class RepositoryAbstract extends EntityRepository
 {
     /**
-     * Flag que determina se o método retornará
-     * o resultado da query ou a própria query
-     * @var bool
-     */
-    private $returnQuery = false;
-
-    /**
      * @var int|null
      */
     private $maxResults = 25;
@@ -26,14 +19,17 @@ abstract class RepositoryAbstract extends EntityRepository
      */
     private $offset = 0;
 
-    /**
-     * @return ArrayCollection|QueryBuilder
-     */
-    public function getActiveResults()
+    protected function getActiveBaseQuery()
     {
         $query = $this->createQueryBuilder('this');
-        $expr = $query->expr();
-        $query->where($expr->eq('this.status', 1));
+        $query->where($query->expr()->eq('this.status', 1));
+
+        return $query;
+    }
+
+    protected function getActiveResultsQuery()
+    {
+        $query = $this->getActiveBaseQuery();
 
         if ($this->maxResults > 0) {
             $query->setMaxResults($this->maxResults);
@@ -43,9 +39,23 @@ abstract class RepositoryAbstract extends EntityRepository
             $query->setFirstResult($this->offset);
         }
 
-        if ($this->returnQuery) {
-            return $query;
-        }
+        return $query;
+    }
+
+    protected function getActiveResultQuery($id)
+    {
+        $query = $this->getActiveBaseQuery();
+        $query->andWhere($query->expr()->eq('this.id', $id));
+
+        return $query;
+    }
+
+    /**
+     * @return ArrayCollection|QueryBuilder
+     */
+    public function getActiveResults()
+    {
+        $query = $this->getActiveResultsQuery();
 
         return $query->getQuery()->getResult();
     }
@@ -56,36 +66,9 @@ abstract class RepositoryAbstract extends EntityRepository
      */
     public function getActiveResult($id)
     {
-        $query = $this->createQueryBuilder('this');
-        $expr = $query->expr();
-        $query->where($expr->eq('this.status', 1));
-        $query->andWhere($expr->eq('this.id', $id));
+        $query = $this->getActiveResultQuery($id);
 
-        if ($this->returnQuery) {
-
-            return $query;
-        }
-        
         return $query->getQuery()->getOneOrNullResult();
-    }
-
-    /**
-     * @return bool
-     */
-    public function getReturnQuery()
-    {
-        return $this->returnQuery;
-    }
-
-    /**
-     * @param bool $returnQuery
-     * @return self
-     */
-    public function setReturnQuery($returnQuery)
-    {
-        $this->returnQuery = $returnQuery;
-
-        return $this;
     }
 
     /**
@@ -97,11 +80,14 @@ abstract class RepositoryAbstract extends EntityRepository
     }
 
     /**
-     * @param int|null $maxResults 
+     * @param int|null $maxResults
+     * @return self
      */
     public function setMaxResults($maxResults)
     {
         $this->maxResults = $maxResults;
+
+        return $this;
     }
 
     /**
@@ -113,10 +99,13 @@ abstract class RepositoryAbstract extends EntityRepository
     }
 
     /**
-     * @param int|null $offset 
+     * @param int|null $offset
+     * @return self
      */
     public function setOffset($offset)
     {
         $this->offset = $offset;
+
+        return $this;
     }
 }

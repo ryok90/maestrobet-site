@@ -63,7 +63,7 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     /**
      * Último extrato cadastrado.
      * 
-     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Extrato", fetch="EAGER", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=true)
      * @var Extrato
      */

@@ -1,8 +1,8 @@
 <?php
+
 namespace ApiResource\V1\Rest\Lancamento;
 
 use Doctrine\ORM\EntityManager;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Financeiro\Service\LancamentoService;
 use Interop\Container\ContainerInterface;
 use Usuario\Rbac\IdentityProvider;
@@ -10,7 +10,7 @@ use Zend\Hydrator\HydratorPluginManager;
 
 class LancamentoResourceFactory
 {
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container)
     {
         $entityManager = $container->get(EntityManager::class);
         $service = $container->get(LancamentoService::class);

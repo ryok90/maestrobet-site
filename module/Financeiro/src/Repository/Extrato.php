@@ -4,19 +4,32 @@ namespace Financeiro\Repository;
 
 use Application\Repository\RepositoryAbstract;
 use Financeiro\Entity\Extrato as ExtratoEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Extrato extends RepositoryAbstract
 {
     /**
      * @param int $idUsuario
-     * @return ExtratoEntity
+     * @return ArrayCollection
      */
-    public function getUltimoExtrato($idUsuario)
+    public function getExtratosPorUsuario($idUsuario)
     {
-        $query = $this->setReturnQuery(true)->getActiveResults();
+        $query = $this->getActiveResultsQuery();
         $query->andWhere($query->expr()->eq('this.usuario', $idUsuario));
-        $query->setMaxResults(1);
-        
+
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $idExtrato
+     * @param int $idUsuario
+     * @return ExtratoEntity|null
+     */
+    public function getExtratoPorUsuario($idExtrato, $idUsuario)
+    {
+        $query = $this->getActiveResultQuery($idExtrato);
+        $query->andWhere($query->expr()->eq('this.usuario', $idUsuario));
+
         return $query->getQuery()->getOneOrNullResult();
     }
 }

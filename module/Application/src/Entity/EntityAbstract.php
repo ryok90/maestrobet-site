@@ -21,8 +21,8 @@ abstract class EntityAbstract
     /**
      * Usuario criador/autor do registro
      * 
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario")
-     * @ORM\JoinColumn(name="idUsuarioCriador", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="idUsuarioCriador", referencedColumnName="id", nullable=true)
      * @var Usuario
      */
     protected $usuarioCriador;

@@ -153,7 +153,9 @@ class Extrato extends EntityAbstract
         $total = 0;
 
         foreach ($this->getLancamentos() as $lancamento) {
-            $total += $lancamento->getValor();
+            if ($lancamento->getStatus() == 1) {
+                $total += $lancamento->getValor();
+            }
         }
 
         return $total;

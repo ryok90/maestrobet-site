@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\ORM\EntityManager;
 use Usuario\Service\UsuarioService;
 use PHPUnit\Framework\TestCase;
 use Usuario\Bootstrap;
@@ -18,7 +19,7 @@ class UsuarioServiceTest extends TestCase
     protected function getORM()
     {
         $sm = Bootstrap::getServiceManager();
-        $orm = $sm->get('doctrine.entitymanager.orm_default');
+        $orm = $sm->get(EntityManager::class);
 
         return $orm;
     }
