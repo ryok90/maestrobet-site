@@ -51,6 +51,7 @@ class LancamentoService extends ServiceAbstract
             
             return new ApiProblem(400, 'Lançamento não encontrado');
         }
+        $lancamento->logicalDelete();
         $this->entityManager->persist($lancamento);
         $this->entityManager->flush();
 

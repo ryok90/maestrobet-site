@@ -9,7 +9,6 @@ use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Exception;
 use Financeiro\Entity\Extrato;
 
 /**
@@ -329,5 +328,28 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         $this->setExtrato($novoExtrato);
 
         return $this->getExtrato();
+    }
+
+    public function toArrayMin()
+    {
+        return [
+            'id' => $this->getId(),
+            'nome' => $this->getNome(),
+            'apelido' => $this->getApelido(),
+            'saldo' => $this->saldoTotalAtual()
+        ];
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'nome' => $this->getNome(),
+            'apelido' => $this->getApelido(),
+            'email' => $this->getEmail(),
+            'roles' => $this->getRoles(),
+            'extrato' => $this->getExtrato() ? $this->getExtrato()->toArrayMin() : null,
+            'saldo' => $this->saldoTotalAtual()
+        ];
     }
 }

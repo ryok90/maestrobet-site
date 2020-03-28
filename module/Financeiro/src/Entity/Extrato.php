@@ -169,4 +169,29 @@ class Extrato extends EntityAbstract
     {
         return $this->getSaldo() + $this->totalLancamentos();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'dataExtrato' => $this->getDataExtrato(),
+            'lancamentos' => $this->collectionToArray($this->getLancamentos()),
+            'saldo' => $this->getSaldo(),
+            'usuario' => $this->getUsuario() ? $this->getUsuario()->toArrayMin() : null
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArrayMin()
+    {
+        return [
+            'id' => $this->getId(),
+            'dataExtrato' => $this->getDataExtrato(),
+        ];
+    }
 }

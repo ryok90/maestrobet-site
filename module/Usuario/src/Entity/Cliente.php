@@ -9,7 +9,7 @@ use Application\Entity\EntityAbstract;
  * @ORM\Entity
  * @ORM\Table(name="cliente")
  */
-class Cliente extends EntityAbstract
+class Cliente
 {
     /**
      * @ORM\Id

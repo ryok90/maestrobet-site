@@ -36,7 +36,7 @@ class ExtratoResource extends RestResourceAbstract implements GuardedResourceInt
                 return new ApiProblem(404, 'Extrato não encontrado');
             }
 
-            return $extrato;
+            return $extrato->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao recuperar extrato');
@@ -53,8 +53,9 @@ class ExtratoResource extends RestResourceAbstract implements GuardedResourceInt
     {
         try {
             $idUsuario = $this->getRouteParam('usuario_id');
+            $extratos = $this->getRepository()->getExtratosPorUsuario($idUsuario);
 
-            return $this->getRepository()->getExtratosPorUsuario($idUsuario);
+            return $this->collectionToArray($extratos);
         } catch (Exception $exception) {
             
             return new ApiProblem(500, 'Ocorreu um erro ao recuperar extratos');

@@ -51,7 +51,6 @@ class UsuarioService extends ServiceAbstract
             return new ApiProblem(400, 'Usuário ainda não registrado');
         }
         $usuario->logicalDelete();
-
         $this->entityManager->persist($usuario);
         $this->entityManager->flush();
 
