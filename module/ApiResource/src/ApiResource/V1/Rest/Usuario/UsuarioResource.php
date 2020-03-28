@@ -8,7 +8,6 @@ use Usuario\Entity\Usuario;
 use Usuario\Rbac\GuardedResourceInterface;
 use Usuario\Rbac\RoleProvider;
 use Usuario\Service\UsuarioService;
-use Zend\View\Model\JsonModel;
 use ZF\ApiProblem\ApiProblem;
 
 class UsuarioResource extends RestResourceAbstract implements GuardedResourceInterface
@@ -35,10 +34,11 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function create($data)
+    public function create($rawData)
     {
         try {
-            $usuario = new Usuario($data);
+            $data = $this->getInputFilter()->getValues();
+            $usuario = $this->getHydrator()->hydrate($data, new Usuario());
             $response = $this->service->insert($usuario);
 
             return $response;
@@ -48,7 +48,7 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
         }
     }
 
-    public function patch($id, $data)
+    public function patch($id, $rawData)
     {
         try {
             $usuarioRepo = $this->getRepository(Usuario::class);
@@ -58,7 +58,8 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
 
                 return new ApiProblem(404, 'Usuário não encontrado');
             }
-            $usuario->patch($data);
+            $data = $this->getInputFilter()->getValues();
+            $usuario = $this->getHydrator()->hydrate($data, $usuario);
 
             return $this->service->update($usuario);
         } catch (Exception $exception) {
@@ -102,7 +103,7 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
 
                 return new ApiProblem(404, 'Usuário não encontrado');
             }
-            
+
             return $usuario;
         } catch (Exception $exception) {
 

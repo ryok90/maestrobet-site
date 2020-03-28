@@ -4,13 +4,13 @@ namespace Financeiro\Entity;
 
 use Application\Entity\EntityAbstract;
 use DateTime;
-use Zend\Db\Sql\Ddl\Column\Date;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Extrato refere-se ao total do mês anterior ao mês corrente
+ * Extrato refere-se ao saldo do mês anterior ao mês corrente.
  * Usado para não ser recalculado todas as transações de um usuário
  * 
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Financeiro\Repository\Extrato")
  * @ORM\Table(name="extrato")
  * @ORM\HasLifecycleCallbacks
  */
@@ -25,23 +25,39 @@ class Extrato extends EntityAbstract
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", mappedBy="extratos", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", inversedBy="extratos", cascade={"persist"})
      * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
      * @var \Usuario\Entity\Usuario
      */
     protected $usuario;
 
     /**
-     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Column(type="date", nullable=false)
      * @var DateTime
      */
     protected $dataExtrato;
 
     /**
+     * Saldo até o mês atual.
+     * Salto total é calculo utilizando este valor mais os lançamentos do mês corrente
+     * 
      * @ORM\Column(type="decimal", precision=11, scale=2, nullable=false)
      * @var float
      */
-    protected $total;
+    protected $saldo;
+
+    /**
+     * Lançamentos referentes ao mês corrente.
+     * 
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Lancamento", fetch="EXTRA_LAZY", mappedBy="extrato", cascade={"persist"})
+     * @var ArrayCollection
+     */
+    protected $lancamentos;
+
+    public function __construct()
+    {
+        $this->setDataExtrato(new DateTime('midnight first day of'));
+    }
 
     /**
      * @return int
@@ -99,16 +115,56 @@ class Extrato extends EntityAbstract
     /**
      * @return float
      */
-    public function getTotal()
+    public function getSaldo()
     {
-        return (float) $this->total;
+        return (float) $this->saldo;
     }
 
     /**
-     * @param float $total 
+     * @param float $saldo 
      */
-    public function setTotal($total)
+    public function setSaldo($saldo)
     {
-        $this->total = $total;
+        $this->saldo = $saldo;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getLancamentos()
+    {
+        return $this->lancamentos;
+    }
+
+    /**
+     * @param ArrayCollection $lancamentos Lançamentos referentes ao mês corrente.
+     */
+    public function setLancamentos($lancamentos)
+    {
+        $this->lancamentos = $lancamentos;
+    }
+
+    /**
+     * Calcula o total dos lançamentos vinculados ao extrato.
+     * @return float
+     */
+    public function totalLancamentos()
+    {
+        $total = 0;
+
+        foreach ($this->getLancamentos() as $lancamento) {
+            $total += $lancamento->getValor();
+        }
+
+        return $total;
+    }
+
+    /**
+     * Calcula o saldo total atual com os lançamentos do mês corrente.
+     * @return void
+     */
+    public function saldoTotalAtual()
+    {
+        return $this->getSaldo() + $this->totalLancamentos();
     }
 }

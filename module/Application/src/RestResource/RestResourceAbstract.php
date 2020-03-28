@@ -7,6 +7,7 @@ use Application\Service\ServiceAbstract;
 use Doctrine\ORM\EntityManager;
 use Application\Repository\RepositoryAbstract;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use Usuario\Entity\Usuario;
 
 abstract class RestResourceAbstract extends AbstractResourceListener
 {
@@ -25,10 +26,17 @@ abstract class RestResourceAbstract extends AbstractResourceListener
      */
     private $hydratorManager;
 
-    public function __construct($service, $entityManager, $hydratorManager = null)
+    /**
+     * Usuario autenticado
+     * @var Usuario
+     */
+    protected $identity;
+
+    public function __construct($service, $entityManager, $identity, $hydratorManager = null)
     {
         $this->service = $service;
         $this->entityManager = $entityManager;
+        $this->identity = $identity;
         $this->hydratorManager = $hydratorManager;
     }
 
@@ -72,5 +80,21 @@ abstract class RestResourceAbstract extends AbstractResourceListener
     public function getRouteParam($param)
     {
         return $this->getEvent()->getRouteMatch()->getParam($param);
+    }
+
+    /**
+     * @return Usuario
+     */
+    public function getIdentity()
+    {
+        return $this->identity;
+    }
+
+    /**
+     * @param Usuario $identity Usuario autenticado
+     */
+    public function setIdentity($identity)
+    {
+        $this->identity = $identity;
     }
 }

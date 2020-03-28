@@ -36,6 +36,8 @@ class IdentityProvider implements IdentityProviderInterface
     /**
      * Faz a conversão de AuthenticatedIdentity para Usuario logado ou 
      * GuestIdentity para um new Usuario
+     * 
+     * @todo rever se é necessário retornar new Usuario para id não encontrados
      * @return Usuario
      */
     public function getIdentity()

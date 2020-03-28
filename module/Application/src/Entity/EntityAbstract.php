@@ -4,17 +4,28 @@ namespace Application\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Usuario\Entity\Usuario;
 
 /**
- * Abstração de Entity básica
+ * Abstração de Entity básica.
  * Toda Entity que estender esta abstração necessita ter
- * HasLifecycleCallbacks para que a dataCriacao e dataAlteracao sejam atualizadas
+ * HasLifecycleCallbacks para que a dataCriacao e dataAlteracao
+ * sem atualizadas automaticamente.
  */
 abstract class EntityAbstract
 {
     const STATUS_DELETED = -1;
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
+
+    /**
+     * Usuario criador/autor do registro
+     * 
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario")
+     * @ORM\JoinColumn(name="idUsuarioCriador", referencedColumnName="id", nullable=false)
+     * @var Usuario
+     */
+    protected $usuarioCriador;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
@@ -34,6 +45,21 @@ abstract class EntityAbstract
      */
     protected $status = self::STATUS_ACTIVE;
 
+    /**
+     * @return Usuario
+     */
+    public function getUsuarioCriador()
+    {
+        return $this->usuarioCriador;
+    }
+
+    /**
+     * @param Usuario $usuarioCriador
+     */
+    public function setUsuarioCriador($usuarioCriador)
+    {
+        $this->usuarioCriador = $usuarioCriador;
+    }
     /**
      * @return DateTime
      */
@@ -56,7 +82,7 @@ abstract class EntityAbstract
     public function getDataAlteracao($format = 'Y-m-d H:i')
     {
         if ($this->dataAlteracao instanceof DateTime) {
-            
+
             return $this->dataAlteracao->format($format = 'Y-m-d H:i');
         }
 

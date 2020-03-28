@@ -2,12 +2,9 @@
 
 namespace Application\Service;
 
-use Exception;
-use RuntimeException;
 use Usuario\Entity\Usuario;
-use Zend\Permissions\Rbac\AssertionInterface;
 use Application\Repository\RepositoryAbstract;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
 
 class ServiceAbstract
 {
@@ -21,47 +18,36 @@ class ServiceAbstract
     const PERMISSION_DENIED_CODE = 5;
 
     /**
-     * Usuario Autenticado
-     * @var Usuario
-     */
-    protected $authenticatedIdentity;
-
-    /**
      * @var EntityManagerInterface
      */
     protected $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var Usuario
+     */
+    protected $identity;
+
+    /**
+     * @param \Doctrine\ORM\EntityManager $entityManager
+     * @param \Usuario\Entity\Usuario $identity
+     */
+    public function __construct(EntityManager $entityManager, Usuario $identity)
     {
         $this->entityManager = $entityManager;
+        $this->identity = $identity;
     }
 
     /**
-     * Define usuario autenticado
-     *
-     * @param Usuario $usuario
-     * @return void
-     */
-    public function setAuthenticatedIdentity(Usuario $usuario)
-    {
-        $this->authenticatedIdentity = $usuario;
-    }
-
-    /**
-     * Retorna usuario autenticado
-     *
      * @return Usuario
-     * @throws RuntimeException
      */
-    public function getAuthenticatedIdentity()
+    public function getUsuarioAutenticado()
     {
-        if (!$this->authenticatedIdentity instanceof Usuario) {
-            throw new RuntimeException(self::MUST_BE_LOGGED_IN_MESSAGE, self::MUST_BE_LOGGED_IN_CODE);
-        }
-
-        return $this->authenticatedIdentity;
+        return $this->identity;
     }
 
+    /**
+     * @return EntityManager
+     */
     public function getEntityManager()
     {
         return $this->entityManager;

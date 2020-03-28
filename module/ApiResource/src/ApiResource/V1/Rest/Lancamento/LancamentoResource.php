@@ -3,12 +3,15 @@
 namespace ApiResource\V1\Rest\Lancamento;
 
 use Application\RestResource\RestResourceAbstract;
+use DateTime;
 use Exception;
+use Financeiro\Entity\Extrato;
 use Financeiro\Entity\Lancamento;
 use Usuario\Rbac\GuardedResourceInterface;
 use Usuario\Rbac\RoleProvider;
 use ZF\ApiProblem\ApiProblem;
 use Financeiro\Service\LancamentoService;
+use Usuario\Entity\Usuario;
 
 class LancamentoResource extends RestResourceAbstract implements GuardedResourceInterface
 {
@@ -23,7 +26,6 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
         return [
             'create' => RoleProvider::ADMIN_CREATE,
             'fetch' => [RoleProvider::USUARIO_FETCH_SELF, RoleProvider::ADMIN_FETCH],
-            'fetchAll' => [RoleProvider::USUARIO_FETCH_SELF, RoleProvider::ADMIN_FETCH],
             'patch' => RoleProvider::ADMIN_PATCH,
             'delete' => RoleProvider::ADMIN_DELETE,
         ];
@@ -41,6 +43,19 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
             $data = $this->getInputFilter()->getValues();
             $hydrator = $this->getHydrator();
             $lancamento = $hydrator->hydrate($data, new Lancamento());
+            $idUsuario = $this->getRouteParam('usuario_id');
+
+            /** @var Usuario $usuario */
+            $usuario = $this->getRepository(Usuario::class)->getActiveResult($idUsuario);
+            $extrato = $usuario->getExtrato();
+            $dataExtratoAtual = new DateTime('first day of');
+
+            /** Extrato desatualizado */
+            if ($extrato->getDataExtrato() != $dataExtratoAtual->format('Y-m-d')) {
+                $extrato = $usuario->gerarNovoExtrato($this->getIdentity());
+            }
+            $lancamento->setExtrato($extrato);
+            $lancamento->setUsuario($usuario);
 
             return $this->service->insert($lancamento);
         } catch (Exception $exception) {
@@ -55,11 +70,17 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function delete($id)
+    public function delete($idLancamento)
     {
         try {
             $lancamentoRepo = $this->getRepository();
-            $lancamento = $lancamentoRepo->getActiveResult($id);
+            $idUsuario = $this->getRouteParam('usuario_id');
+            $lancamento = $lancamentoRepo->getLancamentoPorUsuario($idLancamento, $idUsuario);
+
+            if (!$lancamento instanceof Lancamento) {
+
+                return new ApiProblem(404, 'Lançamento não encontrado');
+            }
             $lancamento->logicalDelete();
 
             return $this->service->delete($lancamento);
@@ -75,11 +96,11 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function fetch($id)
+    public function fetch($idLancamento)
     {
         try {
-            $usuarioId = $this->getRouteParam('usuario_id');
-            $lancamento = $this->getRepository()->getLancamentoPorUsuario($id, $usuarioId);
+            $idUsuario = $this->getRouteParam('usuario_id');
+            $lancamento = $this->getRepository()->getLancamentoPorUsuario($idLancamento, $idUsuario);
 
             if (!$lancamento instanceof Lancamento) {
 
@@ -90,18 +111,6 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao recuperar lançamento');
-        }
-    }
-
-    public function fetchAll($params = [])
-    {
-        try {
-            $usuarioId = $this->getRouteParam('usuario_id');
-
-            return $this->getRepository()->getLancamentosPorUsuario($usuarioId);
-        } catch (Exception $exception) {
-
-            return new ApiProblem(500, 'Ocorreu um erro ao recuperar lançamentos');
         }
     }
 

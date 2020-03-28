@@ -22,6 +22,13 @@ class Fechamento extends EntityAbstract
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario")
+     * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
+     * @var Usuario
+     */
+    protected $usuario;
+
+    /**
      * Número da semana a qual o Fechamento pertence
      * Ex: semana 2 de 2020 refere-se a semana do dia 06 de janeiro (segunda-feira)
      * até o dia 12 de janeiro (domingo)

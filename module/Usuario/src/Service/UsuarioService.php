@@ -3,28 +3,32 @@
 namespace Usuario\Service;
 
 use Application\Service\ServiceAbstract;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use RuntimeException;
 use Usuario\Entity\Usuario;
 use ZF\ApiProblem\ApiProblem;
-use Zend\Mvc\Controller\AbstractActionController;
+
 
 class UsuarioService extends ServiceAbstract
 {
+    /**
+     * @param Usuario $usuario
+     * @return Usuario|ApiProblem
+     */
     public function insert(Usuario $usuario)
     {
         if ($usuario->getId()) {
             return new ApiProblem(400, 'Usuário já registrado.');
         }
-
+        $usuario->setUsuarioCriador($this->getUsuarioAutenticado());
         $this->entityManager->persist($usuario);
         $this->entityManager->flush();
 
         return $usuario;
     }
 
+    /**
+     * @param Usuario $usuario
+     * @return Usuario|ApiProblem
+     */
     public function update(Usuario $usuario)
     {
         if (!$usuario->getId()) {
@@ -37,6 +41,10 @@ class UsuarioService extends ServiceAbstract
         return $usuario;
     }
 
+    /**
+     * @param Usuario $usuario
+     * @return bool|ApiProblem
+     */
     public function delete(Usuario $usuario)
     {
         if (!$usuario->getId()) {

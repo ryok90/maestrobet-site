@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Financeiro\Service\LancamentoService;
 use Interop\Container\ContainerInterface;
+use Usuario\Rbac\IdentityProvider;
 use Zend\Hydrator\HydratorPluginManager;
 
 class LancamentoResourceFactory
@@ -14,7 +15,8 @@ class LancamentoResourceFactory
         $entityManager = $container->get(EntityManager::class);
         $service = $container->get(LancamentoService::class);
         $hydratorManager = $container->get(HydratorPluginManager::class);
+        $identity = $container->get(IdentityProvider::class)->getIdentity();
 
-        return new LancamentoResource($service, $entityManager, $hydratorManager);
+        return new LancamentoResource($service, $entityManager, $identity, $hydratorManager);
     }
 }

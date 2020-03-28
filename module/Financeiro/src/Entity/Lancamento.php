@@ -24,11 +24,11 @@ class Lancamento extends EntityAbstract
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", inversedBy="lancamentos")
-     * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
-     * @var \Usuario\Entity\Usuario
+     * @ORM\ManyToOne(targetEntity="Financeiro\Entity\Extrato", inversedBy="lancamentos", cascade={"persist"})
+     * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=false)
+     * @var \Financeiro\Entity\Extrato
      */
-    protected $usuario;
+    protected $extrato;
 
     /**
      * @ORM\Column(name="valor", type="decimal", precision=11, scale=2, nullable=false)
@@ -43,17 +43,24 @@ class Lancamento extends EntityAbstract
     protected $descricao;
 
     /**
-     * @ORM\Column(name="dataLancamento", type="datetime", nullable=false)
+     * @ORM\Column(name="dataLancamento", type="date", nullable=false)
      * @var DateTime
      */
     protected $dataLancamento;
 
     /**
-     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Fechamento", inversedBy="lancamento")
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Fechamento", inversedBy="lancamento", cascade={"persist"})
      * @ORM\JoinColumn(name="idFechamento", referencedColumnName="id", nullable=true)
      * @var Fechamento
      */
     protected $fechamento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario")
+     * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
+     * @var Usuario
+     */
+    protected $usuario;
 
     /**
      * @return int
@@ -69,21 +76,6 @@ class Lancamento extends EntityAbstract
     public function setId($id)
     {
         $this->id = $id;
-    }
-    /**
-     * @return Usuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * @param Usuario $usuario 
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
     }
 
     /**
@@ -137,5 +129,37 @@ class Lancamento extends EntityAbstract
     public function setDataLancamento($dataLancamento)
     {
         $this->dataLancamento = $dataLancamento;
+    }
+
+    /**
+     * @return \Financeiro\Entity\Extrato
+     */
+    public function getExtrato()
+    {
+        return $this->extrato;
+    }
+
+    /**
+     * @param \Financeiro\Entity\Extrato $extrato 
+     */
+    public function setExtrato($extrato)
+    {
+        $this->extrato = $extrato;
+    }
+
+    /**
+     * @return Usuario
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param Usuario $usuario 
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
     }
 }

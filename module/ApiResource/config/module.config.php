@@ -1,7 +1,4 @@
 <?php
-
-use Usuario\HydratorFilter\UsuarioFilter;
-
 return array(
     'doctrine-hydrator' => array(
         'LancamentoHydrator' => array(
@@ -15,7 +12,7 @@ return array(
             'by_value' => true,
             'filters' => array(
                 'usuario_filter' => array(
-                    'condition' => 'or',
+                    'condition' => 'and',
                     'filter' => 'UsuarioFilter',
                 ),
             ),
@@ -28,9 +25,9 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'invokables' => [
-            'UsuarioFilter' => UsuarioFilter::class,
-        ],
+        'invokables' => array(
+            'UsuarioFilter' => 'Usuario\\HydratorFilter\\UsuarioFilter',
+        ),
         'factories' => array(
             'ApiResource\\V1\\Rest\\Usuario\\UsuarioResource' => 'ApiResource\\V1\\Rest\\Usuario\\UsuarioResourceFactory',
             'ApiResource\\V1\\Rest\\Lancamento\\LancamentoResource' => 'ApiResource\\V1\\Rest\\Lancamento\\LancamentoResourceFactory',
@@ -72,13 +69,12 @@ return array(
             'collection_name' => 'usuario',
             'entity_http_methods' => array(
                 0 => 'GET',
-                1 => 'PUT',
-                2 => 'PATCH',
-                3 => 'DELETE',
+                1 => 'PATCH',
+                2 => 'DELETE',
             ),
             'collection_http_methods' => array(
-                0 => 'GET',
-                1 => 'POST',
+                0 => 'POST',
+                1 => 'GET',
             ),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
@@ -95,12 +91,9 @@ return array(
             'entity_http_methods' => array(
                 0 => 'GET',
                 1 => 'PATCH',
-                2 => 'PUT',
-                3 => 'DELETE',
             ),
             'collection_http_methods' => array(
-                0 => 'GET',
-                1 => 'POST',
+                0 => 'POST',
             ),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
@@ -155,6 +148,7 @@ return array(
                 'route_name' => 'api-resource.rest.usuario',
                 'route_identifier_name' => 'usuario_id',
                 'hydrator' => 'UsuarioHydrator',
+                'max_depth' => 1,
             ),
             'ApiResource\\V1\\Rest\\Lancamento\\LancamentoCollection' => array(
                 'entity_identifier_name' => 'id',
@@ -301,24 +295,6 @@ return array(
                 'field_type' => 'integer',
             ),
             1 => array(
-                'required' => true,
-                'validators' => array(
-                    0 => array(
-                        'name' => 'Zend\\I18n\\Validator\\IsInt',
-                        'options' => array(),
-                    ),
-                ),
-                'filters' => array(
-                    0 => array(
-                        'name' => 'Zend\\Filter\\ToInt',
-                        'options' => array(),
-                    ),
-                ),
-                'name' => 'usuario',
-                'description' => 'Usuario vinculado',
-                'field_type' => 'Usuario\\Entity\\Usuario',
-            ),
-            2 => array(
                 'required' => false,
                 'validators' => array(
                     0 => array(
@@ -338,7 +314,7 @@ return array(
                 'description' => 'Descricao do lançamento',
                 'field_type' => 'string',
             ),
-            3 => array(
+            2 => array(
                 'required' => true,
                 'validators' => array(
                     0 => array(

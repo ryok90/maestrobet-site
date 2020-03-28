@@ -10,7 +10,7 @@ class LancamentoService extends ServiceAbstract
 {
     /**
      * @param Lancamento $lancamento
-     * @return Lancamento
+     * @return Lancamento|ApiProblem
      */
     public function insert($lancamento)
     {
@@ -18,6 +18,7 @@ class LancamentoService extends ServiceAbstract
 
             return new ApiProblem(400, 'Lançamento já registrado');
         }
+        $lancamento->setUsuarioCriador($this->getUsuarioAutenticado());
         $this->entityManager->persist($lancamento);
         $this->entityManager->flush();
 
@@ -26,7 +27,7 @@ class LancamentoService extends ServiceAbstract
 
     /**
      * @param Lancamento $lancamento
-     * @return Lancamento
+     * @return Lancamento|ApiProblem
      */
     public function patch($lancamento)
     {
@@ -40,6 +41,10 @@ class LancamentoService extends ServiceAbstract
         return $lancamento;
     }
 
+    /**
+     * @param Lancamento $lancamento
+     * @return bool|ApiProblem
+     */
     public function delete($lancamento)
     {
         if (!$lancamento->getId()) {

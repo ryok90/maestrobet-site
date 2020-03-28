@@ -4,9 +4,13 @@ namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\EntityAbstract;
+use DateTime;
 use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Exception;
+use Financeiro\Entity\Extrato;
 
 /**
  * @ORM\Entity(repositoryClass="Usuario\Repository\Usuario")
@@ -48,32 +52,28 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $senha;
 
     /**
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Lancamento", fetch="EXTRA_LAZY", mappedBy="usuario", cascade={"persist"})
-     * @var ArrayCollection
-     */
-    protected $lancamentos;
-
-    /**
-     * Extrato com total até o mês anterior ao mês atual
-     * Incluído mais um extrato toda primeira vez do mês em que é requisitado o saldo
+     * Todos os extratos mensais.
+     * Extratos possuem saldo que refere à soma dos lançamentos até seu mês corrente.
      * 
      * @ORM\OneToMany(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", mappedBy="usuario", cascade={"persist"})
-     * @var Extrato
+     * @var ArrayCollection
      */
     protected $extratos;
 
     /**
-     * @ORM\Column(name="roles", type="array", nullable=false)
+     * Último extrato cadastrado.
+     * 
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Extrato", fetch="EAGER", cascade={"persist"})
+     * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=true)
+     * @var Extrato
+     */
+    protected $extrato;
+
+    /**
+     * @ORM\Column(name="roles", type="simple_array", nullable=false)
      * @var array
      */
     protected $roles;
-
-    /**
-     * Propriedade não salva no banco
-     * Existe para ser repassada pela Api como total do saldo
-     * @var float
-     */
-    protected $saldo;
 
     /**
      * Propriedades necessárias para autenticação via Doctrine OAuth2
@@ -82,6 +82,11 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $accessToken;
     protected $authorizationCode;
     protected $refreshToken;
+
+    public function __construct()
+    {
+
+    }
 
     /**
      * Métodos utilizados pelo doctrine oauth2
@@ -267,45 +272,62 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     /**
      * @return ArrayCollection
      */
-    public function getLancamentos()
-    {
-        return $this->lancamentos;
-    }
-
-    /**
-     * @param ArrayCollection $lancamentos 
-     */
-    public function setLancamentos($lancamentos)
-    {
-        $this->lancamentos = $lancamentos;
-    }
-
-    /**
-     * @param stdClass $data
-     * @return void
-     */
-    public function patch($data)
-    {
-        empty($data->senha) ?: $this->setSenha($data->senha);
-        empty($data->nome) ?: $this->setNome($data->nome);
-        empty($data->email) ?: $this->setNome($data->email);
-        empty($data->apelido) ?: $this->setNome($data->apelido);
-        empty($data->roles) ?: $this->setRoles($data->roles);
-    }
-
-    /**
-     * @return Extrato
-     */
     public function getExtratos()
     {
         return $this->extratos;
     }
 
     /**
-     * @param Extrato $extratos Valor atualizado toda primeira vez do mês em que é requisitado o saldo
+     * @param ArrayCollection $extratos
      */
     public function setExtratos($extratos)
     {
         $this->extratos = $extratos;
+    }
+
+    /**
+     * @return Extrato
+     */
+    public function getExtrato()
+    {
+        return $this->extrato;
+    }
+
+    /**
+     * @param Extrato $extrato Último extrato cadastrado.
+     */
+    public function setExtrato($extrato)
+    {
+        $this->extrato = $extrato;
+    }
+
+    /**
+     * @return float
+     */
+    public function saldoTotalAtual()
+    {
+        if ($this->getExtrato() instanceof Extrato) {
+
+            return $this->getExtrato()->saldoTotalAtual();
+        }
+        
+        return 0.0;
+    }
+
+    /**
+     * Gera um novo extrato baseado no extrato anterior
+     * @param Usuario $usuarioCriador
+     * @return Extrato
+     */
+    public function gerarNovoExtrato($usuarioCriador)
+    {
+        $novoExtrato = new Extrato();
+        $novoExtrato->setSaldo($this->saldoTotalAtual());
+        $novoExtrato->setUsuario($this);
+        $novoExtrato->setUsuarioCriador($usuarioCriador);
+        $novoExtrato->setDataExtrato(new DateTime('first day of'));
+        $this->setExtrato($novoExtrato);
+
+        return $this->getExtrato();
     }
 }
