@@ -12,6 +12,10 @@ return [
     ],
     'zf-oauth2' => [
         'storage' => 'oauth2.doctrineadapter.default',
+        'access_lifetime' => 86400,
+        'options' => [
+            'always_issue_new_refresh_token' => true,
+        ],
     ],
     'zf-mvc-auth' => [
         'authentication' => [
