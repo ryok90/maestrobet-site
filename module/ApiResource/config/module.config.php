@@ -110,7 +110,7 @@ return array(
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
-            'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
+            'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'Json',
             'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'Json',
             'ApiResource\\V1\\Rest\\Extrato\\Controller' => 'Json',
         ),
