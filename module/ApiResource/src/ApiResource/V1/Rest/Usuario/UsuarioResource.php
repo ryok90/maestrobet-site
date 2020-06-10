@@ -124,9 +124,10 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
             $usuarioRepo = $this->service->getRepository(Usuario::class);
             $usuarios = $usuarioRepo->getActiveResults();
 
-            foreach ($usuarios as $usuario) {
-                $usuario->setExtrato($usuario->getExtrato()->saldoTotalAtual());
-            }
+            /** @var Usuario $usuario */
+            // foreach ($usuarios as $usuario) {
+            //     $usuario->setExtrato($usuario->getExtrato()->saldoTotalAtual());
+            // }
             
             return $this->collectionToArray($usuarios);
         } catch (Exception $exception) {

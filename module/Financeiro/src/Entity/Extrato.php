@@ -4,6 +4,7 @@ namespace Financeiro\Entity;
 
 use Application\Entity\EntityAbstract;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +57,7 @@ class Extrato extends EntityAbstract
 
     public function __construct()
     {
+        $this->lancamentos = new ArrayCollection();
         $this->setDataExtrato(new DateTime('midnight first day of'));
     }
 
