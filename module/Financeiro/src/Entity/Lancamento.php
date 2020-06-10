@@ -7,7 +7,7 @@ use Application\Entity\EntityAbstract;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use Financeiro\Entity\Fechamento;
-
+use Financeiro\Repository\Extrato;
 /**
  * @ORM\Entity(repositoryClass="Financeiro\Repository\Lancamento")
  * @ORM\Table(name="lancamento")
@@ -26,7 +26,7 @@ class Lancamento extends EntityAbstract
     /**
      * @ORM\ManyToOne(targetEntity="Financeiro\Entity\Extrato", inversedBy="lancamentos", cascade={"persist"})
      * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=false)
-     * @var \Financeiro\Entity\Extrato
+     * @var Extrato
      */
     protected $extrato;
 
@@ -119,7 +119,7 @@ class Lancamento extends EntityAbstract
 
             return $this->dataLancamento->format($format);
         }
-        
+
         return $this->dataLancamento;
     }
 
@@ -132,7 +132,7 @@ class Lancamento extends EntityAbstract
     }
 
     /**
-     * @return \Financeiro\Entity\Extrato
+     * @return Extrato
      */
     public function getExtrato()
     {
@@ -140,7 +140,7 @@ class Lancamento extends EntityAbstract
     }
 
     /**
-     * @param \Financeiro\Entity\Extrato $extrato 
+     * @param Extrato $extrato 
      */
     public function setExtrato($extrato)
     {
@@ -161,5 +161,52 @@ class Lancamento extends EntityAbstract
     public function setUsuario($usuario)
     {
         $this->usuario = $usuario;
+    }
+
+    /**
+     * @return Fechamento
+     */
+    public function getFechamento()
+    {
+        return $this->fechamento;
+    }
+
+    /**
+     * @param Fechamento $fechamento 
+     */
+    public function setFechamento($fechamento)
+    {
+        $this->fechamento = $fechamento;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArrayMin()
+    {
+        return [
+            'id' => $this->getId(),
+            'valor' => $this->getValor(),
+            'descricao' => $this->getDescricao(),
+            'dataLancamento' => $this->getDataLancamento(),
+            'dataCriacao' => $this->getDataCriacao(),
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'valor' => $this->getValor(),
+            'descricao' => $this->getDescricao(),
+            'dataLancamento' => $this->getDataLancamento(),
+            'dataCriacao' => $this->getDataCriacao(),
+            'usuario' => $this->getUsuario() ? $this->getUsuario()->toArrayMin() : null,
+            'extrato' => $this->getExtrato() ? $this->getExtrato()->toArrayMin() : null,
+            'fechamento' => $this->getFechamento() ? $this->getFechamento()->toArrayMin() : null,
+        ];
     }
 }

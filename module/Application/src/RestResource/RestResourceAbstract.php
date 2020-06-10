@@ -65,12 +65,14 @@ abstract class RestResourceAbstract extends AbstractResourceListener
             return null;
         }
 
-        if ($alias) {
+        return $this->hydratorManager->get(DoctrineObject::class);
 
-            return $this->hydratorManager->get($alias);
-        }
+        // if ($alias) {
 
-        return $this->hydratorManager->get($this->entityClass);
+        //     return $this->hydratorManager->get($alias);
+        // }
+
+        // return $this->hydratorManager->get($this->entityClass);
     }
 
     /**
@@ -96,5 +98,16 @@ abstract class RestResourceAbstract extends AbstractResourceListener
     public function setIdentity($identity)
     {
         $this->identity = $identity;
+    }
+
+    public function collectionToArray($collection)
+    {
+        $array = [];
+
+        foreach ($collection as $item) {
+            $array[] = $item->toArrayMin();
+        }
+
+        return $array;
     }
 }

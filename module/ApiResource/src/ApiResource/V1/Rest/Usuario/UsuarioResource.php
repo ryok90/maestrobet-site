@@ -39,9 +39,9 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
         try {
             $data = $this->getInputFilter()->getValues();
             $usuario = $this->getHydrator()->hydrate($data, new Usuario());
-            $response = $this->service->insert($usuario);
+            $usuario = $this->service->insert($usuario);
 
-            return $response;
+            return $usuario->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao inserir usuário');
@@ -60,8 +60,9 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
             }
             $data = $this->getInputFilter()->getValues();
             $usuario = $this->getHydrator()->hydrate($data, $usuario);
+            $usuario = $this->service->update($usuario);
 
-            return $this->service->update($usuario);
+            return $usuario->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao atualizar usuário');
@@ -78,9 +79,9 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
 
                 return new ApiProblem(404, 'Usuário não encontrado');
             }
-            $usuario->logicalDelete();
+            $usuario = $this->service->delete($usuario);
 
-            return $this->service->delete($usuario);
+            return true;
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao remover usuário');
@@ -104,7 +105,7 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
                 return new ApiProblem(404, 'Usuário não encontrado');
             }
 
-            return $usuario;
+            return $usuario->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao recuperar usuário');
@@ -123,11 +124,12 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
             $usuarioRepo = $this->service->getRepository(Usuario::class);
             $usuarios = $usuarioRepo->getActiveResults();
 
-            foreach ($usuarios as $usuario) {
-                $usuario->setExtrato($usuario->getExtrato()->saldoTotalAtual());
-            }
+            /** @var Usuario $usuario */
+            // foreach ($usuarios as $usuario) {
+            //     $usuario->setExtrato($usuario->getExtrato()->saldoTotalAtual());
+            // }
             
-            return $usuarios;
+            return $this->collectionToArray($usuarios);
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao recuperar usuários');

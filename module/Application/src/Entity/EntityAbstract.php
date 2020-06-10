@@ -46,6 +46,20 @@ abstract class EntityAbstract
     protected $status = self::STATUS_ACTIVE;
 
     /**
+     * Retorno para a API
+     * Normalmente utilizado nos métodos fetch
+     * @return array
+     */
+    abstract public function toArray();
+
+    /**
+     * Retorno mínimo para a API para evitar referência circular
+     * Normalmente retorno somente a propriedades vitais
+     * @return array
+     */
+    abstract public function toArrayMin();
+
+    /**
      * @return Usuario
      */
     public function getUsuarioCriador()
@@ -132,5 +146,16 @@ abstract class EntityAbstract
     public function defineDataAlteracao()
     {
         $this->setDataAlteracao(new DateTime());
+    }
+
+    public function collectionToArray($collection)
+    {
+        $array = [];
+
+        foreach ($collection as $item) {
+            $array[] = $item->toArrayMin();
+        }
+        
+        return $array;
     }
 }

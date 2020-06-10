@@ -1,29 +1,5 @@
 <?php
 return array(
-    'doctrine-hydrator' => array(
-        'LancamentoHydrator' => array(
-            'entity_class' => 'Financeiro\\Entity\\Lancamento',
-            'object_manager' => 'Doctrine\\ORM\\EntityManager',
-            'by_value' => true,
-        ),
-        'UsuarioHydrator' => array(
-            'entity_class' => 'Usuario\\Entity\\Usuario',
-            'object_manager' => 'Doctrine\\ORM\\EntityManager',
-            'by_value' => true,
-            'filters' => array(
-                'usuario_filter' => array(
-                    'condition' => 'and',
-                    'filter' => 'UsuarioFilter',
-                ),
-            ),
-        ),
-    ),
-    'hydrators' => array(
-        'aliases' => array(
-            'Financeiro\\Entity\\Lancamento' => 'LancamentoHydrator',
-            'Usuario\\Entity\\Usuario' => 'UsuarioHydrator',
-        ),
-    ),
     'service_manager' => array(
         'invokables' => array(
             'UsuarioFilter' => 'Usuario\\HydratorFilter\\UsuarioFilter',
@@ -134,9 +110,9 @@ return array(
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
-            'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
-            'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'HalJson',
-            'ApiResource\\V1\\Rest\\Extrato\\Controller' => 'HalJson',
+            'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'Json',
+            'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'Json',
+            'ApiResource\\V1\\Rest\\Extrato\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
@@ -187,7 +163,7 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api-resource.rest.usuario',
                 'route_identifier_name' => 'usuario_id',
-                'hydrator' => 'UsuarioHydrator',
+                'hydrator' => 'DoctrineModule\\Stdlib\\Hydrator\\DoctrineObject',
                 'max_depth' => 0,
             ),
             'ApiResource\\V1\\Rest\\Lancamento\\LancamentoCollection' => array(
@@ -201,7 +177,7 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api-resource.rest.lancamento',
                 'route_identifier_name' => 'lancamento_id',
-                'hydrator' => 'LancamentoHydrator',
+                'hydrator' => 'DoctrineModule\\Stdlib\\Hydrator\\DoctrineObject',
                 'max_depth' => 0,
             ),
             'ApiResource\\V1\\Rest\\Extrato\\ExtratoCollection' => array(
@@ -215,7 +191,7 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api-resource.rest.extrato',
                 'route_identifier_name' => 'extrato_id',
-                'hydrator' => 'Zend\\Hydrator\\ClassMethods',
+                'hydrator' => 'DoctrineModule\\Stdlib\\Hydrator\\DoctrineObject',
                 'max_depth' => 0,
             ),
         ),

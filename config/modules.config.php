@@ -7,7 +7,6 @@
 return array(
     'DoctrineModule',
     'DoctrineORMModule',
-    'Phpro\\DoctrineHydrationModule',
     'ZF\\Apigility',
     'ZF\\Apigility\\Provider',
     'ZF\\ApiProblem',

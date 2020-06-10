@@ -75,4 +75,53 @@ class Fechamento extends EntityAbstract
     {
         $this->semana = $semana;
     }
+
+    /**
+     * @return Lancamento
+     */
+    public function getLancamento()
+    {
+        return $this->lancamento;
+    }
+
+    /**
+     * @param Lancamento $lancamento 
+     */
+    public function setLancamento($lancamento)
+    {
+        $this->lancamento = $lancamento;
+    }
+
+    /**
+     * @return Usuario
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param Usuario $usuario 
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'lancamento' => $this->getLancamento() ? $this->getLancamento()->toArrayMin() : null,
+            'semana' => $this->getSemana(),
+            'usuario' => $this->getUsuario() ? $this->getUsuarioCriador()->toArrayMin() : null,
+        ];
+    }
+
+    public function toArrayMin()
+    {
+        return [
+            'id' => $this->getId()
+        ];
+    }
 }

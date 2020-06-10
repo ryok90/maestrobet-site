@@ -56,8 +56,9 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
             }
             $lancamento->setExtrato($extrato);
             $lancamento->setUsuario($usuario);
+            $lancamento = $this->service->insert($lancamento);
 
-            return $this->service->insert($lancamento);
+            return $lancamento->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao registrar lançamento');
@@ -81,9 +82,9 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
 
                 return new ApiProblem(404, 'Lançamento não encontrado');
             }
-            $lancamento->logicalDelete();
+            $lancamento = $this->service->delete($lancamento);
 
-            return $this->service->delete($lancamento);
+            return true;
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao remover lançamento');
@@ -107,7 +108,7 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
                 return new ApiProblem(404, 'Lançamento não encontrado');
             }
 
-            return $lancamento;
+            return $lancamento->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao recuperar lançamento');
@@ -133,8 +134,9 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
             $data = $this->getInputFilter()->getValues();
             $hydrator = $this->getHydrator();
             $lancamento = $hydrator->hydrate($data, $lancamento);
+            $lancamento = $this->service->patch($lancamento);
 
-            return $this->service->patch($lancamento);
+            return $lancamento->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao atualizar lançamento');

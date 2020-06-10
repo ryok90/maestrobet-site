@@ -4,6 +4,7 @@ namespace Financeiro\Entity;
 
 use Application\Entity\EntityAbstract;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +57,7 @@ class Extrato extends EntityAbstract
 
     public function __construct()
     {
+        $this->lancamentos = new ArrayCollection();
         $this->setDataExtrato(new DateTime('midnight first day of'));
     }
 
@@ -168,5 +170,30 @@ class Extrato extends EntityAbstract
     public function saldoTotalAtual()
     {
         return $this->getSaldo() + $this->totalLancamentos();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'dataExtrato' => $this->getDataExtrato(),
+            'lancamentos' => $this->collectionToArray($this->getLancamentos()),
+            'saldo' => $this->getSaldo(),
+            'usuario' => $this->getUsuario() ? $this->getUsuario()->toArrayMin() : null
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArrayMin()
+    {
+        return [
+            'id' => $this->getId(),
+            'dataExtrato' => $this->getDataExtrato(),
+        ];
     }
 }
