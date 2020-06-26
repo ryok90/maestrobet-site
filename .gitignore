@@ -2,7 +2,8 @@ vendor/
 config/development.config.php
 config/autoload/development.local.php
 config/autoload/local.php
-data/
+data/DoctrineORMModule
 error_log
 public/oauth.html
 .vscode
+.idea
