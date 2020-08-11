@@ -12,6 +12,7 @@ use Usuario\Rbac\RoleProvider;
 use ZF\ApiProblem\ApiProblem;
 use Financeiro\Service\LancamentoService;
 use Usuario\Entity\Usuario;
+use Usuario\Repository\Usuario as UsuarioRepository;
 
 class LancamentoResource extends RestResourceAbstract implements GuardedResourceInterface
 {
@@ -45,20 +46,21 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
             $lancamento = $hydrator->hydrate($data, new Lancamento());
             $idUsuario = $this->getRouteParam('usuario_id');
 
-            /** @var Usuario $usuario */
-            $usuario = $this->getRepository(Usuario::class)->getActiveResult($idUsuario);
-            $extrato = $usuario->getExtrato();
-            $dataExtratoAtual = new DateTime('first day of');
+            /** @var UsuarioRepository $usuarioRepo */
+            $usuarioRepo = $this->getRepository(Usuario::class);
 
-            /** Extrato desatualizado */
-            if ($extrato->getDataExtrato() != $dataExtratoAtual->format('Y-m-d')) {
-                $extrato = $usuario->gerarNovoExtrato($this->getIdentity());
+            /** @var Usuario $usuario */
+            $usuario = $usuarioRepo->getActiveResult($idUsuario);
+
+            if (!$usuario instanceof Usuario) {
+                return new ApiProblem(404, 'Usuario não encontrado');
             }
+            $extrato = $usuario->getExtratoAtual();
             $lancamento->setExtrato($extrato);
             $lancamento->setUsuario($usuario);
             $lancamento = $this->service->insert($lancamento);
 
-            return $lancamento->toArray();
+            return $usuario->toArray();
         } catch (Exception $exception) {
 
             return new ApiProblem(500, 'Ocorreu um erro ao registrar lançamento');

@@ -240,6 +240,10 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         $bcrypt = new Bcrypt();
         $bcrypt->setCost(10);
 
+        if (is_null($senha)) {
+            $senha = 'mudar123';
+        }
+
         $this->senha = $bcrypt->create($senha);
     }
 
@@ -289,6 +293,20 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
      */
     public function getExtrato()
     {
+        return $this->extrato;
+    }
+
+    /**
+     * @return Extrato
+     */
+    public function getExtratoAtual()
+    {
+        $semExtratoAtual = is_null($this->extrato) || !$this->extrato->isExtratoAtual();
+
+        if ($semExtratoAtual) {
+            return $this->gerarNovoExtrato($this);
+        }
+
         return $this->extrato;
     }
 

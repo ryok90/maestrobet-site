@@ -172,6 +172,13 @@ class Extrato extends EntityAbstract
         return $this->getSaldo() + $this->totalLancamentos();
     }
 
+    public function isExtratoAtual()
+    {
+        $dataAtual = new DateTime('first day of');
+
+        return $this->getDataExtrato() != $dataAtual;
+    }
+
     /**
      * @inheritdoc
      */

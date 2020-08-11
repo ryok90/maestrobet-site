@@ -78,6 +78,7 @@ return array(
             'entity_http_methods' => array(
                 0 => 'GET',
                 1 => 'PATCH',
+                2 => 'POST',
             ),
             'collection_http_methods' => array(
                 0 => 'POST',
@@ -366,6 +367,15 @@ return array(
                 'name' => 'dataLancamento',
                 'description' => 'Data do lancamento',
                 'field_type' => 'datetime',
+            ),
+            3 => array(
+                'required' => true,
+                'validators' => array(),
+                'filters' => array(),
+                'name' => 'usuario',
+                'description' => 'usuario',
+                'field_type' => 'int',
+                'error_message' => 'invalid data',
             ),
         ),
     ),

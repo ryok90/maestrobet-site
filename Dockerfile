@@ -9,7 +9,6 @@ RUN apt update && apt upgrade -y \
   && docker-php-ext-install pdo pdo_mysql mysqli zip intl \
   && a2enmod rewrite \
   && curl -sS https://getcomposer.org/installer \
-  | php -- --install-dir=/usr/local/bin --filename=composer \
-  && composer development-enable
+  | php -- --install-dir=/usr/local/bin --filename=composer
 
 EXPOSE 80
