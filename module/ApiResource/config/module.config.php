@@ -306,6 +306,58 @@ return array(
                 'description' => 'Papéis do usuário',
                 'error_message' => 'Ao menos um papel deve ser especificado',
             ),
+            5 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\Boolean',
+                        'options' => array(),
+                    ),
+                ),
+                'name' => 'isAgente',
+                'field_type' => 'boolean',
+                'allow_empty' => true,
+            ),
+            6 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\Boolean',
+                        'options' => array(),
+                    ),
+                ),
+                'name' => 'isCliente',
+                'allow_empty' => true,
+                'field_type' => 'boolean',
+            ),
+            7 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\Boolean',
+                        'options' => array(),
+                    ),
+                ),
+                'name' => 'isBanca',
+                'allow_empty' => true,
+                'field_type' => 'boolean',
+            ),
+            8 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\Boolean',
+                        'options' => array(),
+                    ),
+                ),
+                'name' => 'isRepasse',
+                'allow_empty' => true,
+                'field_type' => 'boolean',
+            ),
         ),
         'ApiResource\\V1\\Rest\\Lancamento\\Validator' => array(
             0 => array(
@@ -376,6 +428,15 @@ return array(
                 'description' => 'usuario',
                 'field_type' => 'int',
                 'error_message' => 'invalid data',
+            ),
+            4 => array(
+                'required' => true,
+                'validators' => array(),
+                'filters' => array(),
+                'name' => 'tipo',
+                'description' => 'Tipo de Lançamento',
+                'field_type' => 'string',
+                'error_message' => 'Tipo de lançamento invalido',
             ),
         ),
     ),

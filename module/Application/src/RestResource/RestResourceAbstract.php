@@ -44,7 +44,7 @@ abstract class RestResourceAbstract extends AbstractResourceListener
      * @param string $class
      * @return RepositoryAbstract
      */
-    public function getRepository($class = null)
+    protected function getRepository($class = null)
     {
         if ($class) {
 
@@ -58,7 +58,7 @@ abstract class RestResourceAbstract extends AbstractResourceListener
      * @param string $alias
      * @return DoctrineObject
      */
-    public function getHydrator($alias = null)
+    protected function getHydrator($alias = null)
     {
         if (empty($this->hydratorManager)) {
 
@@ -66,20 +66,24 @@ abstract class RestResourceAbstract extends AbstractResourceListener
         }
 
         return $this->hydratorManager->get(DoctrineObject::class);
+    }
 
-        // if ($alias) {
+    /**
+     * object é o objeto da classe que deseja estar hidratado
+     */
+    protected function getHydratedObject($object)
+    {
+        $data = $this->getInputFilter()->getValues();
+        $hydrator = $this->getHydrator();
 
-        //     return $this->hydratorManager->get($alias);
-        // }
-
-        // return $this->hydratorManager->get($this->entityClass);
+        return $hydrator->hydrate($data, $object);
     }
 
     /**
      * @param string $param
      * @return string
      */
-    public function getRouteParam($param)
+    protected function getRouteParam($param)
     {
         return $this->getEvent()->getRouteMatch()->getParam($param);
     }
@@ -100,7 +104,7 @@ abstract class RestResourceAbstract extends AbstractResourceListener
         $this->identity = $identity;
     }
 
-    public function collectionToArray($collection)
+    protected function collectionToArray($collection)
     {
         $array = [];
 
@@ -110,4 +114,6 @@ abstract class RestResourceAbstract extends AbstractResourceListener
 
         return $array;
     }
+
+
 }

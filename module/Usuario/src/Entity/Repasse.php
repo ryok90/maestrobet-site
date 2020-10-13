@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\EntityAbstract;
 
 /**
- * @ORM\Entity(repositoryClass="Usuario\Repository\Cliente")
- * @ORM\Table(name="cliente")
+ * @ORM\Entity(repositoryClass="Usuario\Repository\Repasse")
+ * @ORM\Table(name="Repasse")
  * @ORM\HasLifecycleCallbacks
  */
-class Cliente extends EntityAbstract
+class Repasse extends EntityAbstract
 {
     /**
      * @ORM\Id
@@ -21,7 +21,7 @@ class Cliente extends EntityAbstract
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario", inversedBy="usuario", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario")
      * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
      * @var Usuario
      */
@@ -55,7 +55,7 @@ class Cliente extends EntityAbstract
      * Get the value of usuario
      *
      * @return Usuario
-     */ 
+     */
     public function getUsuario()
     {
         return $this->usuario;
@@ -67,7 +67,7 @@ class Cliente extends EntityAbstract
      * @param Usuario $usuario
      *
      * @return self
-     */ 
+     */
     public function setUsuario(Usuario $usuario)
     {
         $this->usuario = $usuario;

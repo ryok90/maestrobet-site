@@ -37,13 +37,14 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
     public function create($rawData)
     {
         try {
-            $data = $this->getInputFilter()->getValues();
-            $usuario = $this->getHydrator()->hydrate($data, new Usuario());
+            /** @var Usuario $usuario */
+            $usuario = $this->getHydratedObject(new Usuario());
+            $usuario->setTipos($rawData);
             $usuario = $this->service->insert($usuario);
 
             return $usuario->toArray();
         } catch (Exception $exception) {
-
+            echo($exception->getMessage());
             return new ApiProblem(500, 'Ocorreu um erro ao inserir usuário');
         }
     }

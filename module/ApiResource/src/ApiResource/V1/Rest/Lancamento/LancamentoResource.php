@@ -41,9 +41,7 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
     public function create($rawData)
     {
         try {
-            $data = $this->getInputFilter()->getValues();
-            $hydrator = $this->getHydrator();
-            $lancamento = $hydrator->hydrate($data, new Lancamento());
+            $lancamento = $this->getHydratedObject(new Lancamento());
             $idUsuario = $this->getRouteParam('usuario_id');
 
             /** @var UsuarioRepository $usuarioRepo */

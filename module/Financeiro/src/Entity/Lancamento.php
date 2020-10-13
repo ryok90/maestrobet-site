@@ -15,6 +15,28 @@ use Financeiro\Repository\Extrato;
  */
 class Lancamento extends EntityAbstract
 {
+    const AGENTE = 'agente';
+    const BANCA = 'banca';
+    const CLIENTE = 'cliente';
+    const REPASSE = 'repasse';
+    const USUARIO = 'usuario';
+    const PAGAMENTO = 'pagamento';
+    const RECEBIMENTO = 'recebimento';
+    const FECHAMENTO = 'fechamento';
+
+    /**
+     * @var array
+     */
+    const TIPOS_LANCAMENTO = [
+        self::AGENTE,
+        self::BANCA,
+        self::CLIENTE,
+        self::REPASSE,
+        self::USUARIO,
+        self::PAGAMENTO,
+        self::RECEBIMENTO,
+    ];
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -61,6 +83,12 @@ class Lancamento extends EntityAbstract
      * @var Usuario
      */
     protected $usuario;
+
+    /**
+     * @ORM\Column(name="tipo", type="string", nullable=false, length=32)
+     * @var string
+     */
+    protected $tipo = self::USUARIO;
 
     /**
      * @return int
@@ -177,6 +205,30 @@ class Lancamento extends EntityAbstract
     public function setFechamento($fechamento)
     {
         $this->fechamento = $fechamento;
+    }
+
+    /**
+     * Get the value of tipo
+     *
+     * @return string
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * Set the value of tipo
+     *
+     * @param string $tipo
+     *
+     * @return self
+     */
+    public function setTipo(string $tipo)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
     }
 
     /**

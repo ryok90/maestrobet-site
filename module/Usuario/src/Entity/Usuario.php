@@ -75,6 +75,42 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $roles;
 
     /**
+     * Usuário cliente.
+     * 
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Cliente", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\JoinColumn(name="idCliente", referencedColumnName="id", nullable=true)
+     * @var Cliente
+     */
+    protected $cliente;
+
+    /**
+     * Usuário agente.
+     * 
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Agente", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\JoinColumn(name="idAgente", referencedColumnName="id", nullable=true)
+     * @var Agente
+     */
+    protected $agente;
+
+    /**
+     * Usuário banca.
+     * 
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Banca", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\JoinColumn(name="idBanca", referencedColumnName="id", nullable=true)
+     * @var Banca
+     */
+    protected $banca;
+
+    /**
+     * Usuário repasse.
+     * 
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Repasse", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\JoinColumn(name="idRepasse", referencedColumnName="id", nullable=true)
+     * @var Repasse
+     */
+    protected $repasse;
+
+    /**
      * Propriedades necessárias para autenticação via Doctrine OAuth2
      */
     protected $client;
@@ -159,6 +195,10 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     {
         $this->refreshToken = $refreshToken;
     }
+
+    /**
+     * ----------- End Doctrine Auth
+     */
 
     /**
      * @return int
@@ -297,6 +337,8 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     }
 
     /**
+     * Recupera o Extrato atual. Se não houver Extrato atual ou se o Extrato
+     * não for o atual, gera-se um novo extrato.
      * @return Extrato
      */
     public function getExtratoAtual()
@@ -332,6 +374,102 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     }
 
     /**
+     * Get usuário cliente.
+     *
+     * @return Cliente
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
+    }
+
+    /**
+     * Set usuário cliente.
+     *
+     * @param Cliente $cliente Usuário cliente.
+     *
+     * @return self
+     */
+    public function setCliente(Cliente $cliente)
+    {
+        $this->cliente = $cliente;
+
+        return $this;
+    }
+
+    /**
+     * Get usuário agente.
+     *
+     * @return Agente
+     */
+    public function getAgente()
+    {
+        return $this->agente;
+    }
+
+    /**
+     * Set usuário agente.
+     *
+     * @param Agente $agente Usuário agente.
+     *
+     * @return self
+     */
+    public function setAgente(Agente $agente)
+    {
+        $this->agente = $agente;
+
+        return $this;
+    }
+
+    /**
+     * Get usuário banca.
+     *
+     * @return Banca
+     */
+    public function getBanca()
+    {
+        return $this->banca;
+    }
+
+    /**
+     * Set usuário banca.
+     *
+     * @param Banca $banca Usuário banca.
+     *
+     * @return self
+     */
+    public function setBanca(Banca $banca)
+    {
+        $this->banca = $banca;
+
+        return $this;
+    }
+
+    /**
+     * Get usuário repasse.
+     *
+     * @return Repasse
+     */
+    public function getRepasse()
+    {
+        return $this->repasse;
+    }
+
+    /**
+     * Set usuário repasse.
+     *
+     * @param Repasse $repasse Usuário repasse.
+     *
+     * @return self
+     */
+    public function setRepasse(Repasse $repasse)
+    {
+        $this->repasse = $repasse;
+
+        return $this;
+    }
+
+    /**
      * Gera um novo extrato baseado no extrato anterior
      * @param Usuario $usuarioCriador
      * @return Extrato
@@ -348,6 +486,23 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         return $this->getExtrato();
     }
 
+    /**
+     * Seta os tipos de acordo com os valores vindo por paramestros
+     * Somente para ser usado em 'create' pois cria novos tipos
+     * @param stdObject $rawData
+     * @return void
+     */
+    public function setTipos($rawData)
+    {
+        empty($rawData->isAgente) ?: $this->setAgente((new Agente())->setUsuario($this));
+        empty($rawData->isBanca) ?: $this->setBanca((new Banca())->setUsuario($this));
+        empty($rawData->isCliente) ?: $this->setCliente((new Cliente())->setUsuario($this));
+        empty($rawData->isRepasse) ?: $this->setRepasse((new Repasse())->setUsuario($this));
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function toArrayMin()
     {
         return [
@@ -358,6 +513,9 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function toArray()
     {
         return [
