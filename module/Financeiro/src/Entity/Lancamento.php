@@ -15,6 +15,9 @@ use Financeiro\Repository\Extrato;
  */
 class Lancamento extends EntityAbstract
 {
+    /**
+     * Tipos de Lançamento
+     */
     const AGENTE = 'agente';
     const BANCA = 'banca';
     const CLIENTE = 'cliente';
