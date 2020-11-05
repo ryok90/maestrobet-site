@@ -23,6 +23,8 @@ class Lancamento extends EntityAbstract
     const PAGAMENTO = 'pagamento';
     const RECEBIMENTO = 'recebimento';
     const FECHAMENTO = 'fechamento';
+    const TRANSFERENCIA = 'transferencia';
+    const APORTE = 'aporte';
 
     /**
      * @var array
@@ -35,6 +37,8 @@ class Lancamento extends EntityAbstract
         self::USUARIO,
         self::PAGAMENTO,
         self::RECEBIMENTO,
+        self::TRANSFERENCIA,
+        self::APORTE,
     ];
 
     /**

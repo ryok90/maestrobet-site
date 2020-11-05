@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Financeiro\Entity\Extrato;
 
 /**
+ * Usuario base de toda aplicação.
  * @ORM\Entity(repositoryClass="Usuario\Repository\Usuario")
  * @ORM\Table(name="usuario")
  * @ORM\HasLifecycleCallbacks

@@ -10,7 +10,7 @@ use Usuario\Entity\Usuario;
  * Abstração de Entity básica.
  * Toda Entity que estender esta abstração necessita ter
  * HasLifecycleCallbacks para que a dataCriacao e dataAlteracao
- * sem atualizadas automaticamente.
+ * sejam atualizadas automaticamente.
  */
 abstract class EntityAbstract
 {
