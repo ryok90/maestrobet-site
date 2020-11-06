@@ -112,17 +112,27 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     protected $repasse;
 
     /**
+     * Usuário responsável pra qual os lançamentos são direcionados.
+     * 
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\JoinColumn(name="idResponsavel", referencedColumnName="id", nullable=true)
+     * @var Usuario
+     */
+    protected $responsavel;
+
+    /**
+     * @ORM\Column(name="desconto", type="decimal", precision=2, scale=2, nullable=true)
+     * @var float
+     */
+    protected $desconto = 0;
+
+    /**
      * Propriedades necessárias para autenticação via Doctrine OAuth2
      */
     protected $client;
     protected $accessToken;
     protected $authorizationCode;
     protected $refreshToken;
-
-    public function __construct()
-    {
-
-    }
 
     /**
      * Métodos utilizados pelo doctrine oauth2
@@ -466,6 +476,54 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
     public function setRepasse(Repasse $repasse)
     {
         $this->repasse = $repasse;
+
+        return $this;
+    }
+
+    /**
+     * Get usuário responsável pra qual os lançamentos são direcionados.
+     *
+     * @return Usuario
+     */
+    public function getResponsavel()
+    {
+        return $this->responsavel;
+    }
+
+    /**
+     * Set usuário responsável pra qual os lançamentos são direcionados.
+     *
+     * @param Usuario $responsavel  Usuário responsável pra qual os lançamentos são direcionados.
+     *
+     * @return self
+     */
+    public function setResponsavel(Usuario $responsavel)
+    {
+        $this->responsavel = $responsavel;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of desconto
+     *
+     * @return float
+     */
+    public function getDesconto()
+    {
+        return $this->desconto;
+    }
+
+    /**
+     * Set the value of desconto
+     *
+     * @param float $desconto
+     *
+     * @return self
+     */
+    public function setDesconto(float $desconto)
+    {
+        $this->desconto = $desconto;
 
         return $this;
     }

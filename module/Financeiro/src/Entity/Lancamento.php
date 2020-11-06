@@ -6,8 +6,10 @@ use Usuario\Entity\Usuario;
 use Application\Entity\EntityAbstract;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Financeiro\Entity\Banco;
 use Financeiro\Entity\Fechamento;
 use Financeiro\Repository\Extrato;
+
 /**
  * @ORM\Entity(repositoryClass="Financeiro\Repository\Lancamento")
  * @ORM\Table(name="lancamento")
@@ -96,6 +98,13 @@ class Lancamento extends EntityAbstract
      * @var string
      */
     protected $tipo = self::USUARIO;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Financeiro\Entity\Banco")
+     * @ORM\JoinColumn(name="idBanco", referencedColumnName="id", nullable=true)
+     * @var Banco
+     */
+    protected $banco;
 
     /**
      * @return int
@@ -234,6 +243,30 @@ class Lancamento extends EntityAbstract
     public function setTipo(string $tipo)
     {
         $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of banco
+     *
+     * @return Banco
+     */
+    public function getBanco()
+    {
+        return $this->banco;
+    }
+
+    /**
+     * Set the value of banco
+     *
+     * @param Banco $banco
+     *
+     * @return self
+     */
+    public function setBanco(Banco $banco)
+    {
+        $this->banco = $banco;
 
         return $this;
     }

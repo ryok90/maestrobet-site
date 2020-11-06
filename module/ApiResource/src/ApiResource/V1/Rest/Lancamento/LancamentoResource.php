@@ -3,9 +3,7 @@
 namespace ApiResource\V1\Rest\Lancamento;
 
 use Application\RestResource\RestResourceAbstract;
-use DateTime;
 use Exception;
-use Financeiro\Entity\Extrato;
 use Financeiro\Entity\Lancamento;
 use Usuario\Rbac\GuardedResourceInterface;
 use Usuario\Rbac\RoleProvider;
@@ -41,6 +39,7 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
     public function create($rawData)
     {
         try {
+            /** @var Lancamento $lancamento */
             $lancamento = $this->getHydratedObject(new Lancamento());
             $idUsuario = $this->getRouteParam('usuario_id');
 
@@ -53,10 +52,20 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
             if (!$usuario instanceof Usuario) {
                 return new ApiProblem(404, 'Usuario não encontrado');
             }
-            $extrato = $usuario->getExtratoAtual();
+            $usuarioDestino = $usuario;
+
+            if (!is_null($usuario->getResponsavel())) {
+                $usuarioDestino = $usuario->getResponsavel();
+                $lancamento->setDescricao($usuario->getNome() . ' - ' . $lancamento->getDescricao());
+            }
+            $extrato = $usuarioDestino->getExtratoAtual();
             $lancamento->setExtrato($extrato);
-            $lancamento->setUsuario($usuario);
-            $lancamento = $this->service->insert($lancamento);
+            $lancamento->setUsuario($usuarioDestino);
+            $result = $this->service->insert($lancamento);
+
+            if (!$lancamento instanceof Lancamento) {
+                return $result;
+            }
 
             return $usuario->toArray();
         } catch (Exception $exception) {
