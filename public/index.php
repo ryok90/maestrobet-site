@@ -12,7 +12,7 @@ chdir(dirname(__DIR__));
 $development = file_exists('.dev.env');
 
 define('APPLICATION_ENV', $development ? 'development' : 'production');
-define('APPLICATION_PATH', realpath(dirname(__FILE__) . ($development ? '/../module' : '/../maestrobet.site/module')));
+define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../module'));
 
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server') {
