@@ -53,15 +53,15 @@ return array(
             'listener' => 'ApiResource\\V1\\Rest\\Usuario\\UsuarioResource',
             'route_name' => 'api-resource.rest.usuario',
             'route_identifier_name' => 'usuario_id',
-            'collection_name' => 'usuario',
+            'collection_name' => 'usuarios',
             'entity_http_methods' => array(
                 0 => 'GET',
                 1 => 'PATCH',
                 2 => 'DELETE',
             ),
             'collection_http_methods' => array(
-                0 => 'POST',
-                1 => 'GET',
+                0 => 'GET',
+                1 => 'POST',
             ),
             'collection_query_whitelist' => array(),
             'page_size' => 25,
@@ -111,7 +111,7 @@ return array(
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
-            'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'Json',
+            'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
             'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'Json',
             'ApiResource\\V1\\Rest\\Extrato\\Controller' => 'Json',
         ),

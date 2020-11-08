@@ -1,0 +1,3 @@
+Tratamento de erros específicos na criação de Usuário
+ - Nome, e-mail, ou apelido duplicado
+

@@ -38,40 +38,31 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
      */
     public function create($rawData)
     {
-        try {
-            /** @var Lancamento $lancamento */
-            $lancamento = $this->getHydratedObject(new Lancamento());
-            $idUsuario = $this->getRouteParam('usuario_id');
+        /** @var Lancamento $lancamento */
+        $lancamento = $this->getHydratedObject(new Lancamento());
+        $idUsuario = $this->getRouteParam('usuario_id');
 
-            /** @var UsuarioRepository $usuarioRepo */
-            $usuarioRepo = $this->getRepository(Usuario::class);
+        /** @var UsuarioRepository $usuarioRepo */
+        $usuarioRepo = $this->getRepository(Usuario::class);
 
-            /** @var Usuario $usuario */
-            $usuario = $usuarioRepo->getActiveResult($idUsuario);
+        /** @var Usuario $usuario */
+        $usuario = $usuarioRepo->getActiveResult($idUsuario);
 
-            if (!$usuario instanceof Usuario) {
-                return new ApiProblem(404, 'Usuario não encontrado');
-            }
-            $usuarioDestino = $usuario;
-
-            if (!is_null($usuario->getResponsavel())) {
-                $usuarioDestino = $usuario->getResponsavel();
-                $lancamento->setDescricao($usuario->getNome() . ' - ' . $lancamento->getDescricao());
-            }
-            $extrato = $usuarioDestino->getExtratoAtual();
-            $lancamento->setExtrato($extrato);
-            $lancamento->setUsuario($usuarioDestino);
-            $result = $this->service->insert($lancamento);
-
-            if (!$lancamento instanceof Lancamento) {
-                return $result;
-            }
-
-            return $usuario->toArray();
-        } catch (Exception $exception) {
-
-            return new ApiProblem(500, 'Ocorreu um erro ao registrar lançamento');
+        if (!$usuario instanceof Usuario) {
+            return new ApiProblem(404, 'Usuario não encontrado');
         }
+        $usuarioDestino = $usuario;
+
+        if (!is_null($usuario->getResponsavel())) {
+            $usuarioDestino = $usuario->getResponsavel();
+            $lancamento->setDescricao($usuario->getNome() . ' - ' . $lancamento->getDescricao());
+        }
+        $extrato = $usuarioDestino->getExtratoAtual();
+        $lancamento->setExtrato($extrato);
+        $lancamento->setUsuario($usuarioDestino);
+        $result = $this->service->insert($lancamento);
+
+        return $usuario->toArray();
     }
 
     /**
@@ -82,22 +73,16 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
      */
     public function delete($idLancamento)
     {
-        try {
-            $lancamentoRepo = $this->getRepository();
-            $idUsuario = $this->getRouteParam('usuario_id');
-            $lancamento = $lancamentoRepo->getLancamentoPorUsuario($idLancamento, $idUsuario);
+        $lancamentoRepo = $this->getRepository();
+        $idUsuario = $this->getRouteParam('usuario_id');
+        $lancamento = $lancamentoRepo->getLancamentoPorUsuario($idLancamento, $idUsuario);
 
-            if (!$lancamento instanceof Lancamento) {
+        if (!$lancamento instanceof Lancamento) {
 
-                return new ApiProblem(404, 'Lançamento não encontrado');
-            }
-            $lancamento = $this->service->delete($lancamento);
-
-            return true;
-        } catch (Exception $exception) {
-
-            return new ApiProblem(500, 'Ocorreu um erro ao remover lançamento');
+            return new ApiProblem(404, 'Lançamento não encontrado');
         }
+
+        return $this->service->delete($lancamento);
     }
 
     /**
@@ -108,20 +93,15 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
      */
     public function fetch($idLancamento)
     {
-        try {
-            $idUsuario = $this->getRouteParam('usuario_id');
-            $lancamento = $this->getRepository()->getLancamentoPorUsuario($idLancamento, $idUsuario);
+        $idUsuario = $this->getRouteParam('usuario_id');
+        $lancamento = $this->getRepository()->getLancamentoPorUsuario($idLancamento, $idUsuario);
 
-            if (!$lancamento instanceof Lancamento) {
+        if (!$lancamento instanceof Lancamento) {
 
-                return new ApiProblem(404, 'Lançamento não encontrado');
-            }
-
-            return $lancamento->toArray();
-        } catch (Exception $exception) {
-
-            return new ApiProblem(500, 'Ocorreu um erro ao recuperar lançamento');
+            return new ApiProblem(404, 'Lançamento não encontrado');
         }
+
+        return $lancamento->toArray();
     }
 
     /**
@@ -133,22 +113,17 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
      */
     public function patch($id, $rawData)
     {
-        try {
-            $lancamento = $this->getRepository()->getActiveResult($id);
+        $lancamento = $this->getRepository()->getActiveResult($id);
 
-            if (!$lancamento instanceof Lancamento) {
+        if (!$lancamento instanceof Lancamento) {
 
-                return new ApiProblem(404, 'Lançamento não encontrado');
-            }
-            $data = $this->getInputFilter()->getValues();
-            $hydrator = $this->getHydrator();
-            $lancamento = $hydrator->hydrate($data, $lancamento);
-            $lancamento = $this->service->patch($lancamento);
-
-            return $lancamento->toArray();
-        } catch (Exception $exception) {
-
-            return new ApiProblem(500, 'Ocorreu um erro ao atualizar lançamento');
+            return new ApiProblem(404, 'Lançamento não encontrado');
         }
+        $data = $this->getInputFilter()->getValues();
+        $hydrator = $this->getHydrator();
+        $lancamento = $hydrator->hydrate($data, $lancamento);
+        $lancamento = $this->service->patch($lancamento);
+
+        return $lancamento->toArray();
     }
 }

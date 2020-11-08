@@ -2,7 +2,9 @@
 
 namespace Financeiro\Service;
 
+use Application\Exception\ApiGeneralException;
 use Application\Service\ServiceAbstract;
+use Exception;
 use ZF\ApiProblem\ApiProblem;
 use Financeiro\Entity\Lancamento;
 
@@ -14,15 +16,19 @@ class LancamentoService extends ServiceAbstract
      */
     public function insert($lancamento)
     {
-        if ($lancamento->getId()) {
+        try {
+            if ($lancamento->getId()) {
 
-            return new ApiProblem(400, 'Lançamento já registrado');
+                return new ApiProblem(400, 'Lançamento já registrado');
+            }
+            $lancamento->setUsuarioCriador($this->getUsuarioAutenticado());
+            $this->entityManager->persist($lancamento);
+            $this->entityManager->flush();
+
+            return $lancamento;
+        } catch (Exception $exception) {
+            throw new ApiGeneralException('Ocorreu um erro ao inserir o lançamento', 500, $exception);
         }
-        $lancamento->setUsuarioCriador($this->getUsuarioAutenticado());
-        $this->entityManager->persist($lancamento);
-        $this->entityManager->flush();
-
-        return $lancamento;
     }
 
     /**
@@ -31,14 +37,18 @@ class LancamentoService extends ServiceAbstract
      */
     public function patch($lancamento)
     {
-        if (!$lancamento->getId()) {
+        try {
+            if (!$lancamento->getId()) {
 
-            return new ApiProblem(400, 'Lançamento não encontrado');
+                return new ApiProblem(400, 'Lançamento não encontrado');
+            }
+            $this->entityManager->persist($lancamento);
+            $this->entityManager->flush();
+
+            return $lancamento;
+        } catch (Exception $exception) {
+            throw new ApiGeneralException('Ocorreu um erro ao atualizar o lançamento', 500, $exception);
         }
-        $this->entityManager->persist($lancamento);
-        $this->entityManager->flush();
-
-        return $lancamento;
     }
 
     /**
@@ -47,14 +57,18 @@ class LancamentoService extends ServiceAbstract
      */
     public function delete($lancamento)
     {
-        if (!$lancamento->getId()) {
-            
-            return new ApiProblem(400, 'Lançamento não encontrado');
-        }
-        $lancamento->logicalDelete();
-        $this->entityManager->persist($lancamento);
-        $this->entityManager->flush();
+        try {
+            if (!$lancamento->getId()) {
 
-        return true;
+                return new ApiProblem(400, 'Lançamento não encontrado');
+            }
+            $lancamento->logicalDelete();
+            $this->entityManager->persist($lancamento);
+            $this->entityManager->flush();
+
+            return true;
+        } catch (Exception $exception) {
+            throw new ApiGeneralException('Ocorreu um erro ao remover o lançamento', 500, $exception);
+        }
     }
 }

@@ -27,20 +27,15 @@ class ExtratoResource extends RestResourceAbstract implements GuardedResourceInt
      */
     public function fetch($id)
     {
-        try {
-            $idUsuario = $this->getRouteParam('usuario_id');
-            $extrato = $this->getRepository()->getExtratoPorUsuario($id, $idUsuario);
+        $idUsuario = $this->getRouteParam('usuario_id');
+        $extrato = $this->getRepository()->getExtratoPorUsuario($id, $idUsuario);
 
-            if (!$extrato instanceof Extrato) {
-                
-                return new ApiProblem(404, 'Extrato não encontrado');
-            }
-
-            return $extrato->toArray();
-        } catch (Exception $exception) {
-
-            return new ApiProblem(500, 'Ocorreu um erro ao recuperar extrato');
+        if (!$extrato instanceof Extrato) {
+            
+            return new ApiProblem(404, 'Extrato não encontrado');
         }
+
+        return $extrato->toArray();
     }
 
     /**
@@ -51,14 +46,9 @@ class ExtratoResource extends RestResourceAbstract implements GuardedResourceInt
      */
     public function fetchAll($params = [])
     {
-        try {
-            $idUsuario = $this->getRouteParam('usuario_id');
-            $extratos = $this->getRepository()->getExtratosPorUsuario($idUsuario);
+        $idUsuario = $this->getRouteParam('usuario_id');
+        $extratos = $this->getRepository()->getExtratosPorUsuario($idUsuario);
 
-            return $this->collectionToArray($extratos);
-        } catch (Exception $exception) {
-            
-            return new ApiProblem(500, 'Ocorreu um erro ao recuperar extratos');
-        }
+        return $this->collectionToArray($extratos);
     }
 }
