@@ -112,8 +112,8 @@ return array(
     'zf-content-negotiation' => array(
         'controllers' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
-            'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'Json',
-            'ApiResource\\V1\\Rest\\Extrato\\Controller' => 'Json',
+            'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'HalJson',
+            'ApiResource\\V1\\Rest\\Extrato\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(

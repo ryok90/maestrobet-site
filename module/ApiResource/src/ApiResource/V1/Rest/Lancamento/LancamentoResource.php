@@ -62,6 +62,10 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
         $lancamento->setUsuario($usuarioDestino);
         $result = $this->service->insert($lancamento);
 
+        if ($result instanceof ApiProblem) {
+            return $result;
+        }
+
         return $usuario->toArray();
     }
 

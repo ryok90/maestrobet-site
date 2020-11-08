@@ -18,7 +18,7 @@ class ServiceAbstract
     const PERMISSION_DENIED_CODE = 5;
 
     /**
-     * @var EntityManagerInterface
+     * @var EntityManager
      */
     protected $entityManager;
 

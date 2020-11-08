@@ -3,12 +3,10 @@
 namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Application\Entity\EntityAbstract;
-use DateTime;
 use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Financeiro\Entity\ContaAbstract;
 use Financeiro\Entity\Extrato;
 
 /**
@@ -17,7 +15,7 @@ use Financeiro\Entity\Extrato;
  * @ORM\Table(name="usuario")
  * @ORM\HasLifecycleCallbacks
  */
-class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
+class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
 {
     /**
      * @ORM\Id
@@ -323,66 +321,6 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         $this->roles[] = $role;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getExtratos()
-    {
-        return $this->extratos;
-    }
-
-    /**
-     * @param ArrayCollection $extratos
-     */
-    public function setExtratos($extratos)
-    {
-        $this->extratos = $extratos;
-    }
-
-    /**
-     * @return Extrato
-     */
-    public function getExtrato()
-    {
-        return $this->extrato;
-    }
-
-    /**
-     * Recupera o Extrato atual. Se não houver Extrato atual ou se o Extrato
-     * não for o atual, gera-se um novo extrato.
-     * @return Extrato
-     */
-    public function getExtratoAtual()
-    {
-        $semExtratoAtual = is_null($this->extrato) || !$this->extrato->isExtratoAtual();
-
-        if ($semExtratoAtual) {
-            return $this->gerarNovoExtrato($this);
-        }
-
-        return $this->extrato;
-    }
-
-    /**
-     * @param Extrato $extrato Último extrato cadastrado.
-     */
-    public function setExtrato($extrato)
-    {
-        $this->extrato = $extrato;
-    }
-
-    /**
-     * @return float
-     */
-    public function saldoTotalAtual()
-    {
-        if ($this->getExtrato() instanceof Extrato) {
-
-            return $this->getExtrato()->saldoTotalAtual();
-        }
-        
-        return 0.0;
-    }
 
     /**
      * Get usuário cliente.
@@ -526,23 +464,6 @@ class Usuario extends EntityAbstract implements UserInterface, IdentityInterface
         $this->desconto = $desconto;
 
         return $this;
-    }
-
-    /**
-     * Gera um novo extrato baseado no extrato anterior
-     * @param Usuario $usuarioCriador
-     * @return Extrato
-     */
-    public function gerarNovoExtrato($usuarioCriador)
-    {
-        $novoExtrato = new Extrato();
-        $novoExtrato->setSaldo($this->saldoTotalAtual());
-        $novoExtrato->setUsuario($this);
-        $novoExtrato->setUsuarioCriador($usuarioCriador);
-        $novoExtrato->setDataExtrato(new DateTime('first day of'));
-        $this->setExtrato($novoExtrato);
-
-        return $this->getExtrato();
     }
 
     /**

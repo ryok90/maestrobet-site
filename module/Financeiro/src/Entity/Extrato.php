@@ -27,10 +27,17 @@ class Extrato extends EntityAbstract
 
     /**
      * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", inversedBy="extratos", cascade={"persist"})
-     * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=true)
      * @var \Usuario\Entity\Usuario
      */
     protected $usuario;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Financeiro\Entity\Banco", inversedBy="extratos", cascade={"persist"})
+     * @ORM\JoinColumn(name="idBanco", referencedColumnName="id", nullable=true)
+     * @var \Financeiro\Entity\Banco
+     */
+    protected $banco;
 
     /**
      * @ORM\Column(type="date", nullable=false)
@@ -91,6 +98,26 @@ class Extrato extends EntityAbstract
     public function setUsuario($usuario)
     {
         $this->usuario = $usuario;
+    }
+
+    /**
+     * @return \Financeiro\Entity\Banco
+     */
+    public function getBanco()
+    {
+        return $this->banco;
+    }
+
+    /**
+     * @param \Financeiro\Entity\Banco $banco
+     *
+     * @return self
+     */
+    public function setBanco(\Financeiro\Entity\Banco $banco)
+    {
+        $this->banco = $banco;
+
+        return $this;
     }
 
     /**

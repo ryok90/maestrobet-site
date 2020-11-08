@@ -46,12 +46,22 @@ class Banco extends EntityAbstract
     protected $agencia;
 
     /**
-     * Lançamentos para o banco.
+     * Todos os extratos mensais.
+     * Extratos possuem saldo que refere à soma dos lançamentos até seu mês corrente.
      * 
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Lancamento", fetch="EXTRA_LAZY", mappedBy="banco", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", mappedBy="banco", cascade={"persist"})
      * @var ArrayCollection
      */
-    protected $lancamentos;
+    protected $extratos;
+
+    /**
+     * Último extrato cadastrado.
+     * 
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=true)
+     * @var Extrato
+     */
+    protected $extrato;
 
     /**
      * @return int

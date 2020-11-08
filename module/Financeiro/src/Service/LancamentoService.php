@@ -5,8 +5,10 @@ namespace Financeiro\Service;
 use Application\Exception\ApiGeneralException;
 use Application\Service\ServiceAbstract;
 use Exception;
+use Financeiro\Entity\Banco;
 use ZF\ApiProblem\ApiProblem;
 use Financeiro\Entity\Lancamento;
+use Usuario\Entity\Usuario;
 
 class LancamentoService extends ServiceAbstract
 {
@@ -24,6 +26,7 @@ class LancamentoService extends ServiceAbstract
             $lancamento->setUsuarioCriador($this->getUsuarioAutenticado());
             $this->entityManager->persist($lancamento);
             $this->entityManager->flush();
+            $this->refreshDependencies($lancamento);
 
             return $lancamento;
         } catch (Exception $exception) {
@@ -70,5 +73,25 @@ class LancamentoService extends ServiceAbstract
         } catch (Exception $exception) {
             throw new ApiGeneralException('Ocorreu um erro ao remover o lançamento', 500, $exception);
         }
+    }
+
+
+    /**
+     * Atualiza as dependencias de lançamento
+     * Usuario ou Banco
+     * @param Lancamento $lancamento
+     * @return void
+     */
+    protected function refreshDependencies($lancamento)
+    {
+        try {
+            if ($lancamento->getUsuario() instanceof Usuario) {
+                return $this->entityManager->refresh($lancamento->getUsuario());
+            }
+
+            if ($lancamento->getBanco() instanceof Banco) {
+                return $this->entityManager->refresh($lancamento->getBanco());
+            }
+        } catch (Exception $exception) {}
     }
 }

@@ -79,7 +79,11 @@ abstract class EntityAbstract
      */
     public function getDataCriacao($format = 'Y-m-d H:i')
     {
-        return $this->dataCriacao->format($format);
+        if ($this->dataCriacao instanceof DateTime) {
+            return $this->dataCriacao->format($format);
+        }
+
+        return $this->dataAlteracao;
     }
 
     /**
@@ -97,7 +101,7 @@ abstract class EntityAbstract
     {
         if ($this->dataAlteracao instanceof DateTime) {
 
-            return $this->dataAlteracao->format($format = 'Y-m-d H:i');
+            return $this->dataAlteracao->format($format);
         }
 
         return $this->dataAlteracao;
