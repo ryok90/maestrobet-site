@@ -18,11 +18,11 @@ class LancamentoService extends ServiceAbstract
      */
     public function insert($lancamento)
     {
-        try {
-            if ($lancamento->getId()) {
+        if ($lancamento->getId()) {
+            throw new ApiGeneralException(400, 'Lançamento já registrado');
+        }
 
-                return new ApiProblem(400, 'Lançamento já registrado');
-            }
+        try {
             $lancamento->setUsuarioCriador($this->getUsuarioAutenticado());
             $this->entityManager->persist($lancamento);
             $this->entityManager->flush();
@@ -30,7 +30,7 @@ class LancamentoService extends ServiceAbstract
 
             return $lancamento;
         } catch (Exception $exception) {
-            throw new ApiGeneralException('Ocorreu um erro ao inserir o lançamento', 500, $exception);
+            throw new ApiGeneralException(500, 'Ocorreu um erro ao inserir o lançamento', $exception);
         }
     }
 
@@ -40,17 +40,17 @@ class LancamentoService extends ServiceAbstract
      */
     public function patch($lancamento)
     {
-        try {
-            if (!$lancamento->getId()) {
+        if (!$lancamento->getId()) {
+            throw new ApiGeneralException(400, 'Lançamento não encontrado');
+        }
 
-                return new ApiProblem(400, 'Lançamento não encontrado');
-            }
+        try {
             $this->entityManager->persist($lancamento);
             $this->entityManager->flush();
 
             return $lancamento;
         } catch (Exception $exception) {
-            throw new ApiGeneralException('Ocorreu um erro ao atualizar o lançamento', 500, $exception);
+            throw new ApiGeneralException(500,'Ocorreu um erro ao atualizar o lançamento', $exception);
         }
     }
 
@@ -60,18 +60,18 @@ class LancamentoService extends ServiceAbstract
      */
     public function delete($lancamento)
     {
-        try {
-            if (!$lancamento->getId()) {
+        if (!$lancamento->getId()) {
+            throw new ApiGeneralException(400, 'Lançamento não encontrado');
+        }
 
-                return new ApiProblem(400, 'Lançamento não encontrado');
-            }
+        try {
             $lancamento->logicalDelete();
             $this->entityManager->persist($lancamento);
             $this->entityManager->flush();
 
             return true;
         } catch (Exception $exception) {
-            throw new ApiGeneralException('Ocorreu um erro ao remover o lançamento', 500, $exception);
+            throw new ApiGeneralException(500,'Ocorreu um erro ao remover o lançamento', $exception);
         }
     }
 
@@ -86,11 +86,11 @@ class LancamentoService extends ServiceAbstract
     {
         try {
             if ($lancamento->getUsuario() instanceof Usuario) {
-                return $this->entityManager->refresh($lancamento->getUsuario());
+                return $this->entityManager->refresh($lancamento->getExtratoUsuario());
             }
 
             if ($lancamento->getBanco() instanceof Banco) {
-                return $this->entityManager->refresh($lancamento->getBanco());
+                return $this->entityManager->refresh($lancamento->getExtratoBanco());
             }
         } catch (Exception $exception) {}
     }

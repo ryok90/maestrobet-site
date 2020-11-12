@@ -3,14 +3,11 @@
 namespace ApiResource\V1\Rest\Lancamento;
 
 use Application\RestResource\RestResourceAbstract;
-use Exception;
 use Financeiro\Entity\Lancamento;
 use Usuario\Rbac\GuardedResourceInterface;
 use Usuario\Rbac\RoleProvider;
 use ZF\ApiProblem\ApiProblem;
 use Financeiro\Service\LancamentoService;
-use Usuario\Entity\Usuario;
-use Usuario\Repository\Usuario as UsuarioRepository;
 
 class LancamentoResource extends RestResourceAbstract implements GuardedResourceInterface
 {
@@ -40,33 +37,11 @@ class LancamentoResource extends RestResourceAbstract implements GuardedResource
     {
         /** @var Lancamento $lancamento */
         $lancamento = $this->getHydratedObject(new Lancamento());
-        $idUsuario = $this->getRouteParam('usuario_id');
-
-        /** @var UsuarioRepository $usuarioRepo */
-        $usuarioRepo = $this->getRepository(Usuario::class);
-
-        /** @var Usuario $usuario */
-        $usuario = $usuarioRepo->getActiveResult($idUsuario);
-
-        if (!$usuario instanceof Usuario) {
-            return new ApiProblem(404, 'Usuario não encontrado');
-        }
-        $usuarioDestino = $usuario;
-
-        if (!is_null($usuario->getResponsavel())) {
-            $usuarioDestino = $usuario->getResponsavel();
-            $lancamento->setDescricao($usuario->getNome() . ' - ' . $lancamento->getDescricao());
-        }
-        $extrato = $usuarioDestino->getExtratoAtual();
-        $lancamento->setExtrato($extrato);
-        $lancamento->setUsuario($usuarioDestino);
+        $lancamento->updateResponsavel();
+        $lancamento->updateExtratos();
         $result = $this->service->insert($lancamento);
 
-        if ($result instanceof ApiProblem) {
-            return $result;
-        }
-
-        return $usuario->toArray();
+        return $result->toArray();
     }
 
     /**

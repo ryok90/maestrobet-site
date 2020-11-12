@@ -18,17 +18,18 @@ class UsuarioService extends ServiceAbstract
      */
     public function insert(Usuario $usuario)
     {
+        if ($usuario->getId()) {
+            throw new ApiGeneralException(400, 'Usuário já registrado');
+        }
+
         try {
-            if ($usuario->getId()) {
-                return new ApiProblem(400, 'Usuário já registrado.');
-            }
             $usuario->setUsuarioCriador($this->getUsuarioAutenticado());
             $this->entityManager->persist($usuario);
             $this->entityManager->flush();
 
             return $usuario;
         } catch (Exception $exception) {
-            throw new ApiGeneralException('Ocorreu um erro ao inserir usuário', 500, $exception);
+            throw new ApiGeneralException(500, 'Ocorreu um erro ao inserir usuário', $exception);
         }
     }
 
@@ -39,17 +40,17 @@ class UsuarioService extends ServiceAbstract
      */
     public function update(Usuario $usuario)
     {
-        try {
-            if (!$usuario->getId()) {
-                return new ApiProblem(400, 'Usuário ainda não registrado');
-            }
+        if (!$usuario->getId()) {
+            throw new ApiGeneralException(400, 'Usuário ainda não registrado');
+        }
 
+        try {
             $this->entityManager->persist($usuario);
             $this->entityManager->flush();
 
             return $usuario;
         } catch (Exception $exception) {
-            throw new ApiGeneralException('Ocorreu um erro ao atualizar usuário', 500, $exception);
+            throw new ApiGeneralException(500,'Ocorreu um erro ao atualizar usuário', $exception);
         }
     }
 
@@ -60,17 +61,18 @@ class UsuarioService extends ServiceAbstract
      */
     public function delete(Usuario $usuario)
     {
+        if (!$usuario->getId()) {
+            throw new ApiGeneralException(400, 'Usuário ainda não registrado');
+        }
+
         try {
-            if (!$usuario->getId()) {
-                return new ApiProblem(400, 'Usuário ainda não registrado');
-            }
             $usuario->logicalDelete();
             $this->entityManager->persist($usuario);
             $this->entityManager->flush();
 
             return true;
         } catch (Exception $exception) {
-            throw new ApiGeneralException('Ocorreu um erro ao remover usuário', 500, $exception);
+            throw new ApiGeneralException(500, 'Ocorreu um erro ao remover usuário', $exception);
         }
     }
 }

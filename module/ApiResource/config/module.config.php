@@ -7,7 +7,6 @@ return array(
         'factories' => array(
             'ApiResource\\V1\\Rest\\Usuario\\UsuarioResource' => 'ApiResource\\V1\\Rest\\Usuario\\UsuarioResourceFactory',
             'ApiResource\\V1\\Rest\\Lancamento\\LancamentoResource' => 'ApiResource\\V1\\Rest\\Lancamento\\LancamentoResourceFactory',
-            'ApiResource\\V1\\Rest\\Extrato\\ExtratoResource' => 'ApiResource\\V1\\Rest\\Extrato\\ExtratoResourceFactory',
         ),
     ),
     'router' => array(
@@ -24,18 +23,9 @@ return array(
             'api-resource.rest.lancamento' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/usuario/:usuario_id/lancamento[/:lancamento_id]',
+                    'route' => '/lancamento[/:lancamento_id]',
                     'defaults' => array(
                         'controller' => 'ApiResource\\V1\\Rest\\Lancamento\\Controller',
-                    ),
-                ),
-            ),
-            'api-resource.rest.extrato' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/usuario/:usuario_id/extrato[/:extrato_id]',
-                    'defaults' => array(
-                        'controller' => 'ApiResource\\V1\\Rest\\Extrato\\Controller',
                     ),
                 ),
             ),
@@ -45,7 +35,6 @@ return array(
         'uri' => array(
             0 => 'api-resource.rest.usuario',
             1 => 'api-resource.rest.lancamento',
-            2 => 'api-resource.rest.extrato',
         ),
     ),
     'zf-rest' => array(
@@ -90,30 +79,11 @@ return array(
             'collection_class' => 'ApiResource\\V1\\Rest\\Lancamento\\LancamentoCollection',
             'service_name' => 'Lancamento',
         ),
-        'ApiResource\\V1\\Rest\\Extrato\\Controller' => array(
-            'listener' => 'ApiResource\\V1\\Rest\\Extrato\\ExtratoResource',
-            'route_name' => 'api-resource.rest.extrato',
-            'route_identifier_name' => 'extrato_id',
-            'collection_name' => 'extrato',
-            'entity_http_methods' => array(
-                0 => 'GET',
-            ),
-            'collection_http_methods' => array(
-                0 => 'GET',
-            ),
-            'collection_query_whitelist' => array(),
-            'page_size' => 25,
-            'page_size_param' => null,
-            'entity_class' => 'Financeiro\\Entity\\Extrato',
-            'collection_class' => 'ApiResource\\V1\\Rest\\Extrato\\ExtratoCollection',
-            'service_name' => 'Extrato',
-        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
             'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'HalJson',
-            'ApiResource\\V1\\Rest\\Extrato\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
@@ -128,11 +98,6 @@ return array(
                 2 => 'application/json',
                 3 => 'multipart/form-data',
             ),
-            'ApiResource\\V1\\Rest\\Extrato\\Controller' => array(
-                0 => 'application/vnd.api-resource.v1+json',
-                1 => 'application/hal+json',
-                2 => 'application/json',
-            ),
         ),
         'content_type_whitelist' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
@@ -144,10 +109,6 @@ return array(
                 0 => 'application/vnd.api-resource.v1+json',
                 1 => 'application/json',
                 2 => 'multipart/form-data',
-            ),
-            'ApiResource\\V1\\Rest\\Extrato\\Controller' => array(
-                0 => 'application/vnd.api-resource.v1+json',
-                1 => 'application/json',
             ),
         ),
     ),
@@ -178,20 +139,6 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'api-resource.rest.lancamento',
                 'route_identifier_name' => 'lancamento_id',
-                'hydrator' => 'DoctrineModule\\Stdlib\\Hydrator\\DoctrineObject',
-                'max_depth' => 0,
-            ),
-            'ApiResource\\V1\\Rest\\Extrato\\ExtratoCollection' => array(
-                'entity_identifier_name' => 'id',
-                'route_name' => 'api-resource.rest.extrato',
-                'route_identifier_name' => 'extrato_id',
-                'is_collection' => true,
-                'max_depth' => 0,
-            ),
-            'Financeiro\\Entity\\Extrato' => array(
-                'entity_identifier_name' => 'id',
-                'route_name' => 'api-resource.rest.extrato',
-                'route_identifier_name' => 'extrato_id',
                 'hydrator' => 'DoctrineModule\\Stdlib\\Hydrator\\DoctrineObject',
                 'max_depth' => 0,
             ),
@@ -421,7 +368,7 @@ return array(
                 'field_type' => 'datetime',
             ),
             3 => array(
-                'required' => true,
+                'required' => false,
                 'validators' => array(),
                 'filters' => array(),
                 'name' => 'usuario',
@@ -437,6 +384,14 @@ return array(
                 'description' => 'Tipo de Lançamento',
                 'field_type' => 'string',
                 'error_message' => 'Tipo de lançamento invalido',
+            ),
+            5 => array(
+                'required' => false,
+                'validators' => array(),
+                'filters' => array(),
+                'name' => 'banco',
+                'description' => 'Id do banco do lançamento',
+                'field_type' => 'int',
             ),
         ),
     ),

@@ -7,7 +7,7 @@ use Application\Entity\EntityAbstract;
 
 /**
  * @ORM\Entity(repositoryClass="Usuario\Repository\Repasse")
- * @ORM\Table(name="Repasse")
+ * @ORM\Table(name="Usuario_Repasse")
  * @ORM\HasLifecycleCallbacks
  */
 class Repasse extends EntityAbstract

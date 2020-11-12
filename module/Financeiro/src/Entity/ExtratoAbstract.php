@@ -10,12 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Extrato refere-se ao saldo do mês anterior ao mês corrente.
  * Usado para não ser recalculado todas as transações de um usuário
- * 
- * @ORM\Entity(repositoryClass="Financeiro\Repository\Extrato")
- * @ORM\Table(name="extrato")
- * @ORM\HasLifecycleCallbacks
  */
-class Extrato extends EntityAbstract
+abstract class ExtratoAbstract extends EntityAbstract
 {
     /**
      * @ORM\Id
@@ -24,20 +20,6 @@ class Extrato extends EntityAbstract
      * @var int
      */
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", inversedBy="extratos", cascade={"persist"})
-     * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=true)
-     * @var \Usuario\Entity\Usuario
-     */
-    protected $usuario;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Financeiro\Entity\Banco", inversedBy="extratos", cascade={"persist"})
-     * @ORM\JoinColumn(name="idBanco", referencedColumnName="id", nullable=true)
-     * @var \Financeiro\Entity\Banco
-     */
-    protected $banco;
 
     /**
      * @ORM\Column(type="date", nullable=false)
@@ -53,14 +35,6 @@ class Extrato extends EntityAbstract
      * @var float
      */
     protected $saldo;
-
-    /**
-     * Lançamentos referentes ao mês corrente.
-     * 
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Lancamento", fetch="EXTRA_LAZY", mappedBy="extrato", cascade={"persist"})
-     * @var ArrayCollection
-     */
-    protected $lancamentos;
 
     public function __construct()
     {
@@ -82,42 +56,6 @@ class Extrato extends EntityAbstract
     public function setId($id)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return \Usuario\Entity\Usuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * @param \Usuario\Entity\Usuario $usuario 
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-    }
-
-    /**
-     * @return \Financeiro\Entity\Banco
-     */
-    public function getBanco()
-    {
-        return $this->banco;
-    }
-
-    /**
-     * @param \Financeiro\Entity\Banco $banco
-     *
-     * @return self
-     */
-    public function setBanco(\Financeiro\Entity\Banco $banco)
-    {
-        $this->banco = $banco;
-
-        return $this;
     }
 
     /**
@@ -158,22 +96,6 @@ class Extrato extends EntityAbstract
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getLancamentos()
-    {
-        return $this->lancamentos;
-    }
-
-    /**
-     * @param ArrayCollection $lancamentos Lançamentos referentes ao mês corrente.
-     */
-    public function setLancamentos($lancamentos)
-    {
-        $this->lancamentos = $lancamentos;
-    }
-
-    /**
      * Calcula o total dos lançamentos vinculados ao extrato.
      * @return float
      */
@@ -190,6 +112,10 @@ class Extrato extends EntityAbstract
         return $total;
     }
 
+    abstract public function getLancamentos();
+
+    abstract public function setLancamentos($lancamentos);
+
     /**
      * Calcula o saldo total atual com os lançamentos do mês corrente.
      * @return void
@@ -203,31 +129,6 @@ class Extrato extends EntityAbstract
     {
         $dataAtual = new DateTime('first day of');
 
-        return $this->getDataExtrato() != $dataAtual;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function toArray()
-    {
-        return [
-            'id' => $this->getId(),
-            'dataExtrato' => $this->getDataExtrato(),
-            'lancamentos' => $this->collectionToArray($this->getLancamentos()),
-            'saldo' => $this->getSaldo(),
-            'usuario' => $this->getUsuario() ? $this->getUsuario()->toArrayMin() : null
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function toArrayMin()
-    {
-        return [
-            'id' => $this->getId(),
-            'dataExtrato' => $this->getDataExtrato(),
-        ];
+        return $this->getDataExtrato() == $dataAtual->format('Y-m-d');
     }
 }

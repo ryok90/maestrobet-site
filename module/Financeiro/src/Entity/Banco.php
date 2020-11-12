@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Financeiro\Repository\Banco")
- * @ORM\Table(name="banco")
+ * @ORM\Table(name="Financeiro_Banco")
  * @ORM\HasLifecycleCallbacks
  */
-class Banco extends EntityAbstract
+class Banco extends ContaAbstract
 {
     /**
      * @ORM\Id
@@ -49,7 +49,7 @@ class Banco extends EntityAbstract
      * Todos os extratos mensais.
      * Extratos possuem saldo que refere à soma dos lançamentos até seu mês corrente.
      * 
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", mappedBy="banco", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\ExtratoBanco", fetch="EXTRA_LAZY", mappedBy="banco", cascade={"persist"})
      * @var ArrayCollection
      */
     protected $extratos;
@@ -57,7 +57,7 @@ class Banco extends EntityAbstract
     /**
      * Último extrato cadastrado.
      * 
-     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\ExtratoBanco", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=true)
      * @var Extrato
      */
@@ -96,7 +96,7 @@ class Banco extends EntityAbstract
      *
      * @return self
      */
-    public function setNome(string $nome)
+    public function setNome($nome)
     {
         $this->nome = $nome;
 
@@ -120,7 +120,7 @@ class Banco extends EntityAbstract
      *
      * @return self
      */ 
-    public function setConta(string $conta)
+    public function setConta($conta)
     {
         $this->conta = $conta;
 
@@ -144,7 +144,7 @@ class Banco extends EntityAbstract
      *
      * @return self
      */ 
-    public function setAgencia(string $agencia)
+    public function setAgencia($agencia)
     {
         $this->agencia = $agencia;
 
@@ -168,7 +168,7 @@ class Banco extends EntityAbstract
      *
      * @return self
      */
-    public function setLancamentos(ArrayCollection $lancamentos)
+    public function setLancamentos($lancamentos)
     {
         $this->lancamentos = $lancamentos;
 

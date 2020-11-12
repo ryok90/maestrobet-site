@@ -6,13 +6,10 @@ use Usuario\Entity\Usuario;
 use Application\Entity\EntityAbstract;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
-use Financeiro\Entity\Banco;
-use Financeiro\Entity\Fechamento;
-use Financeiro\Repository\Extrato;
 
 /**
  * @ORM\Entity(repositoryClass="Financeiro\Repository\Lancamento")
- * @ORM\Table(name="lancamento")
+ * @ORM\Table(name="Financeiro_Lancamento")
  * @ORM\HasLifecycleCallbacks
  */
 class Lancamento extends EntityAbstract
@@ -55,11 +52,18 @@ class Lancamento extends EntityAbstract
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Financeiro\Entity\Extrato", inversedBy="lancamentos", cascade={"persist"})
-     * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=false)
-     * @var Extrato
+     * @ORM\ManyToOne(targetEntity="Financeiro\Entity\ExtratoUsuario", inversedBy="lancamentos", cascade={"persist"})
+     * @ORM\JoinColumn(name="idExtratoUsuario", referencedColumnName="id", nullable=true)
+     * @var ExtratoUsuario
      */
-    protected $extrato;
+    protected $extratoUsuario;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Financeiro\Entity\ExtratoBanco", inversedBy="lancamentos", cascade={"persist"})
+     * @ORM\JoinColumn(name="idExtratoBanco", referencedColumnName="id", nullable=true)
+     * @var ExtratoUsuario
+     */
+    protected $extratoBanco;
 
     /**
      * @ORM\Column(name="valor", type="decimal", precision=11, scale=2, nullable=false)
@@ -176,19 +180,19 @@ class Lancamento extends EntityAbstract
     }
 
     /**
-     * @return Extrato
+     * @return ExtratoUsuario
      */
-    public function getExtrato()
+    public function getExtratoUsuario()
     {
-        return $this->extrato;
+        return $this->extratoUsuario;
     }
 
     /**
-     * @param Extrato $extrato 
+     * @param ExtratoUsuario $extrato 
      */
-    public function setExtrato($extrato)
+    public function setExtratoUsuario($extrato)
     {
-        $this->extrato = $extrato;
+        $this->extratoUsuario = $extrato;
     }
 
     /**
@@ -240,7 +244,7 @@ class Lancamento extends EntityAbstract
      *
      * @return self
      */
-    public function setTipo(string $tipo)
+    public function setTipo($tipo)
     {
         $this->tipo = $tipo;
 
@@ -248,8 +252,6 @@ class Lancamento extends EntityAbstract
     }
 
     /**
-     * Get the value of banco
-     *
      * @return Banco
      */
     public function getBanco()
@@ -258,17 +260,58 @@ class Lancamento extends EntityAbstract
     }
 
     /**
-     * Set the value of banco
-     *
      * @param Banco $banco
+     */
+    public function setBanco($banco)
+    {
+        $this->banco = $banco;
+    }
+
+    /**
+     * @return Extrato
+     */
+    public function getExtratoBanco()
+    {
+        return $this->extratoBanco;
+    }
+
+    /**
+     * @param Extrato $extratoBanco
      *
      * @return self
      */
-    public function setBanco(Banco $banco)
+    public function setExtratoBanco($extratoBanco)
     {
-        $this->banco = $banco;
+        $this->extratoBanco = $extratoBanco;
 
         return $this;
+    }
+
+    /**
+     * Atualiza os Extratos atuais de banco e de usuario
+     * @return void
+     */
+    public function updateExtratos()
+    {
+        $usuario = $this->getUsuario();
+
+        if ($usuario instanceof Usuario) {
+            $this->setExtratoUsuario($usuario->getExtratoAtual());
+        }
+        $banco = $this->getBanco();
+
+        if ($banco instanceof Banco) {
+            $this->setExtratoBanco($banco->getExtratoAtual());
+        }
+    }
+
+    public function updateResponsavel()
+    {
+        $responsavel = $this->getUsuario()->getResponsavel();
+
+        if ($responsavel instanceof Usuario) {
+            $this->setUsuario($responsavel);
+        }
     }
 
     /**
@@ -297,7 +340,9 @@ class Lancamento extends EntityAbstract
             'dataLancamento' => $this->getDataLancamento(),
             'dataCriacao' => $this->getDataCriacao(),
             'usuario' => $this->getUsuario() ? $this->getUsuario()->toArrayMin() : null,
-            'extrato' => $this->getExtrato() ? $this->getExtrato()->toArrayMin() : null,
+            'extratoUsuario' => $this->getExtratoUsuario() ? $this->getExtratoUsuario()->toArrayMin() : null,
+            'banco' => $this->getBanco() ? $this->getBanco()->toArrayMin() : null,
+            'extratoBanco' => $this->getExtratoBanco() ? $this->getExtratoBanco()->toArrayMin() : null,
             'fechamento' => $this->getFechamento() ? $this->getFechamento()->toArrayMin() : null,
         ];
     }

@@ -7,12 +7,12 @@ use Zend\Crypt\Password\Bcrypt;
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
 use Financeiro\Entity\ContaAbstract;
-use Financeiro\Entity\Extrato;
+use Financeiro\Entity\ExtratoUsuario;
 
 /**
  * Usuario base de toda aplicação.
  * @ORM\Entity(repositoryClass="Usuario\Repository\Usuario")
- * @ORM\Table(name="usuario")
+ * @ORM\Table(name="Usuario_Usuario")
  * @ORM\HasLifecycleCallbacks
  */
 class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
@@ -53,7 +53,7 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
      * Todos os extratos mensais.
      * Extratos possuem saldo que refere à soma dos lançamentos até seu mês corrente.
      * 
-     * @ORM\OneToMany(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", mappedBy="usuario", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Financeiro\Entity\ExtratoUsuario", fetch="EXTRA_LAZY", mappedBy="usuario", cascade={"persist"})
      * @var ArrayCollection
      */
     protected $extratos;
@@ -61,9 +61,9 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     /**
      * Último extrato cadastrado.
      * 
-     * @ORM\OneToOne(targetEntity="Financeiro\Entity\Extrato", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Financeiro\Entity\ExtratoUsuario", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\JoinColumn(name="idExtrato", referencedColumnName="id", nullable=true)
-     * @var Extrato
+     * @var ExtratoUsuario
      */
     protected $extrato;
 

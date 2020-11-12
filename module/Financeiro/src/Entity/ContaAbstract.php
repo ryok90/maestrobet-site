@@ -30,7 +30,7 @@ abstract class ContaAbstract extends EntityAbstract
     }
 
     /**
-     * @return Extrato
+     * @return ExtratoAbstract
      */
     public function getExtrato()
     {
@@ -38,35 +38,41 @@ abstract class ContaAbstract extends EntityAbstract
     }
 
     /**
-     * Recupera o Extrato atual. Se não houver Extrato atual ou se o Extrato
-     * não for o atual, gera-se um novo extrato.
-     * @return Extrato
-     */
-    public function getExtratoAtual()
-    {
-        $semExtratoAtual = is_null($this->extrato) || !$this->extrato->isExtratoAtual();
-
-        if ($semExtratoAtual) {
-            return $this->gerarNovoExtrato($this);
-        }
-
-        return $this->extrato;
-    }
-
-    /**
-     * @param Extrato $extrato Último extrato cadastrado.
+     * @param ExtratoAbstract $extrato Último extrato cadastrado.
      */
     public function setExtrato($extrato)
     {
         $this->extrato = $extrato;
     }
 
+
+    /**
+     * Recupera o Extrato atual. Se não houver Extrato atual ou se o Extrato
+     * não for o atual, gera-se um novo extrato.
+     * @return ExtratoAbstract
+     */
+    public function getExtratoAtual()
+    {
+        $semExtratoAtual = is_null($this->extrato) || !$this->extrato->isExtratoAtual();
+
+        if ($semExtratoAtual) {
+            $usuarioCriador = $this;
+
+            if ($this instanceof Banco) {
+                $usuarioCriador = $this->getUsuarioCriador();
+            }
+
+            return $this->gerarNovoExtrato($usuarioCriador);
+        }
+
+        return $this->extrato;
+    }
     /**
      * @return float
      */
     public function saldoTotalAtual()
     {
-        if ($this->getExtrato() instanceof Extrato) {
+        if ($this->getExtrato() instanceof ExtratoAbstract) {
 
             return $this->getExtrato()->saldoTotalAtual();
         }
@@ -77,22 +83,39 @@ abstract class ContaAbstract extends EntityAbstract
     /**
      * Gera um novo extrato baseado no extrato anterior
      * @param Usuario $usuarioCriador
-     * @return Extrato
+     * @return ExtratoAbstract
      */
     public function gerarNovoExtrato($usuarioCriador)
     {
-        $novoExtrato = new Extrato();
+        if ($this instanceof Banco) {
+            return $this->gerarExtratoBanco($usuarioCriador);
+        }
+
+        if ($this instanceof Usuario) {
+            return $this->gerarExtratoUsuario($usuarioCriador);
+        }
+    }
+
+    protected function gerarExtratoBanco($usuarioCriador)
+    {
+        $novoExtrato = new ExtratoBanco();
         $novoExtrato->setSaldo($this->saldoTotalAtual());
         $novoExtrato->setUsuarioCriador($usuarioCriador);
         $novoExtrato->setDataExtrato(new DateTime('first day of'));
+        $novoExtrato->setBanco($this);
+        $this->setExtrato($novoExtrato);
 
-        if ($this instanceof Usuario) {
-            $novoExtrato->setUsuario($this);
-        }
+        return $this->getExtrato();
+    }
 
-        if ($this instanceof Banco) {
-            $novoExtrato->setBanco($this);
-        }
+    protected function gerarExtratoUsuario($usuarioCriador)
+    {
+        $novoExtrato = new ExtratoUsuario();
+        $novoExtrato->setSaldo($this->saldoTotalAtual());
+        $novoExtrato->setUsuarioCriador($usuarioCriador);
+        $novoExtrato->setDataExtrato(new DateTime('first day of'));
+        $novoExtrato->setUsuario($this);
+
         $this->setExtrato($novoExtrato);
 
         return $this->getExtrato();

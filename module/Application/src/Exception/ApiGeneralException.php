@@ -24,7 +24,7 @@ class ApiGeneralException extends Exception implements ProblemExceptionInterface
      * @param Throwable $previous
      * @param array $details
      */
-    public function __construct(string $detail = 'Ocorreu um erro no servidor', int $code = 500, Throwable $previous = null, array $details = [])
+    public function __construct(int $code = 500, string $detail = 'Ocorreu um erro no servidor', Throwable $previous = null, array $details = [])
     {
         $this->details = $details;
 

@@ -8,7 +8,7 @@ use Financeiro\Entity\Lancamento;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fechamento")
+ * @ORM\Table(name="Financeiro_Fechamento")
  * @ORM\HasLifecycleCallbacks
  */
 class Fechamento extends EntityAbstract
