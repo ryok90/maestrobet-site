@@ -74,49 +74,58 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     protected $roles;
 
     /**
-     * Usuário cliente.
+     * Agente responsável pelo usuário
      * 
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Cliente", fetch="EXTRA_LAZY", cascade={"persist"})
-     * @ORM\JoinColumn(name="idCliente", referencedColumnName="id", nullable=true)
-     * @var Cliente
-     */
-    protected $cliente;
-
-    /**
-     * Usuário agente.
-     * 
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Agente", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Agente", inversedBy="usuarios", cascade={"persist"})
      * @ORM\JoinColumn(name="idAgente", referencedColumnName="id", nullable=true)
      * @var Agente
      */
     protected $agente;
 
     /**
-     * Usuário banca.
+     * Banca 1 com participação do usuário
      * 
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Banca", fetch="EXTRA_LAZY", cascade={"persist"})
-     * @ORM\JoinColumn(name="idBanca", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Banca", inversedBy="usuarios", cascade={"persist"})})
+     * @ORM\JoinColumn(name="idBanca1", referencedColumnName="id", nullable=true)
      * @var Banca
      */
-    protected $banca;
+    protected $banca1;
 
     /**
-     * Usuário repasse.
+     * Banca 2 com participação do usuário
      * 
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Repasse", fetch="EXTRA_LAZY", cascade={"persist"})
-     * @ORM\JoinColumn(name="idRepasse", referencedColumnName="id", nullable=true)
-     * @var Repasse
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Banca", inversedBy="usuarios", cascade={"persist"})})
+     * @ORM\JoinColumn(name="idBanca2", referencedColumnName="id", nullable=true)
+     * @var Banca
      */
-    protected $repasse;
+    protected $banca2;
 
     /**
      * Usuário responsável pra qual os lançamentos são direcionados.
      * 
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario", cascade={"persist"})
      * @ORM\JoinColumn(name="idResponsavel", referencedColumnName="id", nullable=true)
      * @var Usuario
      */
     protected $responsavel;
+
+    /**
+     * Usuário como Agente
+     * 
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Agente", mappedBy="usuario", cascade={"persist"})
+     * @ORM\JoinColumn(name="idUsuarioAgente", referencedColumnName="id", nullable=true)
+     * @var Usuario
+     */
+    protected $usuarioAgente;
+
+    /**
+     * Usuário como Banca
+     * 
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Agente", mappedBy="usuario", cascade={"persist"})
+     * @ORM\JoinColumn(name="idUsuarioBanca", referencedColumnName="id", nullable=true)
+     * @var Usuario
+     */
+    protected $usuarioBanca;
 
     /**
      * @ORM\Column(name="desconto", type="decimal", precision=2, scale=2, nullable=true)
@@ -321,31 +330,6 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
         $this->roles[] = $role;
     }
 
-
-    /**
-     * Get usuário cliente.
-     *
-     * @return Cliente
-     */
-    public function getCliente()
-    {
-        return $this->cliente;
-    }
-
-    /**
-     * Set usuário cliente.
-     *
-     * @param Cliente $cliente Usuário cliente.
-     *
-     * @return self
-     */
-    public function setCliente(Cliente $cliente)
-    {
-        $this->cliente = $cliente;
-
-        return $this;
-    }
-
     /**
      * Get usuário agente.
      *
@@ -395,25 +379,21 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Get usuário repasse.
-     *
-     * @return Repasse
+     * @return Banca
      */
-    public function getRepasse()
+    public function getBanca2()
     {
-        return $this->repasse;
+        return $this->banca2;
     }
 
     /**
-     * Set usuário repasse.
-     *
-     * @param Repasse $repasse Usuário repasse.
+     * @param Banca $banca2
      *
      * @return self
      */
-    public function setRepasse(Repasse $repasse)
+    public function setBanca2($banca2)
     {
-        $this->repasse = $repasse;
+        $this->banca2 = $banca2;
 
         return $this;
     }
@@ -464,20 +444,6 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
         $this->desconto = $desconto;
 
         return $this;
-    }
-
-    /**
-     * Seta os tipos de acordo com os valores vindo por paramestros
-     * Somente para ser usado em 'create' pois cria novos tipos
-     * @param stdObject $rawData
-     * @return void
-     */
-    public function setTipos($rawData)
-    {
-        empty($rawData->isAgente) ?: $this->setAgente((new Agente())->setUsuario($this));
-        empty($rawData->isBanca) ?: $this->setBanca((new Banca())->setUsuario($this));
-        empty($rawData->isCliente) ?: $this->setCliente((new Cliente())->setUsuario($this));
-        empty($rawData->isRepasse) ?: $this->setRepasse((new Repasse())->setUsuario($this));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Application\Entity\EntityAbstract;
 
 /**
@@ -26,6 +27,13 @@ class Banca extends EntityAbstract
      * @var Usuario
      */
     protected $usuario;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Usuario\Entity\Usuario", fetch="EXTRA_LAZY", mappedBy="banca", cascade={"persist"})
+     * @var ArrayCollection
+     */
+    protected $usuarios;
+
 
     /**
      * Get the value of id

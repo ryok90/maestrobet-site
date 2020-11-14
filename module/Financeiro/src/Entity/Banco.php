@@ -2,7 +2,6 @@
 
 namespace Financeiro\Entity;
 
-use Application\Entity\EntityAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 

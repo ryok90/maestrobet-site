@@ -3,6 +3,7 @@
 namespace Usuario\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Application\Entity\EntityAbstract;
 
 /**
@@ -26,6 +27,12 @@ class Agente extends EntityAbstract
      * @var Usuario
      */
     protected $usuario;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Usuario\Entity\Usuario", fetch="EXTRA_LAZY", mappedBy="agente", cascade={"persist"})
+     * @var ArrayCollection
+     */
+    protected $usuarios;
 
     /**
      * Get the value of id
@@ -73,6 +80,22 @@ class Agente extends EntityAbstract
         $this->usuario = $usuario;
 
         return $this;
+    }
+
+    /**
+     * @return Usuario
+     */
+    public function getUsuarios()
+    {
+        return $this->usuarios;
+    }
+
+    /**
+     * @param Usuario $usuarios
+     */
+    public function setUsuarios($usuarios)
+    {
+        $this->usuarios = $usuarios;
     }
 
     /**

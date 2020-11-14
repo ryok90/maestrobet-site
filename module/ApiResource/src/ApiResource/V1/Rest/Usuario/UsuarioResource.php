@@ -2,7 +2,6 @@
 
 namespace ApiResource\V1\Rest\Usuario;
 
-use Exception;
 use Application\RestResource\RestResourceAbstract;
 use Usuario\Entity\Usuario;
 use Usuario\Rbac\GuardedResourceInterface;
@@ -38,7 +37,6 @@ class UsuarioResource extends RestResourceAbstract implements GuardedResourceInt
     {
         /** @var Usuario $usuario */
         $usuario = $this->getHydratedObject(new Usuario());
-        $usuario->setTipos($rawData);
         $usuario = $this->service->insert($usuario);
 
         return $usuario->toArray();
