@@ -29,12 +29,23 @@ return array(
                     ),
                 ),
             ),
+            'api-resource.rpc.importacao-usuario' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/importacao/usuario',
+                    'defaults' => array(
+                        'controller' => 'ApiResource\\V1\\Rpc\\ImportacaoUsuario\\Controller',
+                        'action' => 'importacaoUsuario',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
         'uri' => array(
             0 => 'api-resource.rest.usuario',
             1 => 'api-resource.rest.lancamento',
+            2 => 'api-resource.rpc.importacao-usuario',
         ),
     ),
     'zf-rest' => array(
@@ -84,6 +95,7 @@ return array(
         'controllers' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => 'HalJson',
             'ApiResource\\V1\\Rest\\Lancamento\\Controller' => 'HalJson',
+            'ApiResource\\V1\\Rpc\\ImportacaoUsuario\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
@@ -98,6 +110,11 @@ return array(
                 2 => 'application/json',
                 3 => 'multipart/form-data',
             ),
+            'ApiResource\\V1\\Rpc\\ImportacaoUsuario\\Controller' => array(
+                0 => 'application/vnd.api-resource.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
         ),
         'content_type_whitelist' => array(
             'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
@@ -109,6 +126,10 @@ return array(
                 0 => 'application/vnd.api-resource.v1+json',
                 1 => 'application/json',
                 2 => 'multipart/form-data',
+            ),
+            'ApiResource\\V1\\Rpc\\ImportacaoUsuario\\Controller' => array(
+                0 => 'application/vnd.api-resource.v1+json',
+                1 => 'application/json',
             ),
         ),
     ),
@@ -145,9 +166,19 @@ return array(
         ),
     ),
     'controllers' => array(
-        'factories' => array(),
+        'factories' => array(
+            'ApiResource\\V1\\Rpc\\ImportacaoUsuario\\Controller' => 'ApiResource\\V1\\Rpc\\ImportacaoUsuario\\ImportacaoUsuarioControllerFactory',
+        ),
     ),
-    'zf-rpc' => array(),
+    'zf-rpc' => array(
+        'ApiResource\\V1\\Rpc\\ImportacaoUsuario\\Controller' => array(
+            'service_name' => 'ImportacaoUsuario',
+            'http_methods' => array(
+                0 => 'POST',
+            ),
+            'route_name' => 'api-resource.rpc.importacao-usuario',
+        ),
+    ),
     'zf-content-validation' => array(
         'ApiResource\\V1\\Rest\\Usuario\\Controller' => array(
             'input_filter' => 'ApiResource\\V1\\Rest\\Usuario\\Validator',
