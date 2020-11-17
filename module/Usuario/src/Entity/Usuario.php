@@ -83,6 +83,18 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     protected $agente;
 
     /**
+     * @ORM\Column(name="commissaoAgentePerca", type="decimal", precision=2, scale=2, nullable=true)
+     * @var float
+     */
+    protected $commissaoAgentePerca;
+
+    /**
+     * @ORM\Column(name="commissaoAgenteGanho", type="decimal", precision=2, scale=2, nullable=true)
+     * @var float
+     */
+    protected $commissaoAgenteGanho;
+
+    /**
      * Banca 1 com participação do usuário
      * 
      * @ORM\ManyToOne(targetEntity="Usuario\Entity\Banca", inversedBy="usuarios", cascade={"persist"})})
@@ -92,6 +104,12 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     protected $banca1;
 
     /**
+     * @ORM\Column(name="participacaoBanca1", type="decimal", precision=2, scale=2, nullable=true)
+     * @var float
+     */
+    protected $participacaoBanca1;
+
+    /**
      * Banca 2 com participação do usuário
      * 
      * @ORM\ManyToOne(targetEntity="Usuario\Entity\Banca", inversedBy="usuarios", cascade={"persist"})})
@@ -99,6 +117,12 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
      * @var Banca
      */
     protected $banca2;
+
+    /**
+     * @ORM\Column(name="participacaoBanca2", type="decimal", precision=2, scale=2, nullable=true)
+     * @var float
+     */
+    protected $participacaoBanca2;
 
     /**
      * Usuário responsável pra qual os lançamentos são direcionados.
@@ -341,13 +365,11 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Set usuário agente.
-     *
-     * @param Agente $agente Usuário agente.
-     *
+     * @param Agente $agente
+     * 
      * @return self
      */
-    public function setAgente(Agente $agente)
+    public function setAgente($agente)
     {
         $this->agente = $agente;
 
@@ -355,8 +377,6 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Get usuário banca.
-     *
      * @return Banca
      */
     public function getBanca()
@@ -365,13 +385,11 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Set usuário banca.
-     *
-     * @param Banca $banca Usuário banca.
+     * @param Banca $banca
      *
      * @return self
      */
-    public function setBanca(Banca $banca)
+    public function setBanca($banca)
     {
         $this->banca = $banca;
 
@@ -399,8 +417,70 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Get usuário responsável pra qual os lançamentos são direcionados.
-     *
+     * @return float
+     */
+    public function getCommissaoAgentePerca()
+    {
+        return $this->commissaoAgentePerca;
+    }
+
+    /**
+     * @param float $commissaoAgentePerca
+     */
+    public function setCommissaoAgentePerca($commissaoAgentePerca)
+    {
+        $this->commissaoAgentePerca = $commissaoAgentePerca;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCommissaoAgenteGanho()
+    {
+        return $this->commissaoAgenteGanho;
+    }
+
+    /**
+     * @param float $commissaoAgenteGanho
+     */
+    public function setCommissaoAgenteGanho($commissaoAgenteGanho)
+    {
+        $this->commissaoAgenteGanho = $commissaoAgenteGanho;
+    }
+
+    /**
+     * @return float
+     */
+    public function getParticipacaoBanca1()
+    {
+        return $this->participacaoBanca1;
+    }
+
+    /**
+     * @param float $participacaoBanca1
+     */
+    public function setParticipacaoBanca1($participacaoBanca1)
+    {
+        $this->participacaoBanca1 = $participacaoBanca1;
+    }
+
+    /**
+     * @return float
+     */
+    public function getParticipacaoBanca2()
+    {
+        return $this->participacaoBanca2;
+    }
+
+    /**
+     * @param float $participacaoBanca2
+     */
+    public function setParticipacaoBanca2($participacaoBanca2)
+    {
+        $this->participacaoBanca2 = $participacaoBanca2;
+    }
+
+    /**
      * @return Usuario
      */
     public function getResponsavel()
@@ -409,13 +489,11 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Set usuário responsável pra qual os lançamentos são direcionados.
-     *
-     * @param Usuario $responsavel  Usuário responsável pra qual os lançamentos são direcionados.
+     * @param Usuario $responsavel
      *
      * @return self
      */
-    public function setResponsavel(Usuario $responsavel)
+    public function setResponsavel($responsavel)
     {
         $this->responsavel = $responsavel;
 
@@ -423,8 +501,6 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Get the value of desconto
-     *
      * @return float
      */
     public function getDesconto()
@@ -433,8 +509,6 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     }
 
     /**
-     * Set the value of desconto
-     *
      * @param float $desconto
      *
      * @return self

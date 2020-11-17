@@ -310,6 +310,10 @@ class Lancamento extends EntityAbstract
         $responsavel = $this->getUsuario()->getResponsavel();
 
         if ($responsavel instanceof Usuario) {
+            $descricao = $this->getDescricao() 
+                ? ($responsavel->getNome() . ' - ' . $this->getDescricao()) 
+                : $responsavel->getNome();
+            $this->setDescricao($descricao);
             $this->setUsuario($responsavel);
         }
     }

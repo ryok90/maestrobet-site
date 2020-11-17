@@ -39,5 +39,4 @@ return array(
     'Usuario',
     'Financeiro',
     'ApiResource',
-    'Importacao',
 );

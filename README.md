@@ -33,3 +33,15 @@ Representação gerada pelo PHPUnit para visualização dos testes
 ```
 ./data/log/codeCoverage/index.html
 ```
+
+### Desenvolvimento
+
+O painel do Apigility necessita de permissões para poder alterar/criar arquivos da API
+```
+sudo chown (usuario):www-data config/
+sudo chown (usuario):www-data module/
+```
+Na pasta do projeto pode resolver.
+
+Toda alteração feita pelo painel deverá ter a propriedade dos arquivos alteradas pois estarão
+todas como www-data:www-data.

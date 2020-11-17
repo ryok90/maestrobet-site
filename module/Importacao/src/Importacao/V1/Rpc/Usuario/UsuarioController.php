@@ -1,19 +1,22 @@
 <?php
-namespace ApiResource\V1\Rpc\ImportacaoUsuario;
+
+namespace Importacao\V1\Rpc\Usuario;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Http\Response;
+use Zend\Http\Request;
 use Doctrine\ORM\EntityManager;
 use Usuario\Service\UsuarioService;
 use Zend\Hydrator\HydratorPluginManager;
+use Zend\Json\Json;
 
-class ImportacaoUsuarioController extends AbstractActionController
+class UsuarioController extends AbstractActionController
 {
     /**
      * @var UsuarioService;
      */
     protected $service;
-    
+
     /**
      * @var EntityManager
      */
@@ -31,13 +34,22 @@ class ImportacaoUsuarioController extends AbstractActionController
         $this->hydratorManager = $hydratorManager;
     }
 
-    public function importacaoUsuarioAction()
+    public function usuarioAction()
     {
         /** @var Response $response */
         $response = $this->getResponse();
 
-        
+        /** @var Request $request */
+        $request = $this->getRequest();
+        $upload = $request->getFiles()->toArray()['usuarios'];
+
+        $json = file_get_contents($upload['tmp_name']);
+        $decoded = Json::decode($json, Json::TYPE_ARRAY);
 
         return $response->setStatusCode(204);
+    }
+
+    protected function hydrateUsuarios($decoded)
+    {
     }
 }

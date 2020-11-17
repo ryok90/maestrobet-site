@@ -1,13 +1,13 @@
 <?php
 
-namespace ApiResource\V1\Rpc\ImportacaoUsuario;
+namespace Importacao\V1\Rpc\Usuario;
 
 use Doctrine\ORM\EntityManager;
 use Zend\Hydrator\HydratorPluginManager;
 use Zend\ServiceManager\ServiceManager;
 use Usuario\Service\UsuarioService;
 
-class ImportacaoUsuarioControllerFactory
+class UsuarioControllerFactory
 {
     /**
      * @param ServiceManager $serviceManager
@@ -19,6 +19,6 @@ class ImportacaoUsuarioControllerFactory
         $hydratorManager = $serviceManager->get(HydratorPluginManager::class);
 
 
-        return new ImportacaoUsuarioController($service, $entityManager, $hydratorManager);
+        return new UsuarioController($service, $entityManager, $hydratorManager);
     }
 }
