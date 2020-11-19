@@ -75,7 +75,7 @@ class Authorization implements AuthorizationInterface
          */
         if (!in_array(GuardedResourceInterface::class, $interfaces)) {
 
-            return true;
+            return false;
         }
         $requestedMethod = self::METHOD_CONVERSION[$group][$privilege];
         $guard = $resourceName::getResourceGuard();

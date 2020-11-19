@@ -83,15 +83,6 @@ return array(
             ),
             'route_name' => 'importacao.rpc.usuario',
         ),
-        '' => array(
-            'service_name' => 'Agente',
-            'http_methods' => array(
-                0 => 'GET',
-                1 => 'GET',
-                2 => 'GET',
-            ),
-            'route_name' => 'importacao.rpc.agente',
-        ),
         'Importacao\\V1\\Rpc\\Agente\\Controller' => array(
             'service_name' => 'Agente',
             'http_methods' => array(

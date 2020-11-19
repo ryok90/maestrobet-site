@@ -1,36 +1,37 @@
 <?php
-return [
-    'doctrine' => [
-        'migrations_configuration' => [
-            'orm_default' => [
+return array(
+    'doctrine' => array(
+        'migrations_configuration' => array(
+            'orm_default' => array(
                 'directory' => 'data/Migrations',
                 'name' => 'Doctrine Database Migrations',
                 'namespace' => 'Migrations',
                 'table' => 'migrations',
-            ],
-        ],
-    ],
-    'zf-oauth2' => [
+            ),
+        ),
+    ),
+    'zf-oauth2' => array(
         'storage' => 'oauth2.doctrineadapter.default',
         'access_lifetime' => 86400,
-        'options' => [
+        'options' => array(
             'always_issue_new_refresh_token' => true,
-        ],
-    ],
-    'zf-mvc-auth' => [
-        'authentication' => [
-            'adapters' => [
-                'oauth2_doctrine' => [
+        ),
+    ),
+    'zf-mvc-auth' => array(
+        'authentication' => array(
+            'adapters' => array(
+                'oauth2_doctrine' => array(
                     'adapter' => 'ZF\\MvcAuth\\Authentication\\OAuth2Adapter',
-                    'storage' => [
+                    'storage' => array(
                         'storage' => 'oauth2.doctrineadapter.default',
                         'route' => '/oauth',
-                    ],
-                ],
-            ],
-            'map' => [
+                    ),
+                ),
+            ),
+            'map' => array(
                 'ApiResource\\V1' => 'oauth2_doctrine',
-            ],
-        ],
-    ],
-];
+                'Importacao\\V1' => 'oauth2_doctrine',
+            ),
+        ),
+    ),
+);

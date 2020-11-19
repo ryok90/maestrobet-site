@@ -98,41 +98,15 @@ class UsuarioService extends ServiceAbstract
         }
     }
 
-    /**
-     * Cria e persiste os objetos do usuario
-     * @param Usuario $usuario
-     * @return void
-     */
-    protected function createRoles($usuario)
+    public function repairBatch($usuarios)
     {
-        $roles = $usuario->getRoles();
-
-        foreach ($roles as $role) {
-            switch ($role) {
-                case RoleProvider::ROLE_AGENTE:
-                    $agente = new Agente();
-                    $agente->setUsuario($usuario);
-                    $this->entityManager->persist($agente);
-                    break;
-
-                case RoleProvider::ROLE_BANCA:
-                    $banca = new Banca();
-                    $banca->setUsuario($usuario);
-                    $this->entityManager->persist($banca);
-                    break;
-
-                case RoleProvider::ROLE_CLIENTE:
-                    $cliente = new Cliente();
-                    $cliente->setUsuario($usuario);
-                    $this->entityManager->persist($cliente);
-                    break;
+        try {
+            foreach ($usuarios as $usuario) {
                 
-                case RoleProvider::ROLE_REPASSE:
-                    $repasse = new Repasse();
-                    $repasse->setUsuario($usuario);
-                    $this->entityManager->persist($repasse);
-                    break;
             }
+
+        } catch (Exception $exception) {
+            throw new ApiGeneralException(500, 'Ocorreu um erro ao ajustar usuarios', $exception);
         }
     }
 }

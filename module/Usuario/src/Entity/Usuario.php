@@ -128,7 +128,7 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     /**
      * Usuário responsável pra qual os lançamentos são direcionados.
      * 
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario", cascade={"persist"})
      * @ORM\JoinColumn(name="idResponsavel", referencedColumnName="id", nullable=true)
      * @var Usuario
      */
@@ -380,9 +380,9 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
     /**
      * @return Banca
      */
-    public function getBanca()
+    public function getBanca1()
     {
-        return $this->banca;
+        return $this->banca1;
     }
 
     /**
@@ -390,9 +390,9 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
      *
      * @return self
      */
-    public function setBanca($banca)
+    public function setBanca1($banca1)
     {
-        $this->banca = $banca;
+        $this->banca1 = $banca1;
 
         return $this;
     }
@@ -514,7 +514,7 @@ class Usuario extends ContaAbstract implements UserInterface, IdentityInterface
      *
      * @return self
      */
-    public function setDesconto(float $desconto)
+    public function setDesconto($desconto)
     {
         $this->desconto = $desconto;
 

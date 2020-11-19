@@ -85,8 +85,6 @@ class ImportacaoUsuarioAbstractController extends AbstractActionController
 
     protected function insertUsuarios($roles)
     {
-        /** @var Response $response */
-        $response = $this->getResponse();
 
         /** @var Request $request */
         $request = $this->getRequest();
@@ -99,6 +97,9 @@ class ImportacaoUsuarioAbstractController extends AbstractActionController
         /** @var UsuarioService $service */
         $service = $this->getService();
         $service->insertBatch($usuarios);
+
+        /** @var Response $response */
+        $response = $this->getResponse();
         $response->setStatusCode(204);
         return;
     }
