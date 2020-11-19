@@ -8,6 +8,7 @@ use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use ZfcRbac\Identity\IdentityInterface;
 use Financeiro\Entity\ContaAbstract;
 use Financeiro\Entity\ExtratoUsuario;
+use Usuario\Rbac\RoleProvider;
 
 /**
  * Usuario base de toda aplicação.

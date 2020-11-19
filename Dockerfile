@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.4-apache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
@@ -6,10 +6,10 @@ RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-avail
 RUN apt update && apt upgrade -y \
   && apt install -y git zlib1g-dev libicu-dev g++ \
   && docker-php-ext-configure intl \
-  && docker-php-ext-install pdo pdo_mysql mysqli zip intl \
+  && docker-php-ext-install pdo pdo_mysql mysqli intl \
   && a2enmod rewrite \
-  && curl -sS https://getcomposer.org/installer \
-  | php -- --install-dir=/usr/local/bin --filename=composer \
+  && curl -sSo /usr/local/bin/composer https://getcomposer.org/download/1.10.17/composer.phar \
+  && chmod 775 /usr/local/bin/composer \
   && pecl install xdebug \
   && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
   && echo "xdebug.default_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \

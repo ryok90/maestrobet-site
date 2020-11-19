@@ -1,15 +1,15 @@
 <?php
-namespace Importacao\V1\Rpc\Agente;
+namespace Importacao\V1\Rpc\Banca;
 
 use Application\Controller\ImportacaoUsuarioAbstractController;
 use Usuario\Rbac\RoleProvider;
 
-class AgenteController extends ImportacaoUsuarioAbstractController
+class BancaController extends ImportacaoUsuarioAbstractController
 {
-    public function agenteAction()
+    public function bancaAction()
     {
         $roles = [
-            RoleProvider::ROLE_AGENTE,
+            RoleProvider::ROLE_BANCA,
             RoleProvider::ROLE_CLIENTE,
             RoleProvider::ROLE_USUARIO,
         ];

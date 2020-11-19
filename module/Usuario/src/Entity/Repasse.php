@@ -21,7 +21,7 @@ class Repasse extends EntityAbstract
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario")
+     * @ORM\OneToOne(targetEntity="Usuario\Entity\Usuario", cascade={"persist"})
      * @ORM\JoinColumn(name="idUsuario", referencedColumnName="id", nullable=false)
      * @var Usuario
      */

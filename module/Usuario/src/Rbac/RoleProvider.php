@@ -4,9 +4,12 @@ namespace Usuario\Rbac;
 class RoleProvider
 {
     // Roles
-    const ROLE_GUEST = 'guest';
     const ROLE_ADMIN = 'admin';
+    const ROLE_AGENTE = 'agente';
+    const ROLE_BANCA = 'banca';
     const ROLE_CLIENTE = 'cliente';
+    const ROLE_GUEST = 'guest';
+    const ROLE_REPASSE = 'repasse';
     const ROLE_USUARIO = 'usuario';
 
     // Admin permissions
@@ -75,9 +78,12 @@ class RoleProvider
     {
         return [
             self::ROLE_ADMIN,
+            self::ROLE_AGENTE,
+            self::ROLE_BANCA,
             self::ROLE_CLIENTE,
-            self::ROLE_USUARIO,
             self::ROLE_GUEST,
+            self::ROLE_REPASSE,
+            self::ROLE_USUARIO,
         ];
     }
 
