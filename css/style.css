@@ -1,0 +1,40 @@
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: 'Helvetica';
+  background-color: #046131;
+  margin: 0;
+}
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #05542b;
+  padding: 0.8rem 0;
+}
+main {
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+footer {
+  color: lightgrey;
+  background-color: #05542b;
+  display: flex;
+  justify-content: center;
+  font-size: 0.75rem;
+  padding: 0.3rem 0;
+}
+footer a {
+  all: unset;
+}
+footer a:hover {
+  color: #48B239;
+  cursor: pointer;
+}

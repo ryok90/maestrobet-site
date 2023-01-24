@@ -1,5 +1,0 @@
-Tratamento de erros específicos na criação de Usuário
- - Nome, e-mail, ou apelido duplicado
-
-Docker permissions (www-data:www-data ou root:root)
-
